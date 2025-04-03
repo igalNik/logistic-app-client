@@ -1,1 +1,23 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-bg-sidebar: #343a40;
+  --color-bg-sidebar-alt: #495057;
+  --color-menu-section: #ffffff77;
+  --color-menuitem-hover: #4b545c;
+  --color-menuitem-active: #3f474e;
+  --color-header-border-color: #dee2e6;
+
+  --gradient-sidebar: linear-gradient(
+    180deg,
+    var(--color-bg-sidebar) 10%,
+    var(--color-bg-sidebar-alt) 100%
+  );
+}
+.bg-sidebar-gradient {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-bg-sidebar) 10%,
+    var(--color-bg-sidebar-alt) 100%
+  );
+}

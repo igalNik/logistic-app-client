@@ -1,21 +1,10 @@
-import { useState } from 'react';
-
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+import router from './router/router';
 
-  return (
-    <>
-      <h1 className="text-3xl font-bold">{count}</h1>
-      <button
-        className="bg-blue-500 text-2xl text-amber-200"
-        onClick={() => setCount(count + 1)}
-      >
-        +
-      </button>
-    </>
-  );
+function App() {
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
