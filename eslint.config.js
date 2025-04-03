@@ -34,6 +34,7 @@ export default tseslint.config(
       ],
       'prettier/prettier': 'error', // Ensure Prettier runs as ESLint rule
       endOfLine: 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   }
 );
