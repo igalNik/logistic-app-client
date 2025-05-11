@@ -17,9 +17,9 @@ function AppLayout() {
 
   return (
     <div
-      className={`grid h-screen max-h-screen max-w-screen ${showSideNav ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr]'} min-w-60 bg-slate-100 md:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]`}
+      className={`text-gray-900 grid h-screen max-h-screen w-full max-w-[100vw] ${showSideNav ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr]'} min-w-60 bg-slate-100 md:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]`}
     >
-      <div className={`md: w-full`}>
+      <div className={`md:w-full`}>
         <Header>
           <span>לוגיסטיקה מסייעת</span>
         </Header>
@@ -34,7 +34,7 @@ function AppLayout() {
       </div>
       {/* <div className="md:col-start-2 md:col-end-2 row-start-2 h-full w-full">
         <BlankPage> */}
-      <main className="p-6 bg-gray-100 row-start-2 mx-auto min-h-[600px] max-w-[1600px] min-w-[800px] flex-1">
+      <main className="md:p-6 bg-gray-100 row-start-2 mx-auto h-full min-h-[600px] w-full max-w-[1200px] flex-1">
         <BlankPage>
           {isLoading ? <Spinner type="page" /> : <Outlet />}
         </BlankPage>

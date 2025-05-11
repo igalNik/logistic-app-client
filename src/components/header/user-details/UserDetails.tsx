@@ -23,7 +23,7 @@ function UserDetails() {
     <div ref={userDetailsElement}>
       <div
         onClick={handleUserDetailsClick}
-        className="hover: gap-1 rounded px-2 py-1 text-bg-sidebar-alt hover:bg-stone-100 flex cursor-pointer items-center justify-center"
+        className="gap-1 rounded px-2 py-1 hover:bg-stone-100 flex cursor-pointer items-center justify-center"
       >
         <span>
           <Icon
@@ -34,7 +34,7 @@ function UserDetails() {
             }}
           />
         </span>
-        <span className="text-xs">{user.fullName}</span>
+        <span>{user.fullName}</span>
       </div>
 
       {showMenu && <UserDetailsMenu />}

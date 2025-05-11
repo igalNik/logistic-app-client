@@ -7,6 +7,11 @@ export const API_ENDPOINTS = {
 
   USERS: {
     GET_ALL: '/users',
+    CREATE: '/users',
     GET_BY_ID: (id: string) => `/users/${id}`,
+  },
+  DEPARTMENTS: {
+    GET_ALL: '/departments',
+    GET_BY_ID: (id: string) => `/departments/${id}`,
   },
 };

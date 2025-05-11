@@ -1,7 +1,11 @@
-import SoldersTable from './../features/table/SoldersTable';
+import { useLoaderData } from 'react-router-dom';
+import SoldersTable from '../../features/solders/components/SoldersTable/SoldersTable';
+import { GetAllSoldersResponse } from '../../api/solders';
 
 function Solders() {
-  return <SoldersTable />;
+  const solders = useLoaderData<GetAllSoldersResponse>();
+
+  return <SoldersTable solders={solders.data} />;
 }
 
 export default Solders;

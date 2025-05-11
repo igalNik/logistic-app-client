@@ -6,8 +6,8 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import PageNotFound from '../pages/PageNotFound';
 import { protectedLoader } from './protectedLoader';
-import Solders from '../pages/Solders';
-
+import Solders from '../pages/solders/Solders';
+import { soldersLoader } from '../features/solders/components/loaders/solders.loader';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -27,6 +27,7 @@ const router = createBrowserRouter([
           {
             path: '/solders',
             element: <Solders />,
+            loader: soldersLoader,
           },
           {
             path: '/departments',

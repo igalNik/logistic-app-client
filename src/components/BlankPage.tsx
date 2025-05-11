@@ -5,7 +5,7 @@ interface BlankPageProps {
 }
 function BlankPage({ children }: BlankPageProps) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md min-h-full w-full">
+    <div className="bg-white p-6 rounded-lg shadow-md w-max-[98%] h-full min-h-full w-full">
       {children}
     </div>
   );

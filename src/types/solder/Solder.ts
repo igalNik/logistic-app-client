@@ -1,4 +1,4 @@
-export interface User {
+export interface Solder {
   _id: string;
   personalNumber: string;
   firstName: string;

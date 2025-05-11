@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
-import BlankPage from '../../BlankPage';
 import UserMenuItem from './UserMenuItem';
+import BlankCard from '../../BlankCard';
 
 export interface UserDetailsMenuProps {
   ref: RefObject<HTMLDivElement | null>;
@@ -8,9 +8,9 @@ export interface UserDetailsMenuProps {
 
 function UserDetailsMenu() {
   return (
-    <div className="absolute">
-      <BlankPage>
-        <div className="m-2 text-sm text-bg-sidebar-alt">
+    <div className="left-0 absolute">
+      <BlankCard className="py-3 px-2">
+        <div className="text-sm text-bg-sidebar-alt">
           {userMenuItems.map((item, index) => (
             <UserMenuItem
               text={item.text}
@@ -20,7 +20,7 @@ function UserDetailsMenu() {
             />
           ))}
         </div>
-      </BlankPage>
+      </BlankCard>
     </div>
   );
 }

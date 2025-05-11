@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { HTMLAttributes, Suspense, useRef } from 'react';
 import Icons from './../utils/Icons';
 
 interface IconOptions {
@@ -8,15 +8,18 @@ interface IconOptions {
   fontSize?: string;
 }
 
-interface IIcon {
+interface IconProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
   options?: IconOptions;
   onClick?: () => void | undefined;
 }
 
-function Icon({ name, options = {}, onClick }: IIcon) {
+function Icon({ name, options = {}, onClick, ...props }: IconProps) {
   const fallbackEL = (
-    <div className="w-6 h-6 border-gray-300 border-t-blue-500 animate-spin rounded-full border-4"></div>
+    <div
+      className="w-6 h-6 border-gray-300 border-t-blue-500 animate-spin rounded-full border-4"
+      {...props}
+    ></div>
   );
 
   const Icon = useRef(Icons[name as keyof typeof Icons]).current;

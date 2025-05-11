@@ -18,6 +18,7 @@ const Icons = {
   Add: lazy(() => import('@mui/icons-material/Add')),
   Department: lazy(() => import('@mui/icons-material/CorporateFare')),
   Home: lazy(() => import('@mui/icons-material/HomeRounded')),
+  Close: lazy(() => import('@mui/icons-material/Close')),
 };
 
 export default Icons;

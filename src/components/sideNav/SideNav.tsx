@@ -26,12 +26,8 @@ function SideNav({ expend = true }: SideNavProps) {
       </SideNavHeader>
       <ul className="px-2 py-2 bg-sidebar-gradient flex h-full flex-col">
         {sideNavData.map((section: SideNavSectionData, index) => (
-          <Fragment>
-            <SideNavSection
-              showTitle={showItemsLabels}
-              title={section.title}
-              key={section.id}
-            >
+          <Fragment key={section.id}>
+            <SideNavSection showTitle={showItemsLabels} title={section.title}>
               {section.items.map((item: SideNavItemData) => (
                 <SideNavItem
                   text={item.text}
@@ -43,7 +39,9 @@ function SideNav({ expend = true }: SideNavProps) {
               ))}
             </SideNavSection>
             {showItemsLabels && (
-              <SideNaveSeparator key={`${section.title}-separator-${index}`} />
+              <SideNaveSeparator
+                key={`${section.title}-separator-${section.id}`}
+              />
             )}
           </Fragment>
         ))}
