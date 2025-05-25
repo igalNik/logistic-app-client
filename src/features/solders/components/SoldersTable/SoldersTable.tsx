@@ -17,9 +17,10 @@ import {
 } from 'ag-grid-community';
 import { User } from '../../../../types/User';
 import Button from '../../../../components/Button';
-import Modal from '../../../../components/Modal';
+import Modal from '../../../../components/Modal/Modal';
 import Input from '../../../../components/Input';
 import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
+import CreateSolderFormTest from '../CreateSolderForm/CreateSolderFormTest';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -203,7 +204,7 @@ function SoldersTable({ solders = [] }: SoldersTableProps) {
         stopEditingWhenCellsLoseFocus={true}
       />
       {showAddModal && (
-        <Modal onClose={() => setShowAddModal(false)}>
+        <Modal onClose={() => setShowAddModal(false)} className="z-50">
           <CreateSolderForm />
         </Modal>
       )}

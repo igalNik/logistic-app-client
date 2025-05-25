@@ -19,6 +19,14 @@ const Icons = {
   Department: lazy(() => import('@mui/icons-material/CorporateFare')),
   Home: lazy(() => import('@mui/icons-material/HomeRounded')),
   Close: lazy(() => import('@mui/icons-material/Close')),
+  Mobile: lazy(() => import('@mui/icons-material/PhoneAndroid')),
+  Email: lazy(() => import('@mui/icons-material/Email')),
+  Numbers: lazy(() => import('@mui/icons-material/Numbers')),
+  ErrorOutline: lazy(() => import('@mui/icons-material/ErrorOutline')),
+  Info: lazy(() => import('@mui/icons-material/Info')),
+  Warning: lazy(() => import('@mui/icons-material/WarningAmber')),
+  Success: lazy(() => import('@mui/icons-material/CheckCircleOutline')),
+  Abc: lazy(() => import('@mui/icons-material/Abc')),
 };
 
 export default Icons;

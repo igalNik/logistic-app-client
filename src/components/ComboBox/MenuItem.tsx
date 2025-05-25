@@ -1,30 +1,29 @@
 import { HTMLAttributes } from 'react';
-import { DropdownOption } from '../types/dropdown.types';
-import { mergeClasses } from '../utils/tailwind.util';
-import Icon from './Icon';
+import { ComboBoxOption } from '../../types/comboBox.types';
+import { mergeClasses } from '../../utils/tailwind.util';
+import Icon from '../Icon';
 
-interface OptionProps extends HTMLAttributes<HTMLLIElement> {
-  option: DropdownOption;
+interface comboBoxProps extends HTMLAttributes<HTMLLIElement> {
+  option: ComboBoxOption;
   isSelected?: boolean;
   isHighlighted?: boolean;
-  onOptionSelect?: (option: DropdownOption) => void;
+  comboBoxSelect?: (option: ComboBoxOption) => void;
   setRef: (el: HTMLLIElement) => void;
 }
 
-function Option({
+function MenuItem({
   option,
   isSelected = false,
   isHighlighted = false,
   setRef,
   ...props
-}: OptionProps) {
+}: comboBoxProps) {
   return (
     <li
-      // onMouseEnter={props.onMouseEnter}
-      // onMouseMove={props.onMouseMove}
+      onMouseEnter={props.onMouseEnter}
+      onMouseMove={props.onMouseMove}
       ref={setRef}
-      // onClick={() => props.onClick}
-      // aria-selected={props.state.selected?.label == option.label}
+      onClick={() => props.onClick}
       className={mergeClasses(
         `${isSelected ? 'bg-blue-100 border-blue-200 border-2' : ''}`,
         props.className,
@@ -34,6 +33,7 @@ function Option({
         }`
       )}
       {...props}
+      value={option.id}
     >
       {option.icon && <Icon name={option.icon} className="text-gray-200" />}
       <span className="">{`${option.label}`}</span>
@@ -41,4 +41,4 @@ function Option({
   );
 }
 
-export default Option;
+export default MenuItem;

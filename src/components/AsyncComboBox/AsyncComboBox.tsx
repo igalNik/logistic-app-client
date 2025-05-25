@@ -1,18 +1,12 @@
 // src/components/AsyncSelect.tsx
 import { useState, useEffect } from 'react';
 import { mergeClasses } from '../../utils/tailwind.util';
-import Dropdown from '../Dropdown';
-import { Option } from '../../types/dropdown.types';
+import { Option } from '../../types/comboBox.types';
 import BouncedLoader from '../BouncedLoader';
-import { AsyncDropdownProps } from './types';
+import { AsyncComboBoxProps } from './types';
+import ComboBox from '../ComboBox';
 
-function AsyncDropdown({
-  label,
-  id,
-  placeholder = 'בחר אפשרות',
-  fetchOptions,
-  ...props
-}: AsyncDropdownProps) {
+function AsyncComboBox({ fetchOptions, ...props }: AsyncComboBoxProps) {
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,14 +31,20 @@ function AsyncDropdown({
 
   return (
     <div className="relative" dir="rtl">
-      <Dropdown
+      <ComboBox
         {...props}
-        id={id}
-        label={String(label)}
+        value={props.value}
+        id={props.id}
+        label={String(props.label)}
         options={options}
-        placeholder={isLoading ? '' : placeholder}
-        className={mergeClasses('w-full', props.className)}
+        placeholder={isLoading ? '' : props.placeholder}
+        className={mergeClasses(
+          `${isLoading ? 'ps-11' : ''} w-full`,
+          props.className
+        )}
         disabled={isLoading}
+        onChange={props.onChange}
+        // iconName=''
       />
       {isLoading && (
         <div className="center pr-4 absolute bottom-[14px] flex w-full items-center justify-start">
@@ -56,4 +56,4 @@ function AsyncDropdown({
   );
 }
 
-export default AsyncDropdown;
+export default AsyncComboBox;

@@ -1,30 +1,34 @@
-import { DropdownOption, NavigationMode } from '../../types/dropdown.types';
-import { DropdownAction, DropdownActionType, DropdownState } from './types';
+import { ComboBoxOption, NavigationMode } from '../../types/comboBox.types';
+import { ComboBoxAction, ComboBoxActionType, ComboBoxState } from './types';
 
 export const dropdownReducer = function (
-  state: DropdownState,
-  action: DropdownAction,
-  options: DropdownOption[]
-): DropdownState {
+  state: ComboBoxState,
+  action: ComboBoxAction,
+  options: ComboBoxOption[]
+): ComboBoxState {
   switch (action.type) {
-    case DropdownActionType.OPEN_DROPDOWN:
+    case ComboBoxActionType.OPEN_COMBO_BOX:
       return { ...state, showOptions: true };
 
-    case DropdownActionType.CLOSE_DROPDOWN:
+    case ComboBoxActionType.CLOSE_COMBO_BOX:
       return { ...state, showOptions: false };
 
-    case DropdownActionType.TOGGLE_DROPDOWN:
+    case ComboBoxActionType.TOGGLE_COMBO_BOX:
       return { ...state, showOptions: !state.showOptions };
 
-    case DropdownActionType.CHOOSE_OPTION:
+    case ComboBoxActionType.CHOOSE_OPTION: {
+      const selectedOption = options.find(
+        (option) => option.id === action.value
+      )!;
       return {
         ...state,
         showOptions: false,
-        selected: action.option,
-        inputValue: action.option.label,
+        selected: selectedOption,
+        inputValue: selectedOption.label || state.inputValue,
       };
+    }
 
-    case DropdownActionType.SEARCH_OPTIONS:
+    case ComboBoxActionType.SEARCH_OPTIONS:
       return {
         ...state,
         showOptions: true,
@@ -41,7 +45,7 @@ export const dropdownReducer = function (
         ),
       };
 
-    case DropdownActionType.NAVIGATE_DOWN:
+    case ComboBoxActionType.NAVIGATE_DOWN:
       return {
         ...state,
         showOptions: true,
@@ -54,7 +58,7 @@ export const dropdownReducer = function (
               : state.highlightedIndex + 1,
       };
 
-    case DropdownActionType.NAVIGATE_UP:
+    case ComboBoxActionType.NAVIGATE_UP:
       return {
         ...state,
         showOptions: true,
@@ -67,11 +71,11 @@ export const dropdownReducer = function (
               : state.highlightedIndex - 1,
       };
 
-    case DropdownActionType.SELECT_HIGHLIGHTED:
+    case ComboBoxActionType.SELECT_HIGHLIGHTED:
       if (!state.filteredOptions[action.index]) return state;
       return { ...state, highlightedIndex: action.index };
 
-    case DropdownActionType.RESET_DROPDOWN:
+    case ComboBoxActionType.RESET_COMBO_BOX:
       return {
         showOptions: false,
         selected: null,
@@ -80,8 +84,20 @@ export const dropdownReducer = function (
         navMode: NavigationMode.MOUSE,
         filteredOptions: options,
       };
-    case DropdownActionType.SET_NAV_MODE:
+    case ComboBoxActionType.SET_NAV_MODE:
       return { ...state, navMode: action.mode };
+
+    case ComboBoxActionType.SYNC_COMBO_BOX:
+      return {
+        ...state,
+        inputValue: action.selected?.label || '',
+        filteredOptions: options,
+        selected: action.selected,
+        highlightedIndex: options.findIndex(
+          (opt) => opt.id === action.selected?.id
+        ),
+      };
+
     default:
       return state;
   }

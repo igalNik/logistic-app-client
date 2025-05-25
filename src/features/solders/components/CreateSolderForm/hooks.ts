@@ -1,13 +1,20 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { getAllDepartments } from '../../../../api/departments';
 import { objectToOption } from '../../../../utils/dropdown.util';
 import { initialSolderInfo } from './constants';
-import { DropdownOption } from '../../../../types/dropdown.types';
 import { Department } from '../../../../types/Department';
 
 export const useCreateSolderForm = () => {
   const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
+
   const firstNameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -15,33 +22,30 @@ export const useCreateSolderForm = () => {
   }, []);
 
   const inputChangeHandlers = useMemo(() => {
-    const handlers: Record<keyof CreateSolder, (val: string | number) => void> =
-      {} as any;
+    const handlers: Record<
+      keyof CreateSolder,
+      ChangeEventHandler<HTMLInputElement>
+    > = {} as any;
 
     (Object.keys(solderInfo) as (keyof CreateSolder)[]).forEach((field) => {
-      handlers[field] = (val: string | number) => {
+      handlers[field] = (event) => {
         setSolderInfo((prev) => ({
           ...prev,
-          [field]: typeof prev[field] === 'number' ? Number(val) : String(val),
+          [field]: event.target.value,
         }));
       };
     });
 
     return handlers;
+  }, [solderInfo]);
+
+  const handleODepartmentSelect = useCallback((value: string) => {
+    setSolderInfo((prev) => ({ ...prev, departmentId: value }));
   }, []);
 
-  const handleODepartmentSelect = useCallback(
-    (option: DropdownOption) => {
-      setSolderInfo((prev) => ({ ...prev, departmentId: option.id }));
-    },
-    [] // No dependencies, as setSolderInfo is stable
-  );
-  const handleRoleSelect = useCallback(
-    (option: DropdownOption) => {
-      setSolderInfo((prev) => ({ ...prev, role: option.label }));
-    },
-    [] // No dependencies, as setSolderInfo is stable
-  );
+  const handleRoleSelect = useCallback((value: string) => {
+    setSolderInfo((prev) => ({ ...prev, role: value }));
+  }, []);
 
   const getDepartmentOptions = useCallback(async function () {
     const res = await getAllDepartments();

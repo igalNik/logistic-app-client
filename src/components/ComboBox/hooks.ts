@@ -1,56 +1,64 @@
-import { useState, useReducer, useRef, useCallback, useEffect } from 'react';
+import {
+  useState,
+  useReducer,
+  useRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  ChangeEventHandler,
+} from 'react';
 import useClickOutside from '../../hooks/useClickOutside';
-import { DropdownOption, NavigationMode } from '../../types/dropdown.types';
+import { NavigationMode } from '../../types/comboBox.types';
 import { dropdownReducer } from './reducer';
 import {
-  DropdownAction,
-  DropdownActionType,
-  DropdownProps,
-  DropdownState,
+  ComboBoxAction,
+  ComboBoxActionType,
+  ComboBoxProps,
+  ComboBoxState,
 } from './types';
 
-export const useDropdown = ({
-  options = [],
-  onOptionSelect,
-  value,
-}: DropdownProps) => {
-  // reducer
-  const [state, dispatch] = useReducer(
-    (state: DropdownState, action: DropdownAction): DropdownState =>
-      dropdownReducer(state, action, options),
-    {
-      showOptions: false,
-      selected: value
-        ? options.find((opt) => opt.id === value || opt.label === value) || null
-        : null,
-      inputValue: String(value) || '',
-      highlightedIndex: null,
-      navMode: NavigationMode.MOUSE,
-      filteredOptions: options,
-    }
-  );
-
+export function useComboBox({ options = [], value, onChange }: ComboBoxProps) {
   const [clientRect, setClientRect] = useState<DOMRect | null>(null);
 
-  const dropdownRef = useRef<HTMLInputElement>(null);
+  const reducer = useCallback(
+    (state: ComboBoxState, action: ComboBoxAction): ComboBoxState =>
+      dropdownReducer(state, action, options),
+    [options]
+  );
+
+  const initialState: ComboBoxState = useMemo<ComboBoxState>(() => {
+    const defaultIndex = options.findIndex(
+      (opt) => opt.id === value || opt.label === value
+    );
+
+    return {
+      showOptions: false,
+      selected: options[defaultIndex],
+      inputValue: options[defaultIndex]?.label,
+      highlightedIndex: defaultIndex,
+      navMode: NavigationMode.MOUSE,
+      filteredOptions: options,
+    };
+  }, [[JSON.stringify(options)], value]);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const comboBoxRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
 
-  useClickOutside(dropdownRef, () =>
-    dispatch({ type: DropdownActionType.CLOSE_DROPDOWN })
+  useClickOutside(comboBoxRef, () =>
+    dispatch({ type: ComboBoxActionType.CLOSE_COMBO_BOX })
   );
 
-  const handleItemSelection = useCallback(
-    function (option: DropdownOption) {
+  const handleItemSelection: (value: string) => void = useCallback(
+    (value) => {
       inputRef.current?.focus();
+      dispatch({ type: ComboBoxActionType.CHOOSE_OPTION, value });
 
-      dispatch({ type: DropdownActionType.CHOOSE_OPTION, option });
-
-      if (onOptionSelect === undefined) return;
-
-      onOptionSelect(option);
+      onChange?.(value);
     },
-    [onOptionSelect]
+    [onChange]
   );
 
   useEffect(() => {
@@ -59,9 +67,7 @@ export const useDropdown = ({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log('key');
-
-      if (!dropdownRef.current?.contains(document.activeElement)) {
+      if (!comboBoxRef.current?.contains(document.activeElement)) {
         return;
       }
 
@@ -70,23 +76,23 @@ export const useDropdown = ({
       }
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        dispatch({ type: DropdownActionType.NAVIGATE_DOWN });
+        dispatch({ type: ComboBoxActionType.NAVIGATE_DOWN });
       }
 
       if (e.key === 'ArrowUp') {
         e.preventDefault();
-        dispatch({ type: DropdownActionType.NAVIGATE_UP });
+        dispatch({ type: ComboBoxActionType.NAVIGATE_UP });
       }
 
       if (e.key === 'Enter') {
         const { showOptions, highlightedIndex } = state;
 
         if (showOptions && highlightedIndex !== null)
-          handleItemSelection(state.filteredOptions[highlightedIndex]);
-        else dispatch({ type: DropdownActionType.TOGGLE_DROPDOWN });
+          handleItemSelection(state.filteredOptions[highlightedIndex].id);
+        else dispatch({ type: ComboBoxActionType.TOGGLE_COMBO_BOX });
       }
       dispatch({
-        type: DropdownActionType.SET_NAV_MODE,
+        type: ComboBoxActionType.SET_NAV_MODE,
         mode: NavigationMode.KEYBOARD,
       });
     };
@@ -114,12 +120,19 @@ export const useDropdown = ({
   }, [state.highlightedIndex, state.navMode]);
 
   useEffect(() => {
-    dispatch({ type: DropdownActionType.RESET_DROPDOWN });
-  }, [options]);
+    dispatch({
+      type: ComboBoxActionType.SYNC_COMBO_BOX,
+      selected:
+        options.find((opt) => opt.id === value || opt.label === value) || null,
+    });
+  }, [options, value]);
 
-  function handleInputChange(value: string) {
-    dispatch({ type: DropdownActionType.SEARCH_OPTIONS, query: value });
-  }
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    dispatch({
+      type: ComboBoxActionType.SEARCH_OPTIONS,
+      query: event.target.value,
+    });
+  };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -130,7 +143,7 @@ export const useDropdown = ({
   const handleHighlightOnMouseEnter = (index: number) => {
     if (state.navMode === NavigationMode.MOUSE) {
       dispatch({
-        type: DropdownActionType.SELECT_HIGHLIGHTED,
+        type: ComboBoxActionType.SELECT_HIGHLIGHTED,
         index,
       });
     }
@@ -138,14 +151,14 @@ export const useDropdown = ({
 
   const setMouseMode = () => {
     dispatch({
-      type: DropdownActionType.SET_NAV_MODE,
+      type: ComboBoxActionType.SET_NAV_MODE,
       mode: NavigationMode.MOUSE,
     });
   };
 
   const setKeyboardMode = () =>
     dispatch({
-      type: DropdownActionType.SET_NAV_MODE,
+      type: ComboBoxActionType.SET_NAV_MODE,
       mode: NavigationMode.KEYBOARD,
     });
 
@@ -153,7 +166,7 @@ export const useDropdown = ({
     state,
     dispatch,
     clientRect,
-    dropdownRef,
+    comboBoxRef,
     inputRef,
     itemRefs,
 
@@ -164,4 +177,4 @@ export const useDropdown = ({
     handleInputKeyDown,
     handleHighlightOnMouseEnter,
   };
-};
+}

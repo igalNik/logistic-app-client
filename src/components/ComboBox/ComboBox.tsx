@@ -1,15 +1,18 @@
 import Input from '../Input';
-import Option from '../Option';
-import { DropdownProps, DropdownActionType } from './types';
-import { useDropdown } from './hooks';
+import MenuItem from './MenuItem';
+import { ComboBoxProps, ComboBoxActionType } from './types';
+import { useComboBox } from './hooks';
 import { mergeClasses } from '../../utils/tailwind.util';
+import { useMemo } from 'react';
 
-function Dropdown({ options = [], onOptionSelect, ...props }: DropdownProps) {
+function ComboBox({ options = [], value, onChange, ...props }: ComboBoxProps) {
+  const stableOptions = useMemo(() => options, [JSON.stringify(options)]);
+
   const {
     state,
     dispatch,
     clientRect,
-    dropdownRef,
+    comboBoxRef,
     inputRef,
     itemRefs,
     setMouseMode,
@@ -17,30 +20,35 @@ function Dropdown({ options = [], onOptionSelect, ...props }: DropdownProps) {
     handleItemSelection,
     handleInputChange,
     handleInputKeyDown,
-  } = useDropdown({ options, onOptionSelect, ...props });
+  } = useComboBox({
+    ...props,
+    options: stableOptions,
+    onChange,
+    value,
+  });
 
   return (
-    <div className="inset-y-0 relative" ref={dropdownRef}>
+    <div className="inset-y-0 relative" ref={comboBoxRef}>
       <Input
         {...props}
         value={state.inputValue}
-        onFocus={() => dispatch({ type: DropdownActionType.OPEN_DROPDOWN })}
-        onClick={() => dispatch({ type: DropdownActionType.OPEN_DROPDOWN })}
+        onFocus={() => dispatch({ type: ComboBoxActionType.OPEN_COMBO_BOX })}
+        onClick={() => dispatch({ type: ComboBoxActionType.OPEN_COMBO_BOX })}
         ref={inputRef}
-        onInputChange={handleInputChange}
+        onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
         clearButton={true}
-        onClear={() => dispatch({ type: DropdownActionType.RESET_DROPDOWN })}
+        onClear={() => dispatch({ type: ComboBoxActionType.RESET_COMBO_BOX })}
       />
 
       <div
         style={{
           width: `calc(${clientRect?.width}px)`,
           maxWidth: '100%',
-          top: `${clientRect && clientRect?.bottom + 2}px`,
+          // top: `${clientRect && clientRect?.bottom + 2}px`,
         }}
         className={mergeClasses(
-          'rounded-lg border-gray-200 bg-white shadow-lg y-10 fixed z-10 max-w-full overflow-hidden border-1 border-l-0',
+          'rounded-lg border-gray-200 bg-white shadow-lg y-10 my-0.5 fixed z-10 max-w-full overflow-hidden border-1 border-l-0',
           `${state.showOptions ? '' : 'hidden'}`
         )}
       >
@@ -51,11 +59,11 @@ function Dropdown({ options = [], onOptionSelect, ...props }: DropdownProps) {
             )}
           >
             {state.filteredOptions.map((option, index) => (
-              <Option
+              <MenuItem
                 option={option}
                 onMouseMove={setMouseMode}
                 onMouseEnter={() => handleHighlightOnMouseEnter(index)}
-                onClick={() => handleItemSelection(option)}
+                onClick={() => handleItemSelection(option.id)}
                 key={option.id}
                 setRef={(el) => (itemRefs.current[index] = el)}
                 isSelected={state.selected?.id === option.id}
@@ -69,4 +77,4 @@ function Dropdown({ options = [], onOptionSelect, ...props }: DropdownProps) {
   );
 }
 
-export default Dropdown;
+export default ComboBox;

@@ -11,10 +11,22 @@ function useClickOutside(
           callback();
         }
       };
-      document.addEventListener('mousedown', handleClickOutside);
+      const handleFocusOut = () => {
+        if (
+          ref.current &&
+          !ref.current.contains(document.activeElement as Node)
+        ) {
+          callback();
+        }
+      };
 
-      return () =>
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keyup', handleFocusOut);
+
+      return () => {
         document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('keyup', handleFocusOut);
+      };
     },
     [ref, callback]
   );

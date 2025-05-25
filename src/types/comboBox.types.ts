@@ -3,7 +3,7 @@ export interface Option {
   label: string;
 }
 
-export interface DropdownOption extends Option {
+export interface ComboBoxOption extends Option {
   icon?: string | undefined;
 }
 

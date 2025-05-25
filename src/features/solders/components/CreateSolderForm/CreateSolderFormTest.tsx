@@ -1,27 +1,33 @@
-import { FormEvent, MouseEventHandler, useContext } from 'react';
+import {
+  FormEvent,
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
-import AsyncComboBox from '../../../../components/AsyncComboBox';
-import ComboBox from '../../../../components/ComboBox/ComboBox';
+import AsyncDropdown from '../../../../components/AsyncComboBox';
+import Dropdown from '../../../../components/ComboBox/ComboBox';
 import Button from '../../../../components/Button';
+import { createSolder } from '../../../../api/solders';
 import { SolderFormStrings } from './constants';
 import { useCreateSolderForm } from './hooks';
 import { ModalContext } from '../../../../components/Modal/ModalContext';
-import Form, { FieldSchema } from '../../../../components/Form';
+import Form from '../../../../components/Form';
 import { FormSection } from '../../../../components/Form';
-import { useFormValidation } from '../../../../components/Form/useFormValidation';
-import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { validator } from '@igalni/logistic-validation';
-function CreateSolderForm() {
+import {
+  FieldSchema,
+  FormSchema,
+  useFormValidation,
+  UseFormValidationProps,
+} from '../../../../components/Form/useFormValidation';
+import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
+import { useForm } from '../../../../components/Form/useForm';
+
+function CreateSolderFormTest() {
   const { onClose } = useContext(ModalContext);
-  const {
-    solderInfo,
-    firstNameRef,
-    inputChangeHandlers,
-    handleODepartmentSelect,
-    getDepartmentOptions,
-    handleRoleSelect,
-  } = useCreateSolderForm();
 
   const validationSchema: FieldSchema<CreateSolder>[] = [
     {
@@ -66,18 +72,24 @@ function CreateSolderForm() {
       eventTypes: ['onBlur'],
     },
   ];
-  const registry = useFormValidation<CreateSolder>({
-    schema: validationSchema,
-  });
-
-  const handleSubmit = async function (event: FormEvent<HTMLFormElement>) {
+  const onSubmit = async function (event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
   };
 
-  const handleCancel: MouseEventHandler<HTMLButtonElement> = function (event) {
+  const onCancel: MouseEventHandler<HTMLButtonElement> = function (event) {
     event.preventDefault();
     onClose();
   };
+
+  const { formData, handleSubmit, handleCancel, registry } =
+    useForm<CreateSolder>({
+      formInitialization: {
+        schema: validationSchema,
+      },
+      onSubmit: onSubmit,
+      onCancel: onCancel,
+    });
+  console.log(Card.name);
 
   return (
     <Card
@@ -91,68 +103,61 @@ function CreateSolderForm() {
             <Input
               {...registry['firstName']}
               label={SolderFormStrings.FIRST_NAME_LABEL}
-              key="first-name"
               id="first-name"
               tabIndex={1}
               ref={firstNameRef}
               value={solderInfo.firstName}
               iconName="Abc"
-              onChange={inputChangeHandlers.firstName}
+              onInputChange={inputChangeHandlers.firstName}
             />
             <Input
               {...registry['lastName']}
               label={SolderFormStrings.LAST_NAME_LABEL}
               id="last-name"
-              key={'last-name'}
               tabIndex={2}
-              onChange={inputChangeHandlers.lastName}
+              onInputChange={inputChangeHandlers.lastName}
             />
             <Input
               {...registry['personalNumber']}
               label={SolderFormStrings.PERSONAL_NUMBER_LABEL}
               id="personal-number"
-              key={'personal-number'}
               tabIndex={3}
               iconName="Numbers"
-              onChange={inputChangeHandlers.personalNumber}
+              onInputChange={inputChangeHandlers.personalNumber}
             />
             <Input
               {...registry['phoneNumber']}
               label={SolderFormStrings.PHONE_NUMBER_LABEL}
               id="phone-number"
-              key={'phone-number'}
               iconName="Mobile"
               tabIndex={4}
-              onChange={inputChangeHandlers.phoneNumber}
+              onInputChange={inputChangeHandlers.phoneNumber}
             />
             <Input
               {...registry['email']}
               label={SolderFormStrings.EMAIL_LABEL}
               id="email"
-              key={'email'}
               tabIndex={5}
               iconName="Email"
-              onChange={inputChangeHandlers.email}
+              onInputChange={inputChangeHandlers.email}
             />
           </div>
         </FormSection>
         <FormSection title="תפקיד ומחלקה">
           <div className="gap-x-5 gap-y-3 grid grid-cols-2">
-            <AsyncComboBox
+            <AsyncDropdown
               {...registry['departmentId']}
               label={SolderFormStrings.DEPARTMENT_LABEL}
               id="department"
-              value="צלפים"
               tabIndex={6}
               placeholder={SolderFormStrings.DEPARTMENT_PLACEHOLDER}
               fetchOptions={getDepartmentOptions}
-              onChange={handleODepartmentSelect}
+              onOptionSelect={handleODepartmentSelect}
               className="w-full"
             />
-            <ComboBox
+            <Dropdown
               {...registry['role']}
               id="role"
-              value="1"
               label={SolderFormStrings.ROLE_LABEL}
               tabIndex={7}
               placeholder={SolderFormStrings.ROLE_PLACEHOLDER}
@@ -160,8 +165,9 @@ function CreateSolderForm() {
                 { id: '1', label: 'צלף' },
                 { id: '2', label: 'קלע' },
               ]}
-              onChange={handleRoleSelect}
+              onOptionSelect={handleRoleSelect}
               className={`w-full`}
+              {...registry['role']}
             />
           </div>
         </FormSection>
@@ -180,4 +186,4 @@ function CreateSolderForm() {
   );
 }
 
-export default CreateSolderForm;
+export default CreateSolderFormTest;
