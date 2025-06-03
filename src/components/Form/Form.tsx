@@ -4,17 +4,7 @@ import Message from './Message';
 import Button from '../Button';
 import Card from '../Card/Card';
 import { ModalContext } from '../Modal/ModalContext';
-type FormStatus =
-  | 'idle'
-  | 'submitting'
-  | 'submitted'
-  | 'validationError'
-  | 'error';
-
-interface FormProps
-  extends Omit<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<any>;
-}
+import { FormProps, FormStatus } from './types';
 
 function Form(props: FormProps) {
   const [status, setStatus] = useState<FormStatus>('idle');

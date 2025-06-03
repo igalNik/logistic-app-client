@@ -59,10 +59,12 @@ export type FormModelOrSchema<T> =
       model: T;
     };
 export type ErrorMessageText = `${errorMessages}`;
+export interface FormProps
+  extends Omit<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<any>;
+}
 
-export type ValidationErrors<T> = {
-  [K in keyof T]?: ErrorMessageText[];
-};
+export type FormPropsType = 'model' | 'schema';
 
 export type UseFormProps<T> = {
   formInitialization: FormModelOrSchema<T>;
@@ -70,4 +72,14 @@ export type UseFormProps<T> = {
   onCancel?: (event: FormEvent<HTMLButtonElement>) => void;
   onError?: (errors: ValidationErrors<T>) => void;
 };
-export type FormPropsType = 'model' | 'schema';
+
+export type ValidationErrors<T> = {
+  [K in keyof T]?: ErrorMessageText[];
+};
+
+export type FormStatus =
+  | 'idle'
+  | 'submitting'
+  | 'submitted'
+  | 'validationError'
+  | 'error';

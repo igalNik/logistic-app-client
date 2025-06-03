@@ -19,8 +19,8 @@ import { User } from '../../../../types/User';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal/Modal';
 import Input from '../../../../components/Input';
-import CreateSolderFormTest from '../CreateSolderForm/CreateSolderFormTest';
 import { useRevalidator } from 'react-router-dom';
+import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -209,11 +209,11 @@ function SoldersTable({ solders = [] }: SoldersTableProps) {
         <Modal
           onClose={() => {
             setShowAddModal(false);
-            revalidate();
+            revalidate(); // runs routs loader on close
           }}
           className="z-50"
         >
-          <CreateSolderFormTest />
+          <CreateSolderForm />
         </Modal>
       )}
     </div>
