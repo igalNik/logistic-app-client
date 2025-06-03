@@ -1,5 +1,7 @@
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { Option } from '../../../../types/comboBox.types';
+import { validator } from '@igalni/logistic-validation';
+import { FieldValidationSchema } from '../../../../components/Form';
 // Data Constants
 export const initialSolderInfo: CreateSolder = {
   personalNumber: '',
@@ -11,6 +13,47 @@ export const initialSolderInfo: CreateSolder = {
   departmentId: '',
 };
 
+export const validationSchema: FieldValidationSchema<CreateSolder>[] = [
+  {
+    fieldName: 'firstName',
+    validation: (value) =>
+      validator(value).required().min(2).max(20).isAlphaHebrewOrEnglish(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'lastName',
+    validation: (value) =>
+      validator(value).required().min(2).max(20).isAlphaHebrewOrEnglish(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'personalNumber',
+    validation: (value) =>
+      validator(value).required().min(7).max(7).isNumeric(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'phoneNumber',
+    validation: (value) =>
+      validator(value).required().isValidIsraeliMobileNumber(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'email',
+    validation: (value) => validator(value).required().isValidEmail(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'role',
+    validation: (value) => validator(value).required(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'departmentId',
+    validation: (value) => validator(value).required(),
+    eventTypes: ['onChange'],
+  },
+];
 // Form UI Strings
 export enum SolderFormStrings {
   FORM_HEADER_TITLE = 'הוספת חייל',

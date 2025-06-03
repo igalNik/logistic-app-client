@@ -19,8 +19,8 @@ import { User } from '../../../../types/User';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal/Modal';
 import Input from '../../../../components/Input';
-import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
 import CreateSolderFormTest from '../CreateSolderForm/CreateSolderFormTest';
+import { useRevalidator } from 'react-router-dom';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -54,6 +54,8 @@ export interface SoldersTableProps {
  */
 
 function SoldersTable({ solders = [] }: SoldersTableProps) {
+  const { revalidate } = useRevalidator();
+
   const [rowData, setRowData] = useState<User[]>([]);
 
   const [colDefs] = useState<ColDef<Row>[]>([
@@ -204,8 +206,14 @@ function SoldersTable({ solders = [] }: SoldersTableProps) {
         stopEditingWhenCellsLoseFocus={true}
       />
       {showAddModal && (
-        <Modal onClose={() => setShowAddModal(false)} className="z-50">
-          <CreateSolderForm />
+        <Modal
+          onClose={() => {
+            setShowAddModal(false);
+            revalidate();
+          }}
+          className="z-50"
+        >
+          <CreateSolderFormTest />
         </Modal>
       )}
     </div>

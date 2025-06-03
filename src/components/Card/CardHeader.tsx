@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 import { mergeClasses } from '../../utils/tailwind.util';
 
 interface FormHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  title: string;
+  title?: string;
   subtitle?: string;
   className?: string;
 }

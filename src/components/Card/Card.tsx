@@ -3,28 +3,22 @@ import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  headerTitle: string;
-  headerSubTitle: string;
+  headerTitle?: string;
+  headerSubTitle?: string;
   children: ReactNode;
 }
 
-function Card({ headerTitle, headerSubTitle, children }: CardProps) {
+function Card({ headerTitle, headerSubTitle, children, ...props }: CardProps) {
   return (
-    <div className="mb-10" dir="rtl">
-      {headerTitle && (
+    <div className="mb-4" dir="rtl">
+      {(headerTitle || headerSubTitle) && (
         <CardHeader
           title={headerTitle}
           subtitle={headerSubTitle}
           className="p-3 text-gray-100"
         />
       )}
-      <CardBody
-        onSubmit={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      >
-        {children}
-      </CardBody>
+      <CardBody className={props.className}>{children}</CardBody>
     </div>
   );
 }

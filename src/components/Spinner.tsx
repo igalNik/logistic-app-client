@@ -1,8 +1,9 @@
 export interface SpinnerProps {
   type: string;
+  text?: string;
 }
 
-function Spinner({ type }: SpinnerProps) {
+function Spinner({ type, text = '' }: SpinnerProps) {
   switch (type) {
     case 'icon':
       return (
@@ -10,7 +11,14 @@ function Spinner({ type }: SpinnerProps) {
       );
     case 'page':
       return (
-        <div className="border-gray-300 border-t-blue-400 animate-spin h-24 w-24 mx-auto rounded-full border-8"></div>
+        <div className="h-60 flex items-center justify-center">
+          <div className="border-gray-300 border-t-blue-400 animate-spin h-30 w-30 absolute mx-auto rounded-full border-8"></div>
+          {text && (
+            <div className="text-blue-400 font-semibold absolute flex h-full w-full items-center justify-center">
+              {text}
+            </div>
+          )}
+        </div>
       );
   }
   return (

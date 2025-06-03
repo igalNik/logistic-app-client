@@ -5,7 +5,7 @@ import { useComboBox } from './hooks';
 import { mergeClasses } from '../../utils/tailwind.util';
 import { useMemo } from 'react';
 
-function ComboBox({ options = [], value, onChange, ...props }: ComboBoxProps) {
+function ComboBox({ options = [], onChange, ...props }: ComboBoxProps) {
   const stableOptions = useMemo(() => options, [JSON.stringify(options)]);
 
   const {
@@ -18,13 +18,15 @@ function ComboBox({ options = [], value, onChange, ...props }: ComboBoxProps) {
     setMouseMode,
     handleHighlightOnMouseEnter,
     handleItemSelection,
+    handleClear,
     handleInputChange,
     handleInputKeyDown,
   } = useComboBox({
     ...props,
     options: stableOptions,
     onChange,
-    value,
+    value: props.value || '',
+    onClear: props.onClear,
   });
 
   return (
@@ -38,7 +40,7 @@ function ComboBox({ options = [], value, onChange, ...props }: ComboBoxProps) {
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
         clearButton={true}
-        onClear={() => dispatch({ type: ComboBoxActionType.RESET_COMBO_BOX })}
+        onClear={handleClear}
       />
 
       <div

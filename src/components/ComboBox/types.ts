@@ -6,13 +6,14 @@ export interface ComboBoxProps {
   id?: string;
   label: string;
   options?: ComboBoxOption[];
-  value?: string;
+  value?: string | number | undefined;
   defaultValue?: string;
   className?: string;
   tabIndex?: number;
   placeholder?: string;
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  onClear?: () => void;
   iconName?: string;
 }
 

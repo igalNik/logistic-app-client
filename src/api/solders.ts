@@ -23,13 +23,9 @@ export const getAllSolders = async () => {
 };
 
 export const createSolder = async (solder: CreateSolder) => {
-  try {
-    const res = await apiClient<Solder>(API_ENDPOINTS.USERS.CREATE, {
-      method: 'POST',
-      body: solder,
-    });
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
+  const res = await apiClient<Solder>(API_ENDPOINTS.USERS.CREATE, {
+    method: 'POST',
+    body: solder,
+  });
+  return res;
 };

@@ -25,7 +25,8 @@ const Icons = {
   ErrorOutline: lazy(() => import('@mui/icons-material/ErrorOutline')),
   Info: lazy(() => import('@mui/icons-material/Info')),
   Warning: lazy(() => import('@mui/icons-material/WarningAmber')),
-  Success: lazy(() => import('@mui/icons-material/CheckCircleOutline')),
+  Success: lazy(() => import('@mui/icons-material/CheckCircleOutlineRounded')),
+  Error: lazy(() => import('@mui/icons-material/ReportGmailerrorred')),
   Abc: lazy(() => import('@mui/icons-material/Abc')),
 };
 

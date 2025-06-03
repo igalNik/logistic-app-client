@@ -17,7 +17,12 @@ import {
   ComboBoxState,
 } from './types';
 
-export function useComboBox({ options = [], value, onChange }: ComboBoxProps) {
+export function useComboBox({
+  options = [],
+  value,
+  onChange,
+  onClear,
+}: ComboBoxProps) {
   const [clientRect, setClientRect] = useState<DOMRect | null>(null);
 
   const reducer = useCallback(
@@ -162,6 +167,10 @@ export function useComboBox({ options = [], value, onChange }: ComboBoxProps) {
       mode: NavigationMode.KEYBOARD,
     });
 
+  const handleClear = () => {
+    dispatch({ type: ComboBoxActionType.RESET_COMBO_BOX });
+    onClear?.();
+  };
   return {
     state,
     dispatch,
@@ -173,6 +182,7 @@ export function useComboBox({ options = [], value, onChange }: ComboBoxProps) {
     setMouseMode,
     setKeyboardMode,
     handleItemSelection,
+    handleClear,
     handleInputChange,
     handleInputKeyDown,
     handleHighlightOnMouseEnter,
