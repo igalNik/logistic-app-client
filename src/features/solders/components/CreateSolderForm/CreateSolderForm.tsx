@@ -1,138 +1,95 @@
-import { FormEvent, MouseEventHandler, useContext } from 'react';
+import { useCallback, useContext, useRef } from 'react';
+
 import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
+import Form from '../../../../components/Form';
 import AsyncComboBox from '../../../../components/AsyncComboBox';
 import ComboBox from '../../../../components/ComboBox/ComboBox';
-import Button from '../../../../components/Button';
-import { SolderFormStrings } from './constants';
-import { useCreateSolderForm } from './hooks';
-import { ModalContext } from '../../../../components/Modal/ModalContext';
-import Form, { FieldSchema } from '../../../../components/Form';
 import { FormSection } from '../../../../components/Form';
-import { useFormValidation } from '../../../../components/Form/useFormValidation';
-import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
-import { validator } from '@igalni/logistic-validation';
-function CreateSolderForm() {
-  const { onClose } = useContext(ModalContext);
-  const {
-    solderInfo,
-    firstNameRef,
-    inputChangeHandlers,
-    handleODepartmentSelect,
-    getDepartmentOptions,
-    handleRoleSelect,
-  } = useCreateSolderForm();
 
-  const validationSchema: FieldSchema<CreateSolder>[] = [
-    {
-      fieldName: 'firstName',
-      validation: validator(solderInfo.firstName).required().min(2).max(20),
-      eventTypes: ['onBlur'],
+import { ModalContext } from '../../../../components/Modal/ModalContext';
+
+import { useForm } from '../../../../components/Form/useForm';
+
+import { initialSolderInfo, validationSchema } from './constants';
+import { SolderFormStrings } from './constants';
+import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
+import { getAllDepartments } from '../../../../api/departments';
+import { objectToOption } from '../../../../utils/dropdown.util';
+import { Department } from '../../../../types/Department';
+import { createSolder } from '../../../../api/solders';
+
+function CreateSolderFormTest() {
+  const { onClose } = useContext(ModalContext);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+
+  const getDepartmentOptions = useCallback(async function () {
+    const res = await getAllDepartments();
+    const departments = res?.data;
+
+    if (!departments) return [];
+
+    const options = departments.map((department) =>
+      objectToOption<Department>(department, '_id', 'name')
+    );
+
+    return options;
+  }, []);
+
+  const { handleSubmit, handleCancel, registry } = useForm<CreateSolder>({
+    formInitialization: {
+      schema: validationSchema.map((field) => {
+        return { ...field, defaultValue: initialSolderInfo[field.fieldName] };
+      }),
     },
-    {
-      fieldName: 'lastName',
-      validation: validator(solderInfo.firstName).required().min(2).max(20),
-      eventTypes: ['onBlur'],
-    },
-    {
-      fieldName: 'personalNumber',
-      validation: validator(solderInfo.personalNumber)
-        .required()
-        .isValidIsraeliMobileNumber(),
-      eventTypes: ['onBlur'],
-    },
-    {
-      fieldName: 'phoneNumber',
-      validation: validator(solderInfo.personalNumber)
-        .required()
-        .isValidIsraeliMobileNumber(),
-      eventTypes: ['onBlur'],
-    },
-    {
-      fieldName: 'email',
-      validation: validator(solderInfo.personalNumber)
-        .required()
-        .isValidEmail(),
-      eventTypes: ['onBlur'],
-    },
-    {
-      fieldName: 'role',
-      validation: validator(solderInfo.role).required(),
-      eventTypes: ['onBlur'],
-    },
-    {
-      fieldName: 'departmentId',
-      validation: validator(solderInfo.role).required(),
-      eventTypes: ['onBlur'],
-    },
-  ];
-  const registry = useFormValidation<CreateSolder>({
-    schema: validationSchema,
+    onSubmit: createSolder,
+    onCancel: onClose,
   });
 
-  const handleSubmit = async function (event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-  };
-
-  const handleCancel: MouseEventHandler<HTMLButtonElement> = function (event) {
-    event.preventDefault();
-    onClose();
-  };
-
   return (
-    <Card
-      headerTitle={SolderFormStrings.FORM_HEADER_TITLE}
-      headerSubTitle={SolderFormStrings.FORM_HEADER_SUBTITLE}
-      className="text-white p-3"
-    >
-      <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
+      <Card
+        headerTitle={SolderFormStrings.FORM_HEADER_TITLE}
+        headerSubTitle={SolderFormStrings.FORM_HEADER_SUBTITLE}
+        className="p-3"
+      >
         <FormSection title={'פרטים אישיים'}>
           <div className="gap-x-5 gap-y-3 md:grid-cols-2 grid grid-cols-1">
             <Input
               {...registry['firstName']}
               label={SolderFormStrings.FIRST_NAME_LABEL}
-              key="first-name"
               id="first-name"
               tabIndex={1}
               ref={firstNameRef}
-              value={solderInfo.firstName}
               iconName="Abc"
-              onChange={inputChangeHandlers.firstName}
             />
             <Input
               {...registry['lastName']}
               label={SolderFormStrings.LAST_NAME_LABEL}
               id="last-name"
-              key={'last-name'}
               tabIndex={2}
-              onChange={inputChangeHandlers.lastName}
             />
             <Input
               {...registry['personalNumber']}
               label={SolderFormStrings.PERSONAL_NUMBER_LABEL}
               id="personal-number"
-              key={'personal-number'}
               tabIndex={3}
               iconName="Numbers"
-              onChange={inputChangeHandlers.personalNumber}
             />
             <Input
               {...registry['phoneNumber']}
               label={SolderFormStrings.PHONE_NUMBER_LABEL}
               id="phone-number"
-              key={'phone-number'}
               iconName="Mobile"
               tabIndex={4}
-              onChange={inputChangeHandlers.phoneNumber}
             />
             <Input
               {...registry['email']}
               label={SolderFormStrings.EMAIL_LABEL}
               id="email"
-              key={'email'}
               tabIndex={5}
               iconName="Email"
-              onChange={inputChangeHandlers.email}
             />
           </div>
         </FormSection>
@@ -142,25 +99,21 @@ function CreateSolderForm() {
               {...registry['departmentId']}
               label={SolderFormStrings.DEPARTMENT_LABEL}
               id="department"
-              value="צלפים"
               tabIndex={6}
               placeholder={SolderFormStrings.DEPARTMENT_PLACEHOLDER}
               fetchOptions={getDepartmentOptions}
-              onChange={handleODepartmentSelect}
               className="w-full"
             />
             <ComboBox
               {...registry['role']}
               id="role"
-              value="1"
               label={SolderFormStrings.ROLE_LABEL}
               tabIndex={7}
               placeholder={SolderFormStrings.ROLE_PLACEHOLDER}
               options={[
-                { id: '1', label: 'צלף' },
-                { id: '2', label: 'קלע' },
+                { id: 'צלף', label: 'צלף' },
+                { id: 'קלע', label: 'קלע' },
               ]}
-              onChange={handleRoleSelect}
               className={`w-full`}
             />
           </div>
@@ -170,14 +123,14 @@ function CreateSolderForm() {
             <Button type="button" tabIndex={8} onClick={handleCancel}>
               {SolderFormStrings.CANCEL_BUTTON_TEXT}
             </Button>
-            <Button type="submit" tabIndex={8} className="">
+            <Button type="button" tabIndex={9}>
               {SolderFormStrings.SUBMIT_BUTTON_TEXT}
             </Button>
           </div>
         </div>
-      </Form>
-    </Card>
+      </Card>
+    </Form>
   );
 }
 
-export default CreateSolderForm;
+export default CreateSolderFormTest;
