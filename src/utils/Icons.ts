@@ -28,6 +28,10 @@ const Icons = {
   Success: lazy(() => import('@mui/icons-material/CheckCircleOutlineRounded')),
   Error: lazy(() => import('@mui/icons-material/ReportGmailerrorred')),
   Abc: lazy(() => import('@mui/icons-material/Abc')),
+  Edit: lazy(() => import('@mui/icons-material/EditRounded')),
+  Save: lazy(() => import('@mui/icons-material/SaveRounded')),
+  Grid: lazy(() => import('@mui/icons-material/GridOnRounded')),
+  Columns: lazy(() => import('@mui/icons-material/ViewColumnOutlined')),
 };
 
 export default Icons;

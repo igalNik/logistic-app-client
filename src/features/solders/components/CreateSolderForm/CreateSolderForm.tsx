@@ -123,7 +123,7 @@ function CreateSolderFormTest() {
             <Button type="button" tabIndex={8} onClick={handleCancel}>
               {SolderFormStrings.CANCEL_BUTTON_TEXT}
             </Button>
-            <Button type="button" tabIndex={9}>
+            <Button type="submit" tabIndex={9}>
               {SolderFormStrings.SUBMIT_BUTTON_TEXT}
             </Button>
           </div>

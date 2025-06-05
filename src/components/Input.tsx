@@ -17,6 +17,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   clearButton?: boolean | undefined;
   onClear?: () => void;
   errorMessages?: string[];
+  containerClassName?: string;
 }
 
 const Input = memo(
@@ -28,6 +29,7 @@ const Input = memo(
       iconName,
       clearButton = false,
       onClear = undefined,
+      containerClassName = '',
       errorMessages,
       ...props
     },
@@ -45,7 +47,7 @@ const Input = memo(
     }, [onClear]);
 
     return (
-      <div className="flex flex-col">
+      <div className={mergeClasses('flex flex-col', containerClassName)}>
         {label?.length && (
           <label htmlFor={id?.length ? id : ''}>{label.length && label}</label>
         )}

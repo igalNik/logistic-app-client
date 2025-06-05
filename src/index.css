@@ -30,6 +30,21 @@ body {
   );
 }
 
+@keyframes pulse {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.pulse-once {
+  animation: pulse 300ms ease-in-out;
+}
+
 @layer utilities {
   /* Hide scrollbar for WebKit-based browsers */
   .scrollbar-hide::-webkit-scrollbar {

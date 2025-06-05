@@ -1,7 +1,7 @@
-import { HTMLAttributes, Suspense, useRef } from 'react';
+import { HTMLAttributes, Suspense } from 'react';
 import Icons from './../utils/Icons';
 
-interface IconOptions {
+export interface IconOptions {
   fill?: string;
   className?: string;
   color?: string;
@@ -22,7 +22,7 @@ function Icon({ name, options = {}, onClick, ...props }: IconProps) {
     ></div>
   );
 
-  const Icon = useRef(Icons[name as keyof typeof Icons]).current;
+  const Icon = Icons[name as keyof typeof Icons];
 
   return (
     <Suspense fallback={fallbackEL}>

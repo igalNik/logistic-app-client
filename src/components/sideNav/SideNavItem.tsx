@@ -19,7 +19,7 @@ function SideNavItem({
     <NavLink
       to={navTo}
       className={({ isActive }) =>
-        `gap-2 rounded px-2 py-0.5 hover:bg-menuitem-hover flex w-auto cursor-pointer items-center justify-start transition-colors duration-200 ${isActive ? 'bg-menuitem-hover' : ''} `
+        `gap-2 rounded px-2 py-0.5 hover:bg-menuitem-hover flex w-auto cursor-pointer items-center justify-start ring-offset-2 transition-colors duration-200 ${isActive ? 'bg-menuitem-hover' : ''} `
       }
     >
       <span className="max-h-xs max-w-xs" onClick={onClick}>
