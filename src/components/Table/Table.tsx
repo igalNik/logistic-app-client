@@ -1,17 +1,8 @@
-import {
-  ChangeEventHandler,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEventHandler, useCallback, useEffect, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import type {
   CellEditingStartedEvent,
   CellEditingStoppedEvent,
-  ColDef,
   RowDataUpdatedEvent,
   RowEditingStartedEvent,
   RowEditingStoppedEvent,
@@ -28,19 +19,12 @@ import Modal from '../../components/Modal/Modal';
 import Input from '../../components/Input';
 import { useRevalidator } from 'react-router-dom';
 import { defaultColDef, TableStrings } from './constants';
-import { SoldersRow } from '../../features/solders/components/SoldersTable/types';
 import ColumnVisibilityManager from './ColumnVisibilityManager';
 
+import { TableProps } from './types';
+import { useTableContext } from './context/TableContext';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
-
-type TableStatus = 'read' | 'write' | 'edit';
-
-export interface TableProps<T> {
-  tableConfig: ColDef<SoldersRow>[];
-  tableConfigOnEdit: ColDef<SoldersRow>[];
-  data: T[] | undefined;
-  children: ReactNode;
-}
 
 /**
  *
@@ -48,28 +32,29 @@ export interface TableProps<T> {
  * @returns
  */
 
-function Table({
+function Table<T>({
   data = [],
   tableConfig,
   tableConfigOnEdit,
   children,
 }: TableProps<T>) {
-  const [rowData, setRowData] = useState<T[]>(data);
-
-  const [showColumnVisibilityManager, setShowColumnVisibilityManager] =
-    useState<boolean>(true);
-
-  const [searchText, setSearchText] = useState<string>('');
-
-  const [tableStatus, setTableStatus] = useState<TableStatus>('read');
-
-  const [colDefs, setColDefs] = useState<ColDef<SoldersRow>[]>(tableConfig);
-
-  const [showAddModal, setShowAddModal] = useState<boolean>(false);
-
   const { revalidate } = useRevalidator();
 
-  const gridRef = useRef<AgGridReact>(null);
+  const {
+    gridRef,
+    rowData,
+    setRowData,
+    tableStatus,
+    setTableStatus,
+    colDefs,
+    setColDefs,
+    showColumnVisibilityManager,
+    setShowColumnVisibilityManager,
+    searchText,
+    setSearchText,
+    showAddModal,
+    setShowAddModal,
+  } = useTableContext();
 
   const autoSizeStrategy = useMemo<
     | SizeColumnsToFitGridStrategy
