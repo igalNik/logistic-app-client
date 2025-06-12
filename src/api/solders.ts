@@ -31,12 +31,15 @@ export const createSolder = async (solder: CreateSolder) => {
   return res;
 };
 
-export const updateSolders = async (solder: UpdateSoldier[]) => {
+export const updateSolders = async (solder: UpdateSoldier[] | User[]) => {
   const res = await apiClient<any>(API_ENDPOINTS.USERS.UPDATE, {
     method: 'PATCH',
     body: solder.map((solder) => {
       if ('department' in solder)
-        return { ...solder, departmentId: solder.department!.id };
+        return Promise.resolve({
+          ...solder,
+          departmentId: solder.department!.id,
+        });
       else return solder;
     }),
   });

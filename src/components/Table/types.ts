@@ -14,6 +14,8 @@ export interface TableProps<T> {
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
   data: T[];
+  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
+
   children: ReactNode;
 }
 
@@ -68,6 +70,8 @@ export interface TableContextType<T> {
   onCellEditingStarted: (event: any) => void;
   onCellEditingStopped: (event: any) => void;
   handleRowDataUpdated: (event: any) => void;
+
+  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
 }
 
 export interface TableProviderProps<T> {

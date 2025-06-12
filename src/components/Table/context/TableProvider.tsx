@@ -12,6 +12,7 @@ interface TableProviderProps<T> {
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
+  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
 }
 
 export function TableProvider<T>({
@@ -20,6 +21,7 @@ export function TableProvider<T>({
   tableConfig,
   tableConfigOnEdit,
   validationSchema,
+  onUpdateMany,
 }: TableProviderProps<T>) {
   const {
     gridRef,
@@ -45,7 +47,7 @@ export function TableProvider<T>({
 
   const defaultColDef = useDefaultColDef(tableStatus, invalidCells, updates);
 
-  const handlers = useTableHandlers(
+  const handlers = useTableHandlers({
     gridRef,
     validationSchema,
     invalidCells,
@@ -57,8 +59,9 @@ export function TableProvider<T>({
     tableConfig,
     tableConfigOnEdit,
     rowDataBackup,
-    setRowData
-  );
+    setRowData,
+    onUpdateMany,
+  });
 
   return (
     <TableContext.Provider
@@ -85,6 +88,7 @@ export function TableProvider<T>({
         invalidCells,
         updates,
         ...handlers,
+        onUpdateMany,
       }}
     >
       {children}

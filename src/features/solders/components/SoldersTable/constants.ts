@@ -104,6 +104,23 @@ export const tableConfigOnEdit: ColDef[] = [
     },
   },
   {
+    field: 'phoneNumber',
+    headerName: 'נייד',
+    valueFormatter: (p: any) =>
+      p.value &&
+      p.value
+        .replace(/^\+972/, '0')
+        .replace(/-/g, '')
+        .replace(/(\d{3})(\d{7})/, '$1-$2'),
+    valueGetter: (params: any) => {
+      if (!params.data?.phoneNumber) return '';
+      return params.data?.phoneNumber
+        .replace(/^\+972/, '0')
+        .replace(/-/g, '')
+        .replace(/(\d{3})(\d{7})/, '$1-$2');
+    },
+  },
+  {
     field: 'email',
     headerName: 'דוא"ל',
   },

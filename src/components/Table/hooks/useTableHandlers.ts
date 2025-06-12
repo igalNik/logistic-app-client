@@ -1,31 +1,66 @@
-import { useCallback, ChangeEventHandler } from 'react';
 import type { CellEditingStoppedEvent, ColDef } from 'ag-grid-community';
-import { TableStrings } from '../constants';
 import type { FieldValidationSchema } from '../types';
+import { ChangeEventHandler, useCallback } from 'react';
+import { TableStrings } from '../constants';
+import { useRevalidator } from 'react-router-dom';
 
-export function useTableHandlers<T>(
-  gridRef: React.RefObject<any>,
-  validationSchema: FieldValidationSchema<T>[] | undefined,
-  invalidCells: Set<string>,
-  updates: Map<string, Partial<T>>,
+type ToastType = 'success' | 'error' | 'info';
+
+export interface Toast {
+  title: string;
+  message: string | string[];
+  type: ToastType;
+  onClose: () => void;
+}
+export interface UseTableHandlersParams<T> {
+  gridRef: React.RefObject<any>;
+  validationSchema?: FieldValidationSchema<T>[];
+  invalidCells: Set<string>;
+  updates: Map<string, Partial<T>>;
+
   setToast: React.Dispatch<
     React.SetStateAction<{
       title: string;
-      message: string[] | string;
+      message: string | string[];
       type: 'success' | 'error' | 'info';
       onClose: () => void;
     } | null>
-  >,
-  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>,
+  >;
+
+  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+
   setTableStatus: React.Dispatch<
     React.SetStateAction<'read' | 'edit' | 'write'>
-  >,
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>,
-  tableConfig: ColDef<T>[],
-  tableConfigOnEdit: ColDef<T>[],
-  rowDataBackup: T[],
-  setRowData: React.Dispatch<React.SetStateAction<T[]>>
-) {
+  >;
+
+  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
+
+  tableConfig: ColDef<T>[];
+  tableConfigOnEdit: ColDef<T>[];
+
+  rowDataBackup: T[];
+
+  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
+
+  onUpdateMany?: (data: any) => Promise<any>;
+}
+
+export function useTableHandlers<T>({
+  gridRef,
+  validationSchema,
+  invalidCells,
+  updates,
+  setToast,
+  setShowAddModal,
+  setTableStatus,
+  setColDefs,
+  tableConfig,
+  tableConfigOnEdit,
+  rowDataBackup,
+  setRowData,
+  onUpdateMany,
+}: UseTableHandlersParams<T>) {
+  const { revalidate } = useRevalidator();
   const onBtnExport = useCallback(() => {
     gridRef.current?.api.exportDataAsCsv();
   }, [gridRef]);
@@ -58,9 +93,15 @@ export function useTableHandlers<T>(
     tableConfig,
   ]);
 
-  const handleStopEditAndSaveClick = useCallback(() => {
-    // Implement save logic here
-  }, []);
+  const handleStopEditAndSaveClick = useCallback(async () => {
+    const res = await onUpdateMany?.([...updates.values()]);
+
+    if (res.status === 'fail') return Promise.resolve(res);
+
+    setColDefs(() => tableConfigOnEdit);
+    setTableStatus(() => 'read');
+    revalidate();
+  }, [onUpdateMany, setColDefs, setTableStatus, tableConfigOnEdit, updates]);
 
   const handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement> =
     useCallback(
