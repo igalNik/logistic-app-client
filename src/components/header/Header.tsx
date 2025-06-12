@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import UserDetails from './user-details/UserDetails';
+import { useTailwindBreakpoint } from '../../hooks/useTailwindBreakpoint';
 
 interface HeaderProps {
   children: ReactNode;

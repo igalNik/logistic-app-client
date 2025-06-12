@@ -8,6 +8,7 @@ function GenericTable<T>(props: TableProps<T>) {
       tableConfig={props.tableConfig}
       tableConfigOnEdit={props.tableConfigOnEdit}
       data={props.data}
+      validationSchema={props.validationSchema}
     >
       <Table<T> {...props}>{props.children}</Table>
     </TableProvider>

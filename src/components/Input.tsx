@@ -47,7 +47,7 @@ const Input = memo(
     }, [onClear]);
 
     return (
-      <div className={mergeClasses('flex flex-col', containerClassName)}>
+      <div className={mergeClasses('flex flex-1 flex-col', containerClassName)}>
         {label?.length && (
           <label htmlFor={id?.length ? id : ''}>{label.length && label}</label>
         )}

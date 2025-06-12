@@ -3,10 +3,12 @@ import { TableContextType, TableProviderProps, TableStatus } from '../types';
 import { ColDef } from 'ag-grid-community';
 import { useMemo, useRef, useState } from 'react';
 import { TableContext } from './TableContext';
+import { ToastProps } from '../../Toast';
 
 export const TableProvider = <T,>({
   children,
   tableConfig = [],
+  validationSchema,
   data,
 }: TableProviderProps<T>) => {
   const gridRef = useRef<AgGridReact>(null);
@@ -24,6 +26,8 @@ export const TableProvider = <T,>({
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
+  const [toast, setToast] = useState<ToastProps | null>(null);
+
   const value = useMemo<TableContextType<T>>(
     () => ({
       gridRef,
@@ -39,6 +43,9 @@ export const TableProvider = <T,>({
       setSearchText,
       showAddModal,
       setShowAddModal,
+      validationSchema,
+      toast,
+      setToast,
     }),
     [
       colDefs,
@@ -47,6 +54,8 @@ export const TableProvider = <T,>({
       showAddModal,
       showColumnVisibilityManager,
       tableStatus,
+      toast,
+      validationSchema,
     ]
   );
   return (

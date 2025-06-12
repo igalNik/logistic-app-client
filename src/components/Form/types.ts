@@ -5,6 +5,7 @@ import {
   type ValidationResult,
 } from '@igalni/logistic-validation';
 import { errorMessages } from './constants';
+import { FieldValidationSchema } from '../Table/types';
 
 export interface FormSectionProps extends HTMLAttributes<HTMLFieldSetElement> {
   title: string;
@@ -36,12 +37,6 @@ export type UseFormValidationResult<T> = {
 };
 
 type ValidationEventType = 'onChange' | 'onBlur' | string;
-
-export interface FieldValidationSchema<T> {
-  fieldName: keyof T;
-  validation: (value: string) => ValidationPipe;
-  eventTypes: string[];
-}
 
 export interface FieldSchema<T> extends FieldValidationSchema<T> {
   defaultValue?: string | undefined;

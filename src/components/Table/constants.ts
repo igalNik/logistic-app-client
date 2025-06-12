@@ -8,6 +8,7 @@ export enum TableStrings {
   ADD = 'הוספה',
   QUICK_SEARCH = 'חיפוש מהיר...',
   COLUMN_VISIBILITY_TITLE = 'ניהול תצוגת עמודות',
+  EXPORT_TO_EXCEL = 'יצוא ל - Excel',
 }
 
 export const defaultColDef = (mode: TableStatus): ColDef => ({
@@ -15,6 +16,7 @@ export const defaultColDef = (mode: TableStatus): ColDef => ({
   cellClass:
     'select-all selection:bg-blue-200 selection:border-0 selection:text-gray-900 ',
   editable: mode === 'edit',
-
+  // resizable: false,
+  minWidth: 100,
   filter: true,
 });

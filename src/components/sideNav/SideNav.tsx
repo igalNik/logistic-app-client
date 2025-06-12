@@ -19,13 +19,13 @@ function SideNav({ expend = true }: SideNavProps) {
   return (
     <nav className="text-white/[.8] flex h-full w-full flex-col justify-center">
       <SideNavHeader
-        showContent={showItemsLabels}
+        showItemsLabels={showItemsLabels}
         onArrowClick={() => setShowItemsLabels((prev) => !prev)}
       >
         {showItemsLabels && <ParaglidingIcon color="inherit" />}
       </SideNavHeader>
       <ul className="px-2 py-2 bg-sidebar-gradient flex h-full flex-col">
-        {sideNavData.map((section: SideNavSectionData, index) => (
+        {sideNavData.map((section: SideNavSectionData) => (
           <Fragment key={section.id}>
             <SideNavSection showTitle={showItemsLabels} title={section.title}>
               {section.items.map((item: SideNavItemData) => (

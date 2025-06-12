@@ -19,9 +19,11 @@ function ColumnVisibilityManager({
   onClose,
 }: ColumnVisibilityManagerProps) {
   return (
-    <div className="rounded-lg border-gray-300 text-md w-auto border-1">
-      <div className="h-10 font-semibold bg-gray-100 px-2 border-b-gray-300 gap-2 flex items-center border-b-1">
-        <span>{TableStrings.COLUMN_VISIBILITY_TITLE}</span>
+    <div className="rounded-lg border-gray-300 text-md border-1">
+      <div className="h-11 font-semibold bg-gray-100 px-2 border-b-gray-300 gap-2 flex items-center overflow-hidden border-b-1">
+        <span className="whitespace-nowrap">
+          {TableStrings.COLUMN_VISIBILITY_TITLE}
+        </span>
         <IconButton iconName={'Close'} onClick={() => onClose()} />
       </div>
       <div className="px-1 pt-3">

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useTailwindBreakpoint } from '../hooks/useTailwindBreakpoint';
 
 interface OverlayProps {
   isOpen: boolean;
@@ -7,13 +8,17 @@ interface OverlayProps {
 }
 
 const Overlay = ({ isOpen, onClick, children }: OverlayProps) => {
+  const breakPoint = useTailwindBreakpoint();
+
   return (
-    <div className="h-[50vh] w-full">
+    <div className="h-screen w-full">
       <div
         onClick={onClick}
-        className={`${isOpen ? 'block' : 'hidden'} bg-slate-900 blur-2xl bg-opacity-10 z-50 mx-auto items-center justify-center`}
+        className={`bg-slate-900 top-0 blur-sm z-10 ${isOpen ? '' : 'hidden'} fixed mx-auto h-screen w-screen items-center justify-center opacity-20`}
       ></div>
-      <div className="h- relative z-20">{children}</div>
+      <div className={`${breakPoint.isMobile() ? 'absolute' : ''} z-20 h-full`}>
+        {children}
+      </div>
     </div>
   );
 };

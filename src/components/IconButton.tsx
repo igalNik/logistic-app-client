@@ -1,13 +1,19 @@
 import { HTMLAttributes } from 'react';
 import { mergeClasses } from '../utils/tailwind.util';
-import Icon from './Icon';
+import Icon, { IconOptions } from './Icon';
 
 interface IconButtonProps extends HTMLAttributes<HTMLDivElement> {
   iconName: string;
   onClick: () => void;
+  iconOptions?: IconOptions;
 }
 
-function IconButton({ iconName, onClick, ...props }: IconButtonProps) {
+function IconButton({
+  iconName,
+  onClick,
+  iconOptions,
+  ...props
+}: IconButtonProps) {
   return (
     <div
       onClick={onClick}
@@ -16,7 +22,7 @@ function IconButton({ iconName, onClick, ...props }: IconButtonProps) {
         props.className
       )}
     >
-      <Icon name={iconName}></Icon>
+      <Icon name={iconName} options={iconOptions}></Icon>
     </div>
   );
 }

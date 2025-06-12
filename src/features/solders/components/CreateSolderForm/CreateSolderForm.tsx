@@ -12,13 +12,14 @@ import { ModalContext } from '../../../../components/Modal/ModalContext';
 
 import { useForm } from '../../../../components/Form/useForm';
 
-import { initialSolderInfo, validationSchema } from './constants';
+import { initialSolderInfo } from './constants';
 import { SolderFormStrings } from './constants';
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { getAllDepartments } from '../../../../api/departments';
 import { objectToOption } from '../../../../utils/dropdown.util';
 import { Department } from '../../../../types/Department';
 import { createSolder } from '../../../../api/solders';
+import { validationSchema } from '../SoldersTable/constants';
 
 function CreateSolderFormTest() {
   const { onClose } = useContext(ModalContext);
@@ -27,6 +28,7 @@ function CreateSolderFormTest() {
   const getDepartmentOptions = useCallback(async function () {
     const res = await getAllDepartments();
     const departments = res?.data;
+    console.log(departments);
 
     if (!departments) return [];
 
