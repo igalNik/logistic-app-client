@@ -8,7 +8,6 @@ import GenericTable from '../../../../components/Table/GenericTable';
 
 function SoldersTableTest() {
   const solders = useLoaderData<GetAllSoldersResponse>();
-
   return (
     <GenericTable<User>
       data={solders.data}

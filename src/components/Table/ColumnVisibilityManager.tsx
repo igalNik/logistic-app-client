@@ -9,7 +9,7 @@ interface ColumnVisibilityManagerProps {
   children?: ReactNode;
   gridRef: React.RefObject<AgGridReact<any> | null>;
   tableConfig: ColDef<any>[];
-  className: string;
+  className?: string;
   onClose: () => void;
 }
 

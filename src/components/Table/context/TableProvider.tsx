@@ -1,64 +1,93 @@
-import { AgGridReact } from 'ag-grid-react';
-import { TableContextType, TableProviderProps, TableStatus } from '../types';
-import { ColDef } from 'ag-grid-community';
-import { useMemo, useRef, useState } from 'react';
+import { ReactNode } from 'react';
+import type { ColDef } from 'ag-grid-community';
 import { TableContext } from './TableContext';
-import { ToastProps } from '../../Toast';
+import { FieldValidationSchema } from '../types';
+import { useTableState } from './../hooks/useTableState';
+import { useDefaultColDef } from './../hooks/useTableConstants';
+import { useTableHandlers } from './../hooks/useTableHandlers';
 
-export const TableProvider = <T,>({
+interface TableProviderProps<T> {
+  children: ReactNode;
+  initialData: T[];
+  tableConfig: ColDef<T>[];
+  tableConfigOnEdit: ColDef<T>[];
+  validationSchema?: FieldValidationSchema<T>[];
+}
+
+export function TableProvider<T>({
   children,
-  tableConfig = [],
+  initialData,
+  tableConfig,
+  tableConfigOnEdit,
   validationSchema,
-  data,
-}: TableProviderProps<T>) => {
-  const gridRef = useRef<AgGridReact>(null);
+}: TableProviderProps<T>) {
+  const {
+    gridRef,
+    invalidCells,
+    updates,
+    rowData,
+    setRowData,
+    rowDataBackup,
+    // setRowDataBackup,
+    colDefs,
+    setColDefs,
+    tableStatus,
+    setTableStatus,
+    showColumnVisibilityManager,
+    setShowColumnVisibilityManager,
+    searchText,
+    setSearchText,
+    showAddModal,
+    setShowAddModal,
+    toast,
+    setToast,
+  } = useTableState<T>(initialData, tableConfig);
 
-  const [rowData, setRowData] = useState<T[]>(data || []);
+  const defaultColDef = useDefaultColDef(tableStatus, invalidCells, updates);
 
-  const [showColumnVisibilityManager, setShowColumnVisibilityManager] =
-    useState<boolean>(false);
-
-  const [searchText, setSearchText] = useState<string>('');
-
-  const [tableStatus, setTableStatus] = useState<TableStatus>('read');
-
-  const [colDefs, setColDefs] = useState<ColDef<Partial<T>>[]>(tableConfig);
-
-  const [showAddModal, setShowAddModal] = useState<boolean>(false);
-
-  const [toast, setToast] = useState<ToastProps | null>(null);
-
-  const value = useMemo<TableContextType<T>>(
-    () => ({
-      gridRef,
-      rowData,
-      setRowData,
-      tableStatus,
-      setTableStatus,
-      colDefs,
-      setColDefs,
-      showColumnVisibilityManager,
-      setShowColumnVisibilityManager,
-      searchText,
-      setSearchText,
-      showAddModal,
-      setShowAddModal,
-      validationSchema,
-      toast,
-      setToast,
-    }),
-    [
-      colDefs,
-      rowData,
-      searchText,
-      showAddModal,
-      showColumnVisibilityManager,
-      tableStatus,
-      toast,
-      validationSchema,
-    ]
+  const handlers = useTableHandlers(
+    gridRef,
+    validationSchema,
+    invalidCells,
+    updates,
+    setToast,
+    setShowAddModal,
+    setTableStatus,
+    setColDefs,
+    tableConfig,
+    tableConfigOnEdit,
+    rowDataBackup,
+    setRowData
   );
+
   return (
-    <TableContext.Provider value={value}>{children}</TableContext.Provider>
+    <TableContext.Provider
+      value={{
+        defaultColDef,
+        tableConfig,
+        tableConfigOnEdit,
+        gridRef,
+        rowData,
+        setRowData,
+        colDefs,
+        setColDefs,
+        tableStatus,
+        setTableStatus,
+        showColumnVisibilityManager,
+        setShowColumnVisibilityManager,
+        searchText,
+        setSearchText,
+        showAddModal,
+        setShowAddModal,
+        validationSchema,
+        toast,
+        setToast,
+        invalidCells,
+        updates,
+        ...handlers,
+      }}
+    >
+      {children}
+    </TableContext.Provider>
   );
-};
+}

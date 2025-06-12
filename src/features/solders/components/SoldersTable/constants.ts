@@ -1,11 +1,8 @@
 import { ColDef } from 'ag-grid-community';
-import { SoldersRow } from './types';
 import { validator } from '@igalni/logistic-validation';
-import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { FieldValidationSchema } from '../../../../components/Table/types';
-import { objectToOption } from '../../../../utils/dropdown.util';
-import { getAllDepartments } from '../../../../api/departments';
-import { Department } from '../../../../types/Department';
+import { User } from '../../../../types/User';
+
 const departments = [
   {
     id: '67ac6a2c14fea674ff4940d5',
@@ -28,7 +25,7 @@ const departments = [
     name: 'מרגמות',
   },
 ];
-export const tableConfig: ColDef<SoldersRow>[] = [
+export const tableConfig: ColDef[] = [
   {
     field: 'personalNumber',
     headerName: 'מספר אישי',
@@ -41,20 +38,20 @@ export const tableConfig: ColDef<SoldersRow>[] = [
   {
     field: 'department',
     headerName: 'מחלקה',
-    valueGetter: (params) => {
+    valueGetter: (params: any) => {
       return params.data?.department?.name;
     },
   },
   {
     field: 'phoneNumber',
     headerName: 'נייד',
-    valueFormatter: (p) =>
+    valueFormatter: (p: any) =>
       p.value &&
       p.value
         .replace(/^\+972/, '0')
         .replace(/-/g, '')
         .replace(/(\d{3})(\d{7})/, '$1-$2'),
-    valueGetter: (params) => {
+    valueGetter: (params: any) => {
       if (!params.data?.phoneNumber) return '';
       return params.data?.phoneNumber
         .replace(/^\+972/, '0')
@@ -76,7 +73,7 @@ export const tableConfig: ColDef<SoldersRow>[] = [
   tooltipShowMode: 'whenTruncated',
 }));
 
-export const tableConfigOnEdit: ColDef<SoldersRow>[] = [
+export const tableConfigOnEdit: ColDef[] = [
   {
     field: 'personalNumber',
     headerName: 'מספר אישי',
@@ -116,7 +113,7 @@ export const tableConfigOnEdit: ColDef<SoldersRow>[] = [
   },
 ];
 
-export const validationSchema: FieldValidationSchema<CreateSolder>[] = [
+export const validationSchema: FieldValidationSchema<User>[] = [
   {
     fieldName: 'firstName',
     validation: (value) =>

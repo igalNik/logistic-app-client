@@ -7,7 +7,7 @@ function GenericTable<T>(props: TableProps<T>) {
     <TableProvider<T>
       tableConfig={props.tableConfig}
       tableConfigOnEdit={props.tableConfigOnEdit}
-      data={props.data}
+      initialData={props.data}
       validationSchema={props.validationSchema}
     >
       <Table<T> {...props}>{props.children}</Table>

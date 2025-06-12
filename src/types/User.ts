@@ -1,5 +1,6 @@
 export interface User {
   _id: string;
+  id: string;
   personalNumber: string;
   firstName: string;
   lastName: string;
@@ -11,4 +12,5 @@ export interface User {
     id: string;
   };
   fullName: string;
+  departmentId: string;
 }

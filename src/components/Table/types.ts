@@ -1,8 +1,6 @@
 import { ValidationPipe } from '@igalni/logistic-validation';
 import { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { ReactNode } from 'react';
-import { ToastProps } from '../Toast';
+import { ChangeEventHandler, ReactNode, RefObject } from 'react';
 
 export type TableStatus = 'read' | 'write' | 'edit';
 export interface FieldValidationSchema<T> {
@@ -12,31 +10,64 @@ export interface FieldValidationSchema<T> {
 }
 
 export interface TableProps<T> {
-  tableConfig: ColDef<Partial<T>>[];
-  tableConfigOnEdit: ColDef<Partial<T>>[];
+  tableConfig: ColDef<T>[];
+  tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
-  data: T[] | undefined;
+  data: T[];
   children: ReactNode;
 }
 
 export interface TableContextType<T> {
-  gridRef: React.RefObject<AgGridReact<T> | null>;
+  gridRef: RefObject<any>;
   rowData: T[];
   setRowData: React.Dispatch<React.SetStateAction<T[]>>;
-  tableStatus: TableStatus;
-  setTableStatus: React.Dispatch<React.SetStateAction<TableStatus>>;
-  colDefs: ColDef<Partial<T>>[];
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef<Partial<T>>[]>>;
+  colDefs: ColDef<T>[];
+  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
+  tableStatus: 'read' | 'edit' | 'write';
+  setTableStatus: React.Dispatch<
+    React.SetStateAction<'read' | 'edit' | 'write'>
+  >;
   showColumnVisibilityManager: boolean;
   setShowColumnVisibilityManager: React.Dispatch<React.SetStateAction<boolean>>;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
   showAddModal: boolean;
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-  toast: ToastProps | null;
-  setToast: React.Dispatch<React.SetStateAction<ToastProps | null>>;
+  validationSchema?: any[];
+  defaultColDef: ColDef;
+  tableConfig: ColDef<T>[];
+  tableConfigOnEdit: ColDef<T>[];
+  invalidCells: Set<string>;
+  updates: Map<string, Partial<T>>;
+  toast: null | {
+    title: string;
+    message: string[] | string;
+    type: 'success' | 'error' | 'info';
+    onClose: () => void;
+  };
+  setToast: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      message: string[] | string;
+      type: 'success' | 'error' | 'info';
+      onClose: () => void;
+    } | null>
+  >;
 
-  validationSchema?: FieldValidationSchema<T>[];
+  // Your handlers (examples)
+  onBtnExport: () => void;
+  handleAdd: () => void;
+  handleEditClick: () => void;
+  handleCancelEditingClick: () => void;
+  handleStopEditAndSaveClick: () => void;
+  handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement>;
+  handleFilterTextBoxClear: () => void;
+
+  onRowEditingStarted: (event: any) => void;
+  onRowEditingStopped: (event: any) => void;
+  onCellEditingStarted: (event: any) => void;
+  onCellEditingStopped: (event: any) => void;
+  handleRowDataUpdated: (event: any) => void;
 }
 
 export interface TableProviderProps<T> {
