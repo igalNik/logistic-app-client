@@ -82,3 +82,37 @@ export interface TableProviderProps<T> {
   validationSchema?: FieldValidationSchema<T>[];
   data: T[] | undefined;
 }
+
+export interface UseTableHandlersParams<T> {
+  gridRef: React.RefObject<any>;
+  validationSchema?: FieldValidationSchema<T>[];
+  invalidCells: Set<string>;
+  updates: Map<string, Partial<T>>;
+
+  setToast: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      message: string | string[];
+      type: 'success' | 'error' | 'info';
+      onClose: () => void;
+    } | null>
+  >;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+
+  setTableStatus: React.Dispatch<
+    React.SetStateAction<'read' | 'edit' | 'write'>
+  >;
+
+  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
+
+  tableConfig: ColDef<T>[];
+  tableConfigOnEdit: ColDef<T>[];
+
+  rowDataBackup: T[];
+
+  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
+
+  onUpdateMany?: (data: any) => Promise<any>;
+}

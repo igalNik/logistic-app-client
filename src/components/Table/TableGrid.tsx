@@ -15,7 +15,7 @@ const TableGrid = () => {
   } = useTableContext();
 
   return (
-    <div className="min-h-50 h-full max-h-5/6 w-full">
+    <div className="min-h-50 h-full w-full">
       <AgGridReact
         ref={gridRef}
         enableRtl

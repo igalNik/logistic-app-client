@@ -26,7 +26,7 @@ export function useTableState<T>(
   const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<null | any>(null); // keep type broad here or pass type in args
 
-  useEffect(() => {
+  useEffect((): any => {
     return () => revalidate();
   }, []);
 

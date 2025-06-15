@@ -29,7 +29,7 @@ function Table<T>({ children }: TableProps<T>) {
   }, [tableStatus, setColDefs, tableConfig, tableConfigOnEdit]);
 
   return (
-    <div dir="rtl" className="gap-4 flex h-full w-full flex-col">
+    <div dir="rtl" className="gap-4 flex h-full w-full flex-row">
       {showColumnVisibilityManager && (
         <ColumnVisibilityManager
           onClose={() => setShowColumnVisibilityManager(false)}
@@ -37,10 +37,12 @@ function Table<T>({ children }: TableProps<T>) {
           tableConfig={tableStatus === 'read' ? tableConfig : tableConfigOnEdit}
         />
       )}
-
-      <TableToolbar />
-
-      <TableGrid />
+      <div className="flex flex-1 flex-col">
+        <TableToolbar />
+        <div className="flex-grow">
+          <TableGrid />
+        </div>
+      </div>
 
       {showAddModal && (
         <Modal onClose={() => setShowAddModal(false)} className="z-50">

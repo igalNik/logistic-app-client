@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 
+type ToastType = 'success' | 'error' | 'info';
+
 export interface ToastProps {
-  title?: string;
+  title: string;
   message: string | string[];
-  type?: 'success' | 'error' | 'info';
-  duration?: number; // milliseconds
+  type: ToastType;
+  duration?: number;
   onClose: () => void;
 }
 

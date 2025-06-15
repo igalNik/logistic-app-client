@@ -8,14 +8,3 @@ export enum TableStrings {
   EXPORT_TO_EXCEL = 'יצוא ל - Excel',
   INVALID_VALUE = 'ערך לא חוקי',
 }
-
-// export const defaultColDef = (mode: TableStatus): ColDef => ({
-//   flex: 1,
-//   cellClass:
-//     'select-all selection:bg-blue-200 selection:border-0 selection:text-gray-900 ',
-//   editable: mode === 'edit',
-//   // resizable: false,
-//   minWidth: 100,
-//   filter: true,
-
-// });

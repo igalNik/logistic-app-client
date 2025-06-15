@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import Checkbox from '../Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { TableStrings } from './constants';
@@ -18,6 +18,15 @@ function ColumnVisibilityManager({
   tableConfig,
   onClose,
 }: ColumnVisibilityManagerProps) {
+  const visibleColumns = useMemo(() => {
+    return (
+      gridRef.current?.api
+        ?.getAllDisplayedColumns()
+        .map((col) => col.getColId()) || []
+    );
+  }, [gridRef]);
+  console.log('visibleColumns', visibleColumns);
+
   return (
     <div className="rounded-lg border-gray-300 text-md border-1">
       <div className="h-11 font-semibold bg-gray-100 px-2 border-b-gray-300 gap-2 flex items-center overflow-hidden border-b-1">
@@ -31,7 +40,7 @@ function ColumnVisibilityManager({
           <Checkbox
             label={col.headerName}
             id={col.field}
-            checked={true}
+            checked={visibleColumns.includes(col.field!)}
             onChange={(value) =>
               gridRef.current?.api?.setColumnsVisible(
                 col.field ? [col.field] : [],

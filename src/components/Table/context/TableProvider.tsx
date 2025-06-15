@@ -61,6 +61,8 @@ export function TableProvider<T>({
     rowDataBackup,
     setRowData,
     onUpdateMany,
+    searchText,
+    setSearchText,
   });
 
   return (

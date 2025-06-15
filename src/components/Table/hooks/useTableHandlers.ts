@@ -1,49 +1,8 @@
-import type { CellEditingStoppedEvent, ColDef } from 'ag-grid-community';
-import type { FieldValidationSchema } from '../types';
+import type { CellEditingStoppedEvent } from 'ag-grid-community';
+import type { FieldValidationSchema, UseTableHandlersParams } from '../types';
 import { ChangeEventHandler, useCallback } from 'react';
 import { TableStrings } from '../constants';
 import { useRevalidator } from 'react-router-dom';
-
-type ToastType = 'success' | 'error' | 'info';
-
-export interface Toast {
-  title: string;
-  message: string | string[];
-  type: ToastType;
-  onClose: () => void;
-}
-export interface UseTableHandlersParams<T> {
-  gridRef: React.RefObject<any>;
-  validationSchema?: FieldValidationSchema<T>[];
-  invalidCells: Set<string>;
-  updates: Map<string, Partial<T>>;
-
-  setToast: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      message: string | string[];
-      type: 'success' | 'error' | 'info';
-      onClose: () => void;
-    } | null>
-  >;
-
-  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-
-  setTableStatus: React.Dispatch<
-    React.SetStateAction<'read' | 'edit' | 'write'>
-  >;
-
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
-
-  tableConfig: ColDef<T>[];
-  tableConfigOnEdit: ColDef<T>[];
-
-  rowDataBackup: T[];
-
-  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
-
-  onUpdateMany?: (data: any) => Promise<any>;
-}
 
 export function useTableHandlers<T>({
   gridRef,
@@ -59,6 +18,7 @@ export function useTableHandlers<T>({
   rowDataBackup,
   setRowData,
   onUpdateMany,
+  setSearchText,
 }: UseTableHandlersParams<T>) {
   const { revalidate } = useRevalidator();
   const onBtnExport = useCallback(() => {
@@ -101,15 +61,23 @@ export function useTableHandlers<T>({
     setColDefs(() => tableConfigOnEdit);
     setTableStatus(() => 'read');
     revalidate();
-  }, [onUpdateMany, setColDefs, setTableStatus, tableConfigOnEdit, updates]);
+  }, [
+    onUpdateMany,
+    revalidate,
+    setColDefs,
+    setTableStatus,
+    tableConfigOnEdit,
+    updates,
+  ]);
 
   const handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (event) => {
         const val = event.target.value;
         gridRef.current!.api.setGridOption('quickFilterText', val);
+        setSearchText(val);
       },
-      [gridRef]
+      [gridRef, setSearchText]
     );
 
   const handleFilterTextBoxClear = useCallback(() => {
