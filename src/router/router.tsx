@@ -8,6 +8,8 @@ import PageNotFound from '../pages/PageNotFound';
 import { protectedLoader } from './protectedLoader';
 import Solders from '../pages/Solders';
 import { soldersLoader } from '../features/solders/loaders/solders.loader';
+import EquipmentTypes from '../pages/EquipmentTypes';
+import { equipmentTypesLoader } from '../features/equipment-type/loaders/equipmentType.loader';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -32,6 +34,11 @@ const router = createBrowserRouter([
           {
             path: '/departments',
             element: <Departments />,
+          },
+          {
+            path: '/equipment-types',
+            element: <EquipmentTypes />,
+            loader: equipmentTypesLoader,
           },
           { path: '*', element: <PageNotFound /> },
         ],

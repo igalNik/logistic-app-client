@@ -1,21 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import type { ColDef } from 'ag-grid-community';
-import { useRevalidator } from 'react-router-dom';
 
-export function useTableState<T>(
-  initialData: T[],
-  tableConfig: ColDef<T>[]
-  //   tableConfigOnEdit: ColDef<T>[]
-) {
+export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
   const gridRef = useRef<any>(null);
 
   const invalidCells = useRef(new Set<string>()).current;
   const updates = useRef(new Map<string, Partial<T>>()).current;
 
-  const { revalidate } = useRevalidator();
-
-  const [rowData, setRowData] = useState<T[]>(initialData);
-  const [rowDataBackup, setRowDataBackup] = useState<T[]>([...initialData]);
+  const [rowData, setRowData] = useState<T[]>([...initialData]);
+  const [rowDataBackup, setRowDataBackup] = useState<T[] | null>([
+    ...initialData,
+  ]);
   const [colDefs, setColDefs] = useState<ColDef<T>[]>(tableConfig);
   const [tableStatus, setTableStatus] = useState<'read' | 'edit' | 'write'>(
     'read'
@@ -25,14 +20,6 @@ export function useTableState<T>(
   const [searchText, setSearchText] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<null | any>(null); // keep type broad here or pass type in args
-
-  useEffect((): any => {
-    return () => revalidate();
-  }, []);
-
-  useEffect(() => {
-    setRowData(initialData);
-  }, [initialData]);
 
   return {
     gridRef,

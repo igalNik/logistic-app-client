@@ -15,4 +15,10 @@ export const API_ENDPOINTS = {
     GET_ALL: '/departments',
     GET_BY_ID: (id: string) => `/departments/${id}`,
   },
+  EQUIPMENT: {
+    GET_ALL: '/equipment',
+    GET_BY_ID: (id: string) => `/equipment/${id}`,
+    CREATE: '/equipment',
+    UPDATE: '/equipment',
+  },
 };

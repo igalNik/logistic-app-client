@@ -22,7 +22,7 @@ const TableToolbar = () => {
   return (
     <>
       <div className="md:flex-row gap-2 mb-2 flex flex-col">
-        <div className="gap-2 mb-2 md:order-2 order-1 flex flex-row justify-between">
+        <div className="gap-2 md:order-2 order-1 flex flex-row justify-between">
           {!showColumnVisibilityManager && (
             <Button
               type="button"
@@ -88,17 +88,19 @@ const TableToolbar = () => {
             </>
           )}
         </div>
-        <Input
-          type="text"
-          id="filter-text-box"
-          placeholder={TableStrings.QUICK_SEARCH}
-          onChange={handleFilterTextBoxChanged}
-          value={searchText}
-          iconName="Search"
-          clearButton
-          onClear={handleFilterTextBoxClear}
-          className="max-h-11 md:order-1 order-2 min-w-[200px] flex-none"
-        />
+        <div className="md:order-1 mb-2 order-2 flex-1">
+          <Input
+            type="text"
+            id="filter-text-box"
+            placeholder={TableStrings.QUICK_SEARCH}
+            onChange={handleFilterTextBoxChanged}
+            value={searchText}
+            iconName="Search"
+            clearButton
+            onClear={handleFilterTextBoxClear}
+            className="max-h-11 min-w-[200px] flex-none"
+          />
+        </div>
       </div>
     </>
   );

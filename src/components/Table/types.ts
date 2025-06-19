@@ -56,7 +56,6 @@ export interface TableContextType<T> {
     } | null>
   >;
 
-  // Your handlers (examples)
   onBtnExport: () => void;
   handleAdd: () => void;
   handleEditClick: () => void;
@@ -110,8 +109,10 @@ export interface UseTableHandlersParams<T> {
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
 
-  rowDataBackup: T[];
+  rowDataBackup: T[] | null;
+  setRowDataBackup: React.Dispatch<React.SetStateAction<T[] | null>>;
 
+  rowData: T[];
   setRowData: React.Dispatch<React.SetStateAction<T[]>>;
 
   onUpdateMany?: (data: any) => Promise<any>;

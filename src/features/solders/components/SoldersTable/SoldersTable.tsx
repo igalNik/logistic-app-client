@@ -4,12 +4,12 @@ import { GetAllSoldersResponse, updateSolders } from '../../../../api/solders';
 import { tableConfig, tableConfigOnEdit, validationSchema } from './constants';
 import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
 import { User } from '../../../../types/User';
-import GenericTable from '../../../../components/Table/GenericTable';
+import Table from '../../../../components/Table';
 
 function SoldersTable() {
   const solders = useLoaderData<GetAllSoldersResponse>();
   return (
-    <GenericTable<User>
+    <Table<User>
       data={solders.data}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
@@ -17,7 +17,7 @@ function SoldersTable() {
       onUpdateMany={updateSolders}
     >
       <CreateSolderForm />
-    </GenericTable>
+    </Table>
   );
 }
 

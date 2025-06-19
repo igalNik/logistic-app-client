@@ -2,7 +2,6 @@ import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import type { FieldValidationSchema, UseTableHandlersParams } from '../types';
 import { ChangeEventHandler, useCallback } from 'react';
 import { TableStrings } from '../constants';
-import { useRevalidator } from 'react-router-dom';
 
 export function useTableHandlers<T>({
   gridRef,
@@ -16,31 +15,37 @@ export function useTableHandlers<T>({
   tableConfig,
   tableConfigOnEdit,
   rowDataBackup,
+  setRowDataBackup,
+  rowData,
   setRowData,
   onUpdateMany,
   setSearchText,
 }: UseTableHandlersParams<T>) {
-  const { revalidate } = useRevalidator();
+  // const { revalidate } = useRevalidator();
   const onBtnExport = useCallback(() => {
     gridRef.current?.api.exportDataAsCsv();
   }, [gridRef]);
 
   const handleAdd = useCallback(() => {
-    gridRef.current?.api.applyTransaction({
-      add: [{} as T],
-    });
     setShowAddModal(true);
-  }, [gridRef, setShowAddModal]);
+  }, [setShowAddModal]);
 
   const handleEditClick = useCallback(() => {
     setTableStatus('edit');
     setColDefs(tableConfigOnEdit);
-  }, [setTableStatus, setColDefs, tableConfigOnEdit]);
+    setRowDataBackup(() => rowData.map((row) => ({ ...row })));
+  }, [
+    setTableStatus,
+    setColDefs,
+    tableConfigOnEdit,
+    setRowDataBackup,
+    rowData,
+  ]);
 
   const handleCancelEditingClick = useCallback(() => {
     invalidCells.clear();
     updates.clear();
-    setRowData(rowDataBackup);
+    setRowData(rowDataBackup!);
     setTableStatus('read');
     setColDefs(tableConfig);
   }, [
@@ -58,13 +63,18 @@ export function useTableHandlers<T>({
 
     if (res.status === 'fail') return Promise.resolve(res);
 
-    setColDefs(() => tableConfigOnEdit);
+    setColDefs(tableConfigOnEdit);
     setTableStatus(() => 'read');
-    revalidate();
+    setRowDataBackup(null);
+
+    invalidCells.clear();
+    updates.clear();
+    // revalidate();
   }, [
+    invalidCells,
     onUpdateMany,
-    revalidate,
     setColDefs,
+    setRowDataBackup,
     setTableStatus,
     tableConfigOnEdit,
     updates,
@@ -114,7 +124,6 @@ export function useTableHandlers<T>({
 
       if (validationResult && !validationResult?.isValid) {
         invalidCells.add(cellKey);
-        refreshGridCells();
 
         setToast({
           title: TableStrings.INVALID_VALUE,

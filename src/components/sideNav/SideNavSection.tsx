@@ -10,7 +10,7 @@ function SideNavSection({ title, showTitle, children }: SideNavSectionProps) {
   return (
     <div>
       {showTitle && (
-        <div className={`pb-2 text-sm font-medium text-white/[.6] uppercase`}>
+        <div className={`font-semibold pb-2 text-white/[.6] uppercase`}>
           {title}
         </div>
       )}

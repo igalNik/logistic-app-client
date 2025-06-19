@@ -32,6 +32,10 @@ const Icons = {
   Save: lazy(() => import('@mui/icons-material/SaveRounded')),
   Grid: lazy(() => import('@mui/icons-material/GridOnRounded')),
   Columns: lazy(() => import('@mui/icons-material/ViewColumnOutlined')),
+  Receive: lazy(() => import('@mui/icons-material/CallReceived')),
+  Exchange: lazy(() => import('@mui/icons-material/SwapHoriz')),
+  Removal: lazy(() => import('@mui/icons-material/PlaylistRemove')),
+  Equipment: lazy(() => import('@mui/icons-material/HomeRepairService')),
 };
 
 export default Icons;

@@ -4,15 +4,26 @@ import { SideNavSectionData } from './types';
 export const sideNavData: SideNavSectionData[] = [
   {
     id: uuidv4(),
-    title: 'טבלאות',
+    title: 'ניהול מלאי',
     items: [
-      { id: uuidv4(), text: 'בית', iconName: 'Home', navTo: '/' },
       {
         id: uuidv4(),
-        text: 'מחלקות',
-        iconName: 'Department',
-        navTo: '/departments',
+        text: 'סוג ציוד',
+        iconName: 'Equipment',
+        navTo: '/equipment-types',
       },
+      {
+        id: uuidv4(),
+        text: 'מלאי',
+        iconName: 'Inventory',
+        navTo: '/inventory',
+      },
+    ],
+  },
+  {
+    id: uuidv4(),
+    title: 'ניהול סד"כ',
+    items: [
       {
         id: uuidv4(),
         text: 'חיילים',
@@ -21,27 +32,33 @@ export const sideNavData: SideNavSectionData[] = [
       },
       {
         id: uuidv4(),
-        text: 'מלאי',
-        iconName: 'Inventory',
-        navTo: '/Inventory',
-      },
-      {
-        id: uuidv4(),
-        text: 'חתימות',
-        iconName: 'Signature',
-        navTo: '/signatures',
+        text: 'מחלקות',
+        iconName: 'Department',
+        navTo: '/departments',
       },
     ],
   },
   {
     id: uuidv4(),
-    title: 'משימות',
+    title: 'תנועות',
     items: [
       {
         id: uuidv4(),
-        text: 'תרומות',
-        iconName: 'Gift',
-        navTo: '/people',
+        text: 'החתמות/זיכויים',
+        iconName: 'Exchange',
+        navTo: '/Inventory',
+      },
+      {
+        id: uuidv4(),
+        text: 'קבלת ציוד',
+        iconName: 'Receive',
+        navTo: '/solders',
+      },
+      {
+        id: uuidv4(),
+        text: 'הורדת ציוד',
+        iconName: 'Removal',
+        navTo: '/remove',
       },
     ],
   },

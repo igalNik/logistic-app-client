@@ -20,15 +20,17 @@ import { objectToOption } from '../../../../utils/dropdown.util';
 import { Department } from '../../../../types/Department';
 import { createSolder } from '../../../../api/solders';
 import { validationSchema } from '../SoldersTable/constants';
+import { User } from '../../../../types/User';
+import { useTableContext } from '../../../../components/Table/context/TableContext';
 
-function CreateSolderFormTest() {
+function CreateSolderForm() {
   const { onClose } = useContext(ModalContext);
   const firstNameRef = useRef<HTMLInputElement>(null);
+  const { setRowData } = useTableContext<User>();
 
   const getDepartmentOptions = useCallback(async function () {
     const res = await getAllDepartments();
     const departments = res?.data;
-    console.log(departments);
 
     if (!departments) return [];
 
@@ -39,13 +41,34 @@ function CreateSolderFormTest() {
     return options;
   }, []);
 
+  const onSubmit = useCallback(
+    async (item: CreateSolder) => {
+      const res: any = await createSolder(item);
+      if (res?.status === 'success') {
+        setRowData((prev: User[]) => [...prev, item as User]);
+      }
+      return res;
+    },
+
+    [setRowData]
+  );
   const { handleSubmit, handleCancel, registry } = useForm<CreateSolder>({
     formInitialization: {
-      schema: validationSchema.map((field) => {
-        return { ...field, defaultValue: initialSolderInfo[field.fieldName] };
-      }),
+      schema: validationSchema
+        .filter(
+          (field) =>
+            (field.fieldName as keyof CreateSolder) in initialSolderInfo
+        )
+        .map((field) => {
+          return {
+            ...field,
+            fieldName: field.fieldName as keyof CreateSolder,
+            defaultValue:
+              initialSolderInfo[field.fieldName as keyof CreateSolder],
+          };
+        }),
     },
-    onSubmit: createSolder,
+    onSubmit,
     onCancel: onClose,
   });
 
@@ -135,4 +158,4 @@ function CreateSolderFormTest() {
   );
 }
 
-export default CreateSolderFormTest;
+export default CreateSolderForm;

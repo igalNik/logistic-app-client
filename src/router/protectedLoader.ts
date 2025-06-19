@@ -3,6 +3,7 @@ import { redirect } from 'react-router-dom';
 import { RootState, store } from './../store/store';
 import { setUser } from './../store/slices/authSlice';
 import { CheckAuthResponse, handleCheckAuth } from '../api/auth';
+import { User } from '../types/User';
 
 export const protectedLoader = async () => {
   try {

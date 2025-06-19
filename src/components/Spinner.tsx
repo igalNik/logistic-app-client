@@ -11,7 +11,7 @@ function Spinner({ type, text = '' }: SpinnerProps) {
       );
     case 'page':
       return (
-        <div className="h-60 flex items-center justify-center">
+        <div className="h-60 mx-auto flex items-center justify-center">
           <div className="border-gray-300 border-t-blue-400 animate-spin h-30 w-30 absolute mx-auto rounded-full border-8"></div>
           {text && (
             <div className="text-blue-400 font-semibold absolute flex h-full w-full items-center justify-center">

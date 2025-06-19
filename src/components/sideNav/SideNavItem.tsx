@@ -31,7 +31,7 @@ function SideNavItem({
           }}
         />
       </span>
-      {showLabel && <span className={`text-sm`}>{text}</span>}
+      {showLabel && <span>{text}</span>}
     </NavLink>
   );
 }
