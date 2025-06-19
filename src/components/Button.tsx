@@ -18,7 +18,7 @@ function Button({ children, iconName, iconOptions, ...props }: ButtonProps) {
         props.className
       )}
     >
-      <span className="gap-1 flex items-center justify-center">
+      <span className="gap-1 flex h-full items-center justify-center">
         {iconName && <Icon name={iconName} options={iconOptions} />}
         {children}
       </span>

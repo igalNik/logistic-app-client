@@ -21,7 +21,7 @@ const TableToolbar = () => {
 
   return (
     <>
-      <div className="md:flex-row gap-2 mb-2 flex flex-col">
+      <div className="lg:flex-row gap-2 mb-2 flex flex-col overflow-auto">
         <div className="gap-2 md:order-2 order-1 flex flex-row justify-between">
           {!showColumnVisibilityManager && (
             <Button

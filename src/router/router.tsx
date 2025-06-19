@@ -10,6 +10,8 @@ import Solders from '../pages/Solders';
 import { soldersLoader } from '../features/solders/loaders/solders.loader';
 import EquipmentTypes from '../pages/EquipmentTypes';
 import { equipmentTypesLoader } from '../features/equipment-type/loaders/equipmentType.loader';
+import { inventoryWithPopulatedEquipmentTypeLoader } from '../features/inventory/loaders/inventory.loader';
+import Inventory from '../pages/Inventory';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -39,6 +41,11 @@ const router = createBrowserRouter([
             path: '/equipment-types',
             element: <EquipmentTypes />,
             loader: equipmentTypesLoader,
+          },
+          {
+            path: '/inventory',
+            element: <Inventory />,
+            loader: inventoryWithPopulatedEquipmentTypeLoader,
           },
           { path: '*', element: <PageNotFound /> },
         ],

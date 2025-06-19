@@ -3,4 +3,5 @@ export interface EquipmentType {
   name: string;
   description?: string;
   provider?: 'צה"ל' | 'תרומה' | 'אישי' | 'אחר';
+  hasSerialNumber: boolean;
 }

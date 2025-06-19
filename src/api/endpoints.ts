@@ -21,4 +21,11 @@ export const API_ENDPOINTS = {
     CREATE: '/equipment',
     UPDATE: '/equipment',
   },
+  INVENTORY: {
+    GET_ALL: '/inventory',
+    GET_ALL_WITH_POPULATE_EQUIPMENT_TYPE: '/inventory?populate=equipmentTypeId',
+    GET_BY_ID: (id: string) => `/inventory/${id}`,
+    CREATE: '/inventory',
+    UPDATE: '/inventory',
+  },
 };

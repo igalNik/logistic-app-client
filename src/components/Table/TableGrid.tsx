@@ -1,5 +1,8 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useTableContext } from './context/TableContext';
+import { useMemo } from 'react';
+import { RowSelectionOptions } from 'ag-grid-community';
+import './style.css';
 
 const TableGrid = () => {
   const {
@@ -14,6 +17,17 @@ const TableGrid = () => {
     handleRowDataUpdated,
   } = useTableContext();
 
+  const rowSelection = useMemo<
+    RowSelectionOptions | 'single' | 'multiple'
+  >(() => {
+    return {
+      mode: 'multiRow',
+      enableClickSelection: true,
+    };
+  }, []);
+
+  console.log(gridRef.current?.api.getSelectedRows());
+
   return (
     <div className="min-h-50 h-full w-full">
       <AgGridReact
@@ -23,8 +37,6 @@ const TableGrid = () => {
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
         suppressCellFocus={false}
-        suppressRowHoverHighlight
-        rowClass="hover:bg-[var(--color-bg-sidebar-alt)]! hover:text-white!"
         onRowEditingStarted={onRowEditingStarted}
         onRowEditingStopped={onRowEditingStopped}
         onCellEditingStarted={onCellEditingStarted}
@@ -33,6 +45,7 @@ const TableGrid = () => {
         stopEditingWhenCellsLoseFocus
         tooltipShowMode="whenTruncated"
         tooltipShowDelay={500}
+        rowSelection={rowSelection}
       />
     </div>
   );

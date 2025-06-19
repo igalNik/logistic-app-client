@@ -10,7 +10,7 @@ export function useDefaultColDef<T>(
     () => ({
       flex: 1,
       cellClass:
-        'select-all selection:bg-blue-200 selection:border-0 selection:text-gray-900 ',
+        'selection:bg-blue-200 selection:border-0 selection:text-gray-900 ',
       editable: tableStatus === 'edit',
       minWidth: 100,
       filter: true,
