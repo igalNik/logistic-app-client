@@ -5,8 +5,8 @@ export function FormSection({ title, ...props }: FormSectionProps) {
   return (
     <fieldset
       className={mergeClasses(
-        'border-gray-300 rounded-lg p-4 text-gray-700 border-2',
-        props.className
+        props.className,
+        'border-gray-300 rounded-lg p-4 text-gray-700 border-2'
       )}
     >
       <legend className="font-semibold text-xl px-2">{title}</legend>

@@ -21,9 +21,9 @@ export type FormValidationSchema<T> =
   | null;
 
 export type FieldRegistry = Partial<
-  Record<ValidationEventType, (value: string) => void> &
+  Record<ValidationEventType, (value: any) => void> &
     Record<'errorMessages', string[]> &
-    Record<'value', string | number>
+    Record<'value', any>
 >;
 
 export type FormRegistry<T> = {

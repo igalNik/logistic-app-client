@@ -16,7 +16,7 @@ export const getAllEquipmentTypes = async () => {
 
     return res;
   } catch (error) {
-    console.log('failed to get all users', error);
+    console.log('failed to get all equipment Types', error);
   }
 };
 
@@ -32,6 +32,14 @@ export const updateEquipmentTypes = async (equipments: EquipmentType[]) => {
   const res = await apiClient<any>(API_ENDPOINTS.EQUIPMENT.UPDATE, {
     method: 'PATCH',
     body: equipments,
+  });
+  return res;
+};
+
+export const deleteEquipmentTypes = async (itemIds: string[]) => {
+  const res = await apiClient<any>(API_ENDPOINTS.EQUIPMENT.DELETE, {
+    method: 'DELETE',
+    body: itemIds,
   });
   return res;
 };

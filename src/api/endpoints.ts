@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     GET_ALL: '/users',
     CREATE: '/users',
     UPDATE: '/users',
+    DELETE: '/users',
     GET_BY_ID: (id: string) => `/users/${id}`,
   },
   DEPARTMENTS: {
@@ -20,6 +21,7 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: string) => `/equipment/${id}`,
     CREATE: '/equipment',
     UPDATE: '/equipment',
+    DELETE: '/equipment',
   },
   INVENTORY: {
     GET_ALL: '/inventory',

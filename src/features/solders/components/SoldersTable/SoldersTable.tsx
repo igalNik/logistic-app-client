@@ -1,5 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
-import { GetAllSoldersResponse, updateSolders } from '../../../../api/solders';
+import {
+  deleteSolders,
+  GetAllSoldersResponse,
+  updateSolders,
+} from '../../../../api/solders';
 // import Table from '../../../../components/Table/Table';
 import { tableConfig, tableConfigOnEdit, validationSchema } from './constants';
 import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
@@ -15,6 +19,7 @@ function SoldersTable() {
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
       onUpdateMany={updateSolders}
+      onDeleteMany={deleteSolders}
     >
       <CreateSolderForm />
     </Table>

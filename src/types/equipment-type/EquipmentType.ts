@@ -1,5 +1,5 @@
 export interface EquipmentType {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   provider?: 'צה"ל' | 'תרומה' | 'אישי' | 'אחר';

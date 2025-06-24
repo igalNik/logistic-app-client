@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef } from 'react';
+import { useCallback, useContext, useMemo, useRef } from 'react';
 
 import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
@@ -20,6 +20,7 @@ import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
 import { createEquipmentType } from '../../../../api/equipmentType';
 import { PROVIDER_OPTIONS } from '../../../../constants/dropdownOptions';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
+import Checkbox from '../../../../components/Checkbox';
 
 function CreateEquipmentTypeForm() {
   const { onClose } = useContext(ModalContext);
@@ -37,19 +38,26 @@ function CreateEquipmentTypeForm() {
     [setRowData]
   );
 
-  const { handleSubmit, handleCancel, registry } = useForm<EquipmentType>({
-    formInitialization: {
-      schema: validationSchema.map((field: any) => {
+  const schema = useMemo(
+    () =>
+      validationSchema.map((field: any) => {
         return {
           ...field,
           defaultValue:
             initialEquipmentTypeInfo[field.fieldName as keyof EquipmentType],
         };
       }),
+    []
+  );
+
+  const { handleSubmit, handleCancel, registry } = useForm<EquipmentType>({
+    formInitialization: {
+      schema,
     },
     onSubmit: onsubmit,
     onCancel: onClose,
   });
+  console.log(registry);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -83,6 +91,14 @@ function CreateEquipmentTypeForm() {
               options={PROVIDER_OPTIONS}
               className={`w-full`}
             />
+            <div className="py-2 flex h-full w-fit items-end justify-end">
+              <Checkbox
+                {...registry['hasSerialNumber']}
+                id="has-serial-number"
+                label={EquipmentTypeFormStrings.HAS_SERIAL_NUMBER}
+                className="w-fit justify-end hover:opacity-100"
+              />
+            </div>
           </div>
         </FormSection>
 

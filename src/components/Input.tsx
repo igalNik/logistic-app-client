@@ -10,7 +10,7 @@ import Icon from './Icon';
 import { mergeClasses } from '../utils/tailwind.util';
 import Tooltip from './Tooltip';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string | undefined;
   id?: string | undefined;
   iconName?: string | undefined;
@@ -48,7 +48,7 @@ const Input = memo(
 
     return (
       <div className={mergeClasses('flex flex-1 flex-col', containerClassName)}>
-        {label?.length && (
+        {label && (
           <label htmlFor={id?.length ? id : ''}>{label.length && label}</label>
         )}
         <div className="relative">
@@ -74,9 +74,9 @@ const Input = memo(
           )}
 
           <input
+            type="text"
             {...props}
             ref={ref}
-            type="text"
             id={id}
             value={value}
             onChange={handleInputChange}

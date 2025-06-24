@@ -15,6 +15,7 @@ const TableGrid = () => {
     onCellEditingStarted,
     onCellEditingStopped,
     handleRowDataUpdated,
+    handleRowSelection,
   } = useTableContext();
 
   const rowSelection = useMemo<
@@ -22,14 +23,15 @@ const TableGrid = () => {
   >(() => {
     return {
       mode: 'multiRow',
+      checkboxes: true,
+      headerCheckbox: true,
       enableClickSelection: true,
+      enableSelectionWithoutKeys: true,
     };
   }, []);
 
-  console.log(gridRef.current?.api.getSelectedRows());
-
   return (
-    <div className="min-h-50 h-full w-full">
+    <div className="min-h-50 ove h-full w-full">
       <AgGridReact
         ref={gridRef}
         enableRtl
@@ -46,6 +48,7 @@ const TableGrid = () => {
         tooltipShowMode="whenTruncated"
         tooltipShowDelay={500}
         rowSelection={rowSelection}
+        onRowSelected={handleRowSelection}
       />
     </div>
   );

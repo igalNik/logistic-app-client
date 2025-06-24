@@ -45,3 +45,11 @@ export const updateSolders = async (solder: UpdateSoldier[] | User[]) => {
   });
   return res;
 };
+
+export const deleteSolders = async (soldersIds: string[]) => {
+  const res = await apiClient<any>(API_ENDPOINTS.USERS.DELETE, {
+    method: 'DELETE',
+    body: soldersIds,
+  });
+  return res;
+};

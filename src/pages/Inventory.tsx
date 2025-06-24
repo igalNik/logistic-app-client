@@ -1,4 +1,4 @@
-import InventoryTable from '../features/inventory/components/InventoryTable';
+import InventoryTable from '../features/inventory/components/InventoryTable/InventoryTable';
 
 function Inventory() {
   //   return <h1>Equipment Types</h1>;

@@ -15,6 +15,7 @@ export interface TableProps<T> {
   validationSchema?: FieldValidationSchema<T>[];
   data: T[];
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
+  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 
   children: ReactNode;
 }
@@ -55,6 +56,8 @@ export interface TableContextType<T> {
       onClose: () => void;
     } | null>
   >;
+  selectedRows: T[];
+  setSelectedRows: React.Dispatch<React.SetStateAction<T[]>>;
 
   onBtnExport: () => void;
   handleAdd: () => void;
@@ -69,6 +72,8 @@ export interface TableContextType<T> {
   onCellEditingStarted: (event: any) => void;
   onCellEditingStopped: (event: any) => void;
   handleRowDataUpdated: (event: any) => void;
+  handleRowSelection: (event: any) => void;
+  handleDeleteSelectedItems: (event: any) => void;
 
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
 }
@@ -115,5 +120,9 @@ export interface UseTableHandlersParams<T> {
   rowData: T[];
   setRowData: React.Dispatch<React.SetStateAction<T[]>>;
 
+  selectedRows: T[];
+  setSelectedRows: React.Dispatch<React.SetStateAction<T[]>>;
+
   onUpdateMany?: (data: any) => Promise<any>;
+  onDeleteMany?: (data: any) => Promise<any>;
 }

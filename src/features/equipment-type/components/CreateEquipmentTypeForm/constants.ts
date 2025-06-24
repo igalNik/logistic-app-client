@@ -15,6 +15,7 @@ export enum EquipmentTypeFormStrings {
   DESCRIPTION_LABEL = 'תיאור הציוד',
   PROVIDER_LABEL = 'ספק הציוד',
   PROVIDER_PLACEHOLDER = 'בחירת ספק',
+  HAS_SERIAL_NUMBER = 'קיים מספר סידורי',
 
   SUBMIT_BUTTON_TEXT = 'שמירה',
   CANCEL_BUTTON_TEXT = 'ביטול',

@@ -19,7 +19,10 @@ export function useTableHandlers<T>({
   rowData,
   setRowData,
   onUpdateMany,
+  onDeleteMany,
   setSearchText,
+  selectedRows,
+  setSelectedRows,
 }: UseTableHandlersParams<T>) {
   // const { revalidate } = useRevalidator();
   const onBtnExport = useCallback(() => {
@@ -58,6 +61,10 @@ export function useTableHandlers<T>({
     tableConfig,
   ]);
 
+  const handleRowSelection = useCallback(() => {
+    setSelectedRows(gridRef.current.api.getSelectedRows());
+  }, [gridRef, setSelectedRows]);
+
   const handleStopEditAndSaveClick = useCallback(async () => {
     const res = await onUpdateMany?.([...updates.values()]);
 
@@ -73,6 +80,7 @@ export function useTableHandlers<T>({
   }, [
     invalidCells,
     onUpdateMany,
+
     setColDefs,
     setRowDataBackup,
     setTableStatus,
@@ -150,6 +158,14 @@ export function useTableHandlers<T>({
 
   const handleRowDataUpdated = useCallback(() => {}, []);
 
+  const handleDeleteSelectedItems = useCallback(async () => {
+    const ids = selectedRows.map((row) => row._id);
+    await onDeleteMany?.(ids);
+    setRowData((prev) =>
+      prev.filter((row) => !ids.includes(row.id) && !ids.includes(row._id))
+    );
+  }, [onDeleteMany, selectedRows, setRowData]);
+
   return {
     onBtnExport,
     handleAdd,
@@ -163,5 +179,7 @@ export function useTableHandlers<T>({
     onCellEditingStarted,
     onCellEditingStopped,
     handleRowDataUpdated,
+    handleRowSelection,
+    handleDeleteSelectedItems,
   };
 }

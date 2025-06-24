@@ -13,6 +13,7 @@ interface TableProviderProps<T> {
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
+  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 }
 
 export function TableProvider<T>({
@@ -22,6 +23,7 @@ export function TableProvider<T>({
   tableConfigOnEdit,
   validationSchema,
   onUpdateMany,
+  onDeleteMany,
 }: TableProviderProps<T>) {
   const {
     gridRef,
@@ -43,6 +45,8 @@ export function TableProvider<T>({
     setShowAddModal,
     toast,
     setToast,
+    selectedRows,
+    setSelectedRows,
   } = useTableState<T>(initialData, tableConfig);
 
   const defaultColDef = useDefaultColDef(tableStatus, invalidCells, updates);
@@ -63,8 +67,11 @@ export function TableProvider<T>({
     rowData,
     setRowData,
     onUpdateMany,
+    onDeleteMany,
     searchText,
     setSearchText,
+    selectedRows,
+    setSelectedRows,
   });
 
   return (
@@ -91,6 +98,8 @@ export function TableProvider<T>({
         setToast,
         invalidCells,
         updates,
+        selectedRows,
+        setSelectedRows,
         ...handlers,
         onUpdateMany,
       }}

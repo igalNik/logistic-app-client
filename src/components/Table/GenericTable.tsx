@@ -10,6 +10,7 @@ function GenericTable<T>(props: TableProps<T>) {
       initialData={props.data}
       validationSchema={props.validationSchema}
       onUpdateMany={props.onUpdateMany}
+      onDeleteMany={props.onDeleteMany}
     >
       <Table<T> {...props}>{props.children}</Table>
     </TableProvider>

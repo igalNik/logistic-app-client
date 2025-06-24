@@ -19,6 +19,11 @@ export const tableConfig: ColDef[] = [
     headerName: 'שייך ל-',
     headerTooltip: 'שייך ל-',
   },
+  {
+    field: 'hasSerialNumber',
+    headerName: 'קיים מספר סידורי',
+    headerTooltip: 'קיים מספר סידורי',
+  },
 ];
 
 export const tableConfigOnEdit: ColDef[] = [...tableConfig];
@@ -39,6 +44,11 @@ export const validationSchema: FieldValidationSchema<EquipmentType>[] = [
     fieldName: 'provider',
     validation: (value) =>
       validator(value).required().min(2).max(20).isAlphaHebrewOrEnglish(),
+    eventTypes: ['onChange'],
+  },
+  {
+    fieldName: 'hasSerialNumber',
+    validation: (value) => validator(value),
     eventTypes: ['onChange'],
   },
 ];

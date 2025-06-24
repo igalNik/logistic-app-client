@@ -3,6 +3,7 @@ import { lazy } from 'react';
 const Icons = {
   Menu: lazy(() => import('@mui/icons-material/Menu')),
   CloseMenu: lazy(() => import('@mui/icons-material/RemoveOutlined')),
+  Delete: lazy(() => import('@mui/icons-material/Delete')),
   People: lazy(() => import('@mui/icons-material/People')),
   Paragliding: lazy(() => import('@mui/icons-material/Paragliding')),
   Inventory: lazy(() => import('@mui/icons-material/Inventory')),
@@ -30,6 +31,7 @@ const Icons = {
   Success: lazy(() => import('@mui/icons-material/CheckCircleOutlineRounded')),
   Error: lazy(() => import('@mui/icons-material/ReportGmailerrorred')),
   Abc: lazy(() => import('@mui/icons-material/Abc')),
+  Numeric: lazy(() => import('@mui/icons-material/Pin')),
   Edit: lazy(() => import('@mui/icons-material/EditRounded')),
   Save: lazy(() => import('@mui/icons-material/SaveRounded')),
   Grid: lazy(() => import('@mui/icons-material/GridOnRounded')),

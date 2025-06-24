@@ -3,6 +3,7 @@ import { tableConfig, tableConfigOnEdit, validationSchema } from './constants';
 
 import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
 import {
+  deleteEquipmentTypes,
   GetAllEquipmentTypesResponse,
   updateEquipmentTypes,
 } from '../../../../api/equipmentType';
@@ -19,6 +20,7 @@ function EquipmentTypesTable() {
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
       onUpdateMany={updateEquipmentTypes}
+      onDeleteMany={deleteEquipmentTypes}
     >
       <CreateEquipmentTypeForm />
     </Table>

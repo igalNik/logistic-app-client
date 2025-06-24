@@ -3,16 +3,26 @@ import Button from '../Button';
 
 function CellListView(props: any) {
   const [showList, setShowList] = useState(false);
-  return props?.value?.length ? (
+  const length = props?.value?.length || 0;
+
+  if (length === 0) {
+    return <span>אין מק"טים</span>;
+  }
+
+  if (length === 1) {
+    return <span>{props?.value[0]}</span>;
+  }
+
+  return (
     <>
-      <div className="h-6 my-2 z-100 mx-auto flex w-fit items-center justify-start overflow-visible">
+      <div className="h-6 my-2 z-100 flex w-fit items-center justify-start overflow-visible">
         <Button
           onClick={() => {
             setShowList((prev) => !prev);
           }}
           iconName={showList ? 'ArrowUp' : 'ArrowDown'}
           iconOptions={{ fontSize: '12px' }}
-          className="mr-1 px-2 z-50 h-full w-fit"
+          className="px-2 z-50 h-full w-fit overflow-visible"
         >
           {showList ? 'הסתרה' : 'הצגה'}
         </Button>
@@ -23,8 +33,6 @@ function CellListView(props: any) {
         </ul>
       )}
     </>
-  ) : (
-    <span>אין מק"טים</span>
   );
 }
 export default CellListView;

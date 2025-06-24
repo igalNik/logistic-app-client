@@ -41,6 +41,7 @@ function ColumnVisibilityManager({
             label={col.headerName}
             id={col.field}
             checked={visibleColumns.includes(col.field!)}
+            className="hover:bg-stone-100"
             onChange={(value) =>
               gridRef.current?.api?.setColumnsVisible(
                 col.field ? [col.field] : [],

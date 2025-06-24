@@ -10,12 +10,14 @@ const TableToolbar = () => {
     showColumnVisibilityManager,
     setShowColumnVisibilityManager,
     tableStatus,
+    selectedRows,
     handleAdd,
     handleEditClick,
     handleCancelEditingClick,
     handleStopEditAndSaveClick,
     handleFilterTextBoxChanged,
     handleFilterTextBoxClear,
+    handleDeleteSelectedItems,
     onBtnExport,
   } = useTableContext();
 
@@ -23,6 +25,16 @@ const TableToolbar = () => {
     <>
       <div className="lg:flex-row gap-2 mb-2 flex flex-col overflow-auto">
         <div className="gap-2 md:order-2 order-1 flex flex-row justify-between">
+          {selectedRows && selectedRows.length > 0 && (
+            <Button
+              type="button"
+              onClick={handleDeleteSelectedItems}
+              iconName="Delete"
+              className="max-h-11 bg-red-100 border-red-300 hover:bg-red-300 flex-1"
+            >
+              <HideOnMobile>{TableStrings.DELETE_SELECTED}</HideOnMobile>
+            </Button>
+          )}
           {!showColumnVisibilityManager && (
             <Button
               type="button"
@@ -88,7 +100,7 @@ const TableToolbar = () => {
             </>
           )}
         </div>
-        <div className="md:order-1 mb-2 order-2 flex-1">
+        <div className="md:order-1 m-1 order-2 flex-1">
           <Input
             type="text"
             id="filter-text-box"

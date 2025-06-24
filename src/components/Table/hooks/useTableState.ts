@@ -20,6 +20,7 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
   const [searchText, setSearchText] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<null | any>(null); // keep type broad here or pass type in args
+  const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
   return {
     gridRef,
@@ -41,5 +42,7 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
     setShowAddModal,
     toast,
     setToast,
+    selectedRows,
+    setSelectedRows,
   };
 }

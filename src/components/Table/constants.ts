@@ -7,4 +7,5 @@ export enum TableStrings {
   COLUMN_VISIBILITY_TITLE = 'ניהול תצוגת עמודות',
   EXPORT_TO_EXCEL = 'יצוא ל - Excel',
   INVALID_VALUE = 'ערך לא חוקי',
+  DELETE_SELECTED = 'מחיקת נבחרים',
 }

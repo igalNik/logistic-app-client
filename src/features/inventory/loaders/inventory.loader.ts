@@ -1,6 +1,6 @@
 import {
   getInventory,
-  getInventoryWithPopulatedEquipment,
+  getInventoryWithPopulatedEquipmentAndUser,
 } from '../../../api/inventory';
 
 export const inventoryLoader = async () => {
@@ -8,7 +8,7 @@ export const inventoryLoader = async () => {
   return inventory;
 };
 export const inventoryWithPopulatedEquipmentTypeLoader = async () => {
-  const inventory = await getInventoryWithPopulatedEquipment();
+  const inventory = await getInventoryWithPopulatedEquipmentAndUser();
   console.log(inventory);
 
   return inventory;
