@@ -3,6 +3,7 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import HideOnMobile from '../HideOnMobile';
 import { TableStrings } from './constants';
+import { useTailwindBreakpoint } from '../../hooks/useTailwindBreakpoint';
 
 const TableToolbar = () => {
   const {
@@ -21,16 +22,18 @@ const TableToolbar = () => {
     onBtnExport,
   } = useTableContext();
 
+  const { isMobile } = useTailwindBreakpoint();
   return (
     <>
       <div className="lg:flex-row gap-2 mb-2 flex flex-col overflow-auto">
-        <div className="gap-2 md:order-2 order-1 flex flex-row justify-between">
+        <div className="gap-2 md:order-2 my-1 ml-1 mr-1 md:mr-0 order-1 flex flex-row justify-between">
           {selectedRows && selectedRows.length > 0 && (
             <Button
               type="button"
               onClick={handleDeleteSelectedItems}
               iconName="Delete"
               className="max-h-11 bg-red-100 border-red-300 hover:bg-red-300 flex-1"
+              tabIndex={2}
             >
               <HideOnMobile>{TableStrings.DELETE_SELECTED}</HideOnMobile>
             </Button>
@@ -41,6 +44,7 @@ const TableToolbar = () => {
               onClick={() => setShowColumnVisibilityManager((prev) => !prev)}
               iconName="Columns"
               className="max-h-11 flex-1"
+              tabIndex={3}
             >
               <HideOnMobile>
                 {TableStrings.COLUMN_VISIBILITY_TITLE}
@@ -55,6 +59,7 @@ const TableToolbar = () => {
                 onClick={handleCancelEditingClick}
                 iconName="Close"
                 className="max-h-11 flex-1"
+                tabIndex={4}
               >
                 <HideOnMobile>{TableStrings.CANCEL_EDITING}</HideOnMobile>
               </Button>
@@ -63,6 +68,7 @@ const TableToolbar = () => {
                 onClick={handleStopEditAndSaveClick}
                 iconName="Save"
                 className="max-h-11 flex-1"
+                tabIndex={5}
               >
                 <HideOnMobile>{TableStrings.STOP_AND_SAVE}</HideOnMobile>
               </Button>
@@ -74,6 +80,7 @@ const TableToolbar = () => {
                 onClick={handleEditClick}
                 iconName="Edit"
                 className="max-h-11 flex-1"
+                tabIndex={6}
               >
                 <HideOnMobile>{TableStrings.EDIT_TABLE}</HideOnMobile>
               </Button>
@@ -82,6 +89,7 @@ const TableToolbar = () => {
                 onClick={handleAdd}
                 iconName="Add"
                 className="max-h-11 flex-1"
+                tabIndex={7}
               >
                 <HideOnMobile>{TableStrings.ADD}</HideOnMobile>
               </Button>
@@ -89,6 +97,7 @@ const TableToolbar = () => {
                 type="button"
                 onClick={onBtnExport}
                 className="max-h-11 flex-1"
+                tabIndex={8}
               >
                 <img
                   src={`public/Excel.svg`}
@@ -100,7 +109,7 @@ const TableToolbar = () => {
             </>
           )}
         </div>
-        <div className="md:order-1 m-1 order-2 flex-1">
+        <div className="md:order-1 my-1 mr-1 order-2 flex-1">
           <Input
             type="text"
             id="filter-text-box"
@@ -108,6 +117,7 @@ const TableToolbar = () => {
             onChange={handleFilterTextBoxChanged}
             value={searchText}
             iconName="Search"
+            tabIndex={isMobile() ? 9 : 1}
             clearButton
             onClear={handleFilterTextBoxClear}
             className="max-h-11 min-w-[200px] flex-none"

@@ -1,6 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 
-type TailwindBreakpoint = 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type TailwindBreakpoint = 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+
+export type BreakpointInfo = {
+  value: string;
+  isMobile: () => boolean;
+};
 
 const breakpoints: Record<TailwindBreakpoint, number> = {
   base: 0,
@@ -20,7 +25,7 @@ function getBreakpoint(width: number): TailwindBreakpoint {
   return 'base';
 }
 
-export function useTailwindBreakpoint() {
+export function useTailwindBreakpoint(): BreakpointInfo {
   const [breakpoint, setBreakpoint] = useState<TailwindBreakpoint>(() =>
     typeof window !== 'undefined' ? getBreakpoint(window.innerWidth) : 'base'
   );

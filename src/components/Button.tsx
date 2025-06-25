@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 import { mergeClasses } from '../utils/tailwind.util';
 import Icon, { IconOptions } from './Icon';
 
@@ -9,7 +9,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode | undefined;
 }
 
-function Button({ children, iconName, iconOptions, ...props }: ButtonProps) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function ({
+  children,
+  iconName,
+  iconOptions,
+  ...props
+}: ButtonProps) {
   return (
     <button
       {...props}
@@ -24,6 +29,6 @@ function Button({ children, iconName, iconOptions, ...props }: ButtonProps) {
       </span>
     </button>
   );
-}
+});
 
 export default Button;

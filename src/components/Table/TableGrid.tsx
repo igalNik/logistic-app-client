@@ -25,13 +25,13 @@ const TableGrid = () => {
       mode: 'multiRow',
       checkboxes: true,
       headerCheckbox: true,
-      enableClickSelection: true,
-      enableSelectionWithoutKeys: true,
+      // enableClickSelection: true,
+      // enableSelectionWithoutKeys: true,
     };
   }, []);
 
   return (
-    <div className="min-h-50 ove h-full w-full">
+    <div className="min-h-50 ove mx-1 h-full w-full">
       <AgGridReact
         ref={gridRef}
         enableRtl
