@@ -4,7 +4,6 @@ import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
-import AsyncComboBox from '../../../../components/AsyncComboBox';
 import { FormSection } from '../../../../components/Form';
 
 import { ModalContext } from '../../../../components/Modal/ModalContext';
@@ -16,41 +15,17 @@ import {
   InventoryItemFormStrings,
 } from '../CreateInventoryItemForm/constants';
 
-import { objectToOption } from '../../../../utils/dropdown.util';
-
 import { validationSchema } from '../InventoryTable/constants';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
-import { getAllEquipmentTypes } from '../../../../api/equipmentType';
-import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
-import { Option } from '../../../../types/comboBox.types';
 import { InventoryItem } from '../../../../types/inventory/InventoryItem.type';
 import { createInventoryItem } from '../../../../api/inventory';
 import StringArrayInput from '../../../../components/StringArrayInput/StringArrayInput';
+import EquipmentTypeComboBox from '../../../equipment-type/components/EquipmentTypeComboBox';
 
 function CreateInventoryItemForm() {
   const { onClose } = useContext(ModalContext);
-  const firstNameRef = useRef<HTMLInputElement>(null);
+  const equipmentTypeRef = useRef<HTMLInputElement>(null);
   const { setRowData } = useTableContext<InventoryItem>();
-
-  const getEquipmentTypeOptions = useCallback<
-    () => Promise<Option[]>
-  >(async () => {
-    const res = await getAllEquipmentTypes();
-    const equipmentTypes = res?.data;
-
-    if (!equipmentTypes) return [];
-
-    const options = equipmentTypes.map((equipmentType) => {
-      const option: Option = objectToOption<EquipmentType>(
-        equipmentType,
-        '_id',
-        'name'
-      );
-      return option;
-    });
-
-    return options;
-  }, []);
 
   const onSubmit = useCallback(
     async (item: InventoryItem) => {
@@ -97,14 +72,14 @@ function CreateInventoryItemForm() {
       >
         <FormSection title={'הגדרת הפריט'}>
           <div className="gap-x-5 gap-y-3 md:grid-cols-2 grid-cols grid">
-            <AsyncComboBox
+            <EquipmentTypeComboBox
               {...registry['equipmentTypeId']}
               label={InventoryItemFormStrings.ITEM_LABEL}
               id="equipment-type"
               tabIndex={1}
               placeholder={InventoryItemFormStrings.ITEM_PLACEHOLDER}
-              fetchOptions={getEquipmentTypeOptions}
               className="w-full"
+              ref={equipmentTypeRef}
             />
             <Input
               type="number"
@@ -112,7 +87,6 @@ function CreateInventoryItemForm() {
               label={InventoryItemFormStrings.QUANTITY_LABEL}
               id="quantity"
               tabIndex={2}
-              ref={firstNameRef}
               iconName="Numeric"
             />
 

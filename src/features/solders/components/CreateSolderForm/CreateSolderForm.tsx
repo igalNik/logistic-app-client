@@ -22,6 +22,7 @@ import { createSolder } from '../../../../api/solders';
 import { validationSchema } from '../SoldersTable/constants';
 import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
+import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';
 
 function CreateSolderForm() {
   const { onClose } = useContext(ModalContext);
@@ -135,10 +136,7 @@ function CreateSolderForm() {
               label={SolderFormStrings.ROLE_LABEL}
               tabIndex={7}
               placeholder={SolderFormStrings.ROLE_PLACEHOLDER}
-              options={[
-                { id: 'צלף', label: 'צלף' },
-                { id: 'קלע', label: 'קלע' },
-              ]}
+              options={ROLES_OPTIONS}
               className={`w-full`}
             />
           </div>

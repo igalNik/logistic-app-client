@@ -1,10 +1,9 @@
-import { ChangeEventHandler, HTMLAttributes, InputHTMLAttributes } from 'react';
 import { ComboBoxOption, NavigationMode } from '../../types/comboBox.types';
 
 // export interface ComboBoxProps extends InputHTMLAttributes<HTMLInputElement> {
 export interface ComboBoxProps {
   id?: string;
-  label: string;
+  label?: string;
   options?: ComboBoxOption[];
   value?: string | number | undefined;
   defaultValue?: string;

@@ -1,10 +1,10 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useTableContext } from './context/TableContext';
 import { useMemo } from 'react';
-import { RowSelectionOptions } from 'ag-grid-community';
+import { GridOptions, RowSelectionOptions } from 'ag-grid-community';
 import './style.css';
 
-const TableGrid = () => {
+const TableGrid = ({ ...props }: GridOptions<any>) => {
   const {
     gridRef,
     rowData,
@@ -29,6 +29,7 @@ const TableGrid = () => {
       // enableSelectionWithoutKeys: true,
     };
   }, []);
+  console.log(props);
 
   return (
     <div className="min-h-50 ove mx-1 h-full w-full">
@@ -49,6 +50,7 @@ const TableGrid = () => {
         tooltipShowDelay={500}
         rowSelection={rowSelection}
         onRowSelected={handleRowSelection}
+        {...props}
       />
     </div>
   );

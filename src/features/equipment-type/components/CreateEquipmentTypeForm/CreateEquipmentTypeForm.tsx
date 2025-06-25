@@ -72,7 +72,6 @@ function CreateEquipmentTypeForm() {
               {...registry['name']}
               label={EquipmentTypeFormStrings.NAME_LABEL}
               id="name"
-              tabIndex={1}
               ref={nameRef}
               iconName="Abc"
             />
@@ -80,13 +79,11 @@ function CreateEquipmentTypeForm() {
               {...registry['description']}
               label={EquipmentTypeFormStrings.DESCRIPTION_LABEL}
               id="last-name"
-              tabIndex={2}
             />
             <ComboBox
               {...registry['provider']}
               id="role"
               label={EquipmentTypeFormStrings.PROVIDER_LABEL}
-              tabIndex={7}
               placeholder={EquipmentTypeFormStrings.PROVIDER_PLACEHOLDER}
               options={PROVIDER_OPTIONS}
               className={`w-full`}
@@ -104,10 +101,10 @@ function CreateEquipmentTypeForm() {
 
         <div className="gap-5 mt-10 grid grid-cols-2">
           <div className="gap-5 col-start-2 grid grid-cols-2">
-            <Button type="button" tabIndex={8} onClick={handleCancel}>
+            <Button type="button" onClick={handleCancel}>
               {EquipmentTypeFormStrings.CANCEL_BUTTON_TEXT}
             </Button>
-            <Button type="submit" tabIndex={9}>
+            <Button type="submit">
               {EquipmentTypeFormStrings.SUBMIT_BUTTON_TEXT}
             </Button>
           </div>

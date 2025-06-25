@@ -40,15 +40,14 @@ function Table<T>({ children }: TableProps<T>) {
       <div className="flex flex-1 flex-col">
         <TableToolbar />
         <div className="flex-grow">
-          <TableGrid />
+          <TableGrid tabIndex={-1} />
+          {showAddModal && (
+            <Modal onClose={() => setShowAddModal(false)} className="z-50">
+              {children}
+            </Modal>
+          )}
         </div>
       </div>
-
-      {showAddModal && (
-        <Modal onClose={() => setShowAddModal(false)} className="z-50">
-          {children}
-        </Modal>
-      )}
 
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>

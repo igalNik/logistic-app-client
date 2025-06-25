@@ -3,9 +3,12 @@ import MenuItem from './MenuItem';
 import { ComboBoxProps, ComboBoxActionType } from './types';
 import { useComboBox } from './hooks';
 import { mergeClasses } from '../../utils/tailwind.util';
-import { useMemo } from 'react';
+import { forwardRef, useImperativeHandle, useMemo } from 'react';
 
-function ComboBox({ options = [], onChange, ...props }: ComboBoxProps) {
+const ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(function (
+  { options = [], onChange, ...props }: ComboBoxProps,
+  ref
+) {
   const stableOptions = useMemo(() => options, [JSON.stringify(options)]);
 
   const {
@@ -28,6 +31,8 @@ function ComboBox({ options = [], onChange, ...props }: ComboBoxProps) {
     value: props.value || '',
     onClear: props.onClear,
   });
+
+  useImperativeHandle(ref, () => inputRef.current!);
 
   return (
     <div className="inset-y-0 relative" ref={comboBoxRef}>
@@ -77,6 +82,5 @@ function ComboBox({ options = [], onChange, ...props }: ComboBoxProps) {
       </div>
     </div>
   );
-}
-
+});
 export default ComboBox;

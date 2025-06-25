@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Spinner from '../Spinner';
 import Message from './Message';
 import Button from '../Button';
@@ -35,10 +35,6 @@ function Form(props: FormProps) {
       setStatus(() => 'error');
     }
   };
-
-  useEffect(() => {
-    console.log(status);
-  }, [status]);
 
   if (status === 'idle')
     return (
