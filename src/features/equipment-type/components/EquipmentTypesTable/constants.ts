@@ -1,7 +1,8 @@
-import { ColDef } from 'ag-grid-community';
+import { ColDef, ISelectCellEditorParams } from 'ag-grid-community';
 import { validator } from '@igalni/logistic-validation';
 import { FieldValidationSchema } from '../../../../components/Table/types';
 import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
+import { PROVIDER_OPTIONS } from '../../../../constants/dropdownOptions';
 
 export const tableConfig: ColDef[] = [
   {
@@ -26,7 +27,18 @@ export const tableConfig: ColDef[] = [
   },
 ];
 
-export const tableConfigOnEdit: ColDef[] = [...tableConfig];
+export const tableConfigOnEdit: ColDef[] = tableConfig.map((cell) => {
+  if (cell.field === 'provider')
+    return {
+      ...cell,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: {
+        values: PROVIDER_OPTIONS.map((entry) => entry.label),
+      } as ISelectCellEditorParams,
+    };
+
+  return cell;
+});
 
 export const validationSchema: FieldValidationSchema<EquipmentType>[] = [
   {

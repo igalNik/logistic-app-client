@@ -10,6 +10,8 @@ export interface FieldValidationSchema<T> {
 }
 
 export interface TableProps<T> {
+  title?: string;
+  description?: string;
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];

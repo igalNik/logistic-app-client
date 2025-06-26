@@ -5,12 +5,14 @@ import { FieldValidationSchema } from '../../../../components/Table';
 import { validator } from '@igalni/logistic-validation';
 import CellListView from '../../../../components/Table/CellListView';
 import { InventoryItem } from '../../../../types/inventory/InventoryItem.type';
+import EquipmentTypeComboBox from '../../../equipment-type/components/EquipmentTypeComboBox';
 
 export const tableConfig: ColDef[] = [
   {
     field: 'equipmentTypeId.name',
     headerName: 'שם הפריט',
     headerTooltip: 'שם הפריט',
+    cellEditor: EquipmentTypeComboBox,
   },
   {
     field: 'quantity',
@@ -29,6 +31,8 @@ export const tableConfig: ColDef[] = [
     field: 'updatedAt',
     headerName: 'עודכן בתאריך',
     headerTooltip: 'עודכן בתאריך',
+    cellEditor: 'agDateCellEditor',
+
     valueFormatter: (params) => {
       if (!params.value) return '';
 
@@ -73,3 +77,8 @@ export const validationSchema: FieldValidationSchema<InventoryItem>[] = [
     eventTypes: ['onChange'],
   },
 ];
+
+export enum InventoryTableStrings {
+  TITLE = 'מלאי',
+  DESCRIPTION = 'ניהול מלאי של הפלוג',
+}

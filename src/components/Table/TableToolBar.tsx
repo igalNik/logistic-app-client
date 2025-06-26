@@ -23,7 +23,7 @@ const TableToolbar = () => {
 
   return (
     <>
-      <div className="lg:flex-row gap-2 mb-2 flex flex-col overflow-auto">
+      <div className="lg:flex-row gap-2 mb-2 text-gray-900 flex flex-col overflow-auto text-[16px]">
         <div className="gap-2 md:order-2 my-1 ml-1 mr-1 md:mr-0 order-1 flex flex-row justify-between">
           {selectedRows && selectedRows.length > 0 && (
             <Button

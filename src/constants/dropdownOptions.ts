@@ -8,6 +8,6 @@ export const PROVIDER_OPTIONS: Option[] = [
 ];
 
 export const ROLES_OPTIONS: Option[] = [
-  { id: '1', label: 'צלף' },
-  { id: '2', label: 'קלע' },
+  { id: 'צלף', label: 'צלף' },
+  { id: 'קלע', label: 'קלע' },
 ];

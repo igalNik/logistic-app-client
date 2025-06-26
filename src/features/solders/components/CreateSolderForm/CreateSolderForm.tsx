@@ -4,7 +4,6 @@ import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
-import AsyncComboBox from '../../../../components/AsyncComboBox';
 import ComboBox from '../../../../components/ComboBox/ComboBox';
 import { FormSection } from '../../../../components/Form';
 
@@ -15,32 +14,18 @@ import { useForm } from '../../../../components/Form/useForm';
 import { initialSolderInfo } from './constants';
 import { SolderFormStrings } from './constants';
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
-import { getAllDepartments } from '../../../../api/departments';
-import { objectToOption } from '../../../../utils/dropdown.util';
-import { Department } from '../../../../types/Department';
+
 import { createSolder } from '../../../../api/solders';
 import { validationSchema } from '../SoldersTable/constants';
 import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';
+import DepartmentsComboBox from '../../../departments/components/DepartmentsComboBox';
 
 function CreateSolderForm() {
   const { onClose } = useContext(ModalContext);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const { setRowData } = useTableContext<User>();
-
-  const getDepartmentOptions = useCallback(async function () {
-    const res = await getAllDepartments();
-    const departments = res?.data;
-
-    if (!departments) return [];
-
-    const options = departments.map((department) =>
-      objectToOption<Department>(department, '_id', 'name')
-    );
-
-    return options;
-  }, []);
 
   const onSubmit = useCallback(
     async (item: CreateSolder) => {
@@ -121,13 +106,12 @@ function CreateSolderForm() {
         </FormSection>
         <FormSection title="תפקיד ומחלקה">
           <div className="gap-x-5 gap-y-3 grid grid-cols-2">
-            <AsyncComboBox
+            <DepartmentsComboBox
               {...registry['departmentId']}
               label={SolderFormStrings.DEPARTMENT_LABEL}
-              id="department"
+              id="departments"
               tabIndex={6}
               placeholder={SolderFormStrings.DEPARTMENT_PLACEHOLDER}
-              fetchOptions={getDepartmentOptions}
               className="w-full"
             />
             <ComboBox
