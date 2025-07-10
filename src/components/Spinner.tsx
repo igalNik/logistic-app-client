@@ -1,5 +1,5 @@
 export interface SpinnerProps {
-  type: string;
+  type: 'page' | 'icon';
   text?: string;
 }
 

@@ -2,6 +2,7 @@ import { ColDef } from 'ag-grid-community';
 import { validator } from '@igalni/logistic-validation';
 import { FieldValidationSchema } from '../../../../components/Table/types';
 import { User } from '../../../../types/User';
+import CellButton from '../../../../components/Table/CellButton';
 
 const departments = [
   {
@@ -26,6 +27,16 @@ const departments = [
   },
 ];
 export const tableConfig: ColDef[] = [
+  {
+    field: 'actions',
+    headerName: 'פעולות',
+    headerTooltip: 'פעולות',
+    cellRenderer: CellButton,
+    suppressNavigable: true, // Prevents tabbing into the cell
+    cellRendererParams: {
+      onClick: () => alert('click'),
+    },
+  },
   {
     field: 'personalNumber',
     headerName: 'מספר אישי',
@@ -171,3 +182,8 @@ export const validationSchema: FieldValidationSchema<User>[] = [
     eventTypes: ['onChange'],
   },
 ];
+
+export enum SoldiersStrings {
+  TITLE = 'חיילים',
+  DESCRIPTION = 'רשימת סד"כ פלוגתי',
+}

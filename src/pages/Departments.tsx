@@ -1,5 +1,7 @@
+import DepartmentsTable from '../features/departments/components/DepartmentsTable/DepartmentsTable';
+
 function Departments() {
-  return <div>Departments</div>;
+  return <DepartmentsTable />;
 }
 
 export default Departments;

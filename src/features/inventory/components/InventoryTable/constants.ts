@@ -32,6 +32,8 @@ export const tableConfig: ColDef[] = [
     headerName: 'עודכן בתאריך',
     headerTooltip: 'עודכן בתאריך',
     cellEditor: 'agDateCellEditor',
+    filter: 'agDateColumnFilter',
+    cellDataType: 'dateTime',
 
     valueFormatter: (params) => {
       if (!params.value) return '';

@@ -11,19 +11,14 @@ export const tableConfig: ColDef[] = [
     headerTooltip: 'שם',
   },
   {
-    field: 'description',
-    headerName: 'תיאור',
-    headerTooltip: 'תיאור',
+    field: 'officerId.fullName',
+    headerName: 'מ"מ',
+    headerTooltip: 'מ"מ',
   },
   {
-    field: 'provider',
-    headerName: 'שייך ל-',
-    headerTooltip: 'שייך ל-',
-  },
-  {
-    field: 'hasSerialNumber',
-    headerName: 'קיים מספר סידורי',
-    headerTooltip: 'קיים מספר סידורי',
+    field: 'sergeantId.fullName',
+    headerName: 'סמל',
+    headerTooltip: 'סמל',
   },
 ];
 

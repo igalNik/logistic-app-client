@@ -3,6 +3,7 @@ import {
   FormEvent,
   MouseEventHandler,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -37,20 +38,26 @@ export function useForm<T>({
   const { schema, model } = formInitialization;
 
   // define default values in form data
-  const [formData, setFormData] = useState<Partial<T>>(() => {
+  const defineFormData = useCallback(() => {
     if (formMode === 'schema') {
       // create form model based on the schema
-      return schema!.reduce<Partial<T>>(
+      const x = schema!.reduce<Partial<T>>(
         (acc: Partial<T>, field: FieldSchema<T>) => {
           acc[field.fieldName] = field.defaultValue as T[keyof T];
+
           return acc;
         },
         {} as Partial<T>
       );
+      return x;
     } else {
       return { ...model } as Partial<T>;
     }
-  });
+  }, [formMode, model, schema]);
+
+  const [formData, setFormData] = useState<Partial<T>>(defineFormData());
+
+  useEffect(() => setFormData(defineFormData()), [defineFormData]);
 
   const {
     registry: validationRegistry,

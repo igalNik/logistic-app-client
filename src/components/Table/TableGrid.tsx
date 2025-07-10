@@ -29,11 +29,11 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
       // enableSelectionWithoutKeys: true,
     };
   }, []);
-  console.log(props);
 
   return (
     <div className="min-h-50 ove mx-1 h-full w-full">
       <AgGridReact
+        {...props}
         ref={gridRef}
         enableRtl
         rowData={rowData}
@@ -50,7 +50,6 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
         tooltipShowDelay={500}
         rowSelection={rowSelection}
         onRowSelected={handleRowSelection}
-        {...props}
       />
     </div>
   );

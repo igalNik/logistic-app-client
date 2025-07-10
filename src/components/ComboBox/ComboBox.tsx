@@ -62,7 +62,7 @@ const ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(function (
         {
           <ul
             className={mergeClasses(
-              'max-h-40 gap-y-0.5 mr-2 ml-0.5 pl-1 my-1 scrollbar-thin box-border flex flex-col overflow-y-auto scroll-smooth'
+              'bg-white max-h-40 gap-y-0.5 mr-2 ml-0.5 pl-1 my-1 scrollbar-thin box-border flex flex-col overflow-y-auto scroll-smooth'
             )}
           >
             {state.filteredOptions.map((option, index) => (

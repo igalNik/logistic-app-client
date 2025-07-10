@@ -1,7 +1,11 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode, useEffect } from 'react';
 
 import Icon from '../Icon';
 import { ModalContext } from './ModalContext';
+import {
+  closeOnEscape,
+  removeCloseOnEscape,
+} from '../../utils/keyboardEventsHandlers';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   onClose: () => void | undefined;
@@ -10,6 +14,11 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function Modal({ onClose, closeOnOutsideClick = false, children }: ModalProps) {
+  useEffect(() => {
+    closeOnEscape(onClose);
+    return () => removeCloseOnEscape(onClose);
+  }, [onClose]);
+  //
   return (
     <ModalContext.Provider value={{ onClose: onClose }}>
       <div

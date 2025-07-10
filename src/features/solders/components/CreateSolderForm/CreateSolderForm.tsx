@@ -1,4 +1,11 @@
-import { useCallback, useContext, useRef } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import Card from '../../../../components/Card/Card';
 import Input from '../../../../components/Input';
@@ -21,11 +28,23 @@ import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';
 import DepartmentsComboBox from '../../../departments/components/DepartmentsComboBox';
+import { useSearchParams } from 'react-router-dom';
 
 function CreateSolderForm() {
   const { onClose } = useContext(ModalContext);
   const firstNameRef = useRef<HTMLInputElement>(null);
-  const { setRowData } = useTableContext<User>();
+  const { rowData, setRowData } = useTableContext<User>();
+  const [searchParams] = useSearchParams();
+  const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id) {
+      const data = rowData.find((solder) => solder._id === id) as CreateSolder;
+
+      setSolderInfo(data as CreateSolder);
+    }
+  }, [rowData, searchParams]);
 
   const onSubmit = useCallback(
     async (item: CreateSolder) => {
@@ -38,21 +57,28 @@ function CreateSolderForm() {
 
     [setRowData]
   );
-  const { handleSubmit, handleCancel, registry } = useForm<CreateSolder>({
-    formInitialization: {
-      schema: validationSchema
+  const schema = useMemo(
+    () =>
+      validationSchema
         .filter(
-          (field) =>
-            (field.fieldName as keyof CreateSolder) in initialSolderInfo
+          (field) => (field.fieldName as keyof CreateSolder) in solderInfo
         )
         .map((field) => {
-          return {
+          const data = {
             ...field,
             fieldName: field.fieldName as keyof CreateSolder,
-            defaultValue:
-              initialSolderInfo[field.fieldName as keyof CreateSolder],
+            defaultValue: solderInfo[field.fieldName as keyof CreateSolder],
           };
+
+          return data;
         }),
+    [solderInfo]
+  );
+  // console.log('schema: ', schema);
+
+  const { handleSubmit, handleCancel, registry } = useForm<CreateSolder>({
+    formInitialization: {
+      schema,
     },
     onSubmit,
     onCancel: onClose,

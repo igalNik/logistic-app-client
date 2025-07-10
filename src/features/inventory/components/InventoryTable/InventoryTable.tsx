@@ -15,8 +15,8 @@ function InventoryTable() {
       data={inventory.data}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
-      onUpdateMany={() => {}}
-      onDeleteMany={() => {}}
+      // onUpdateMany={() => {}}
+      // onDeleteMany={() => {}}
       validationSchema={validationSchema}
     >
       <CreateInventoryItemForm />

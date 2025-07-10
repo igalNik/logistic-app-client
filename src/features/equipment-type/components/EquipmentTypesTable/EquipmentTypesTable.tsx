@@ -1,5 +1,10 @@
 import { useLoaderData } from 'react-router-dom';
-import { tableConfig, tableConfigOnEdit, validationSchema } from './constants';
+import {
+  EquipmentTypeStrings,
+  tableConfig,
+  tableConfigOnEdit,
+  validationSchema,
+} from './constants';
 
 import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
 import {
@@ -15,6 +20,8 @@ function EquipmentTypesTable() {
 
   return (
     <Table<EquipmentType>
+      title={EquipmentTypeStrings.TITLE}
+      description={EquipmentTypeStrings.DESCRIPTION}
       data={equipmentTypes.data}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}

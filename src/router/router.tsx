@@ -12,6 +12,7 @@ import EquipmentTypes from '../pages/EquipmentTypes';
 import { equipmentTypesLoader } from '../features/equipment-type/loaders/equipmentType.loader';
 import { inventoryWithPopulatedEquipmentTypeLoader } from '../features/inventory/loaders/inventory.loader';
 import Inventory from '../pages/Inventory';
+import { departmentsLoader } from '../features/departments/loaders/departments.loader';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -31,11 +32,12 @@ const router = createBrowserRouter([
           {
             path: '/solders',
             element: <Solders />,
-            loader: soldersLoader,
+            // loader: soldersLoader,
           },
           {
             path: '/departments',
             element: <Departments />,
+            loader: departmentsLoader,
           },
           {
             path: '/equipment-types',
