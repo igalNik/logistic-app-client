@@ -12,6 +12,8 @@ interface TableProviderProps<T> {
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
+  isLoading?: boolean;
+  error?: string;
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
   onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 }
@@ -22,6 +24,8 @@ export function TableProvider<T>({
   tableConfig,
   tableConfigOnEdit,
   validationSchema,
+  isLoading = false,
+  error,
   onUpdateMany,
   onDeleteMany,
 }: TableProviderProps<T>) {
@@ -102,6 +106,8 @@ export function TableProvider<T>({
         setSelectedRows,
         ...handlers,
         onUpdateMany,
+        isLoading,
+        error,
       }}
     >
       {children}

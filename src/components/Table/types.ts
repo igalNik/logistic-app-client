@@ -16,6 +16,8 @@ export interface TableProps<T> {
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
   data: T[];
+  isLoading: boolean;
+  error?: string;
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
   onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 
@@ -38,6 +40,9 @@ export interface TableContextType<T> {
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
   showAddModal: boolean;
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading?: boolean;
+  error?: string;
+
   validationSchema?: any[];
   defaultColDef: ColDef;
   tableConfig: ColDef<T>[];

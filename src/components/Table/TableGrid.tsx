@@ -31,7 +31,7 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
   }, []);
 
   return (
-    <div className="min-h-50 ove mx-1 h-full w-full">
+    <div className="min-h-50 pr-1 h-full w-full">
       <AgGridReact
         {...props}
         ref={gridRef}

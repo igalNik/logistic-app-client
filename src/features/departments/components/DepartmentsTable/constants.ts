@@ -1,7 +1,7 @@
 import { ColDef, ISelectCellEditorParams } from 'ag-grid-community';
 import { validator } from '@igalni/logistic-validation';
 import { FieldValidationSchema } from '../../../../components/Table/types';
-import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
+import { Department } from '../../../../types/Department';
 import { PROVIDER_OPTIONS } from '../../../../constants/dropdownOptions';
 
 export const tableConfig: ColDef[] = [
@@ -35,7 +35,7 @@ export const tableConfigOnEdit: ColDef[] = tableConfig.map((cell) => {
   return cell;
 });
 
-export const validationSchema: FieldValidationSchema<EquipmentType>[] = [
+export const validationSchema: FieldValidationSchema<Department>[] = [
   {
     fieldName: 'name',
     validation: (value) =>
@@ -43,24 +43,18 @@ export const validationSchema: FieldValidationSchema<EquipmentType>[] = [
     eventTypes: ['onChange'],
   },
   {
-    fieldName: 'description',
+    fieldName: 'officerId',
     validation: (value) => validator(value).max(256),
     eventTypes: ['onChange'],
   },
   {
-    fieldName: 'provider',
-    validation: (value) =>
-      validator(value).required().min(2).max(20).isAlphaHebrewOrEnglish(),
-    eventTypes: ['onChange'],
-  },
-  {
-    fieldName: 'hasSerialNumber',
-    validation: (value) => validator(value),
+    fieldName: 'sergeantId',
+    validation: (value) => validator(value).min(2).max(20),
     eventTypes: ['onChange'],
   },
 ];
 
-export enum EquipmentTypeStrings {
-  TITLE = 'סוג ציוד',
-  DESCRIPTION = 'רשימת כל סוגי הציוד שקיימים במערכת',
+export enum DepartmentStrings {
+  TITLE = 'מחלקות',
+  DESCRIPTION = 'רשימת מחלקות בפלוגה',
 }

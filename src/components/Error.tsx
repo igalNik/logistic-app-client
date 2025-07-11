@@ -1,6 +1,6 @@
 interface ErrorProps {
   error: string;
-  errorCode: number;
+  errorCode?: number;
 }
 
 const Error = ({ error }: ErrorProps) => {

@@ -10,6 +10,17 @@ export interface GetAllSoldersResponse {
   data: User[];
 }
 
+export const getSolderById = async (id: string) => {
+  try {
+    const res = await apiClient<any>(API_ENDPOINTS.USERS.GET_BY_ID(id), {
+      method: 'GET',
+    });
+
+    return res;
+  } catch (error) {
+    console.log('failed to get all users', error);
+  }
+};
 export const getAllSolders = async () => {
   try {
     const res = await apiClient<GetAllSoldersResponse>(

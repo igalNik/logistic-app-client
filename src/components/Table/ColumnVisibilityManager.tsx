@@ -28,7 +28,7 @@ function ColumnVisibilityManager({
   console.log('visibleColumns', visibleColumns);
 
   return (
-    <div className="rounded-lg border-gray-300 border-1 text-[16px]">
+    <div className="rounded-lg border-gray-300 md:mt-1 border-1 text-[16px]">
       <div className="h-11 font-semibold bg-gray-100 px-2 border-b-gray-300 gap-2 flex items-center overflow-hidden border-b-1 text-[16px]">
         <span className="whitespace-nowrap">
           {TableStrings.COLUMN_VISIBILITY_TITLE}

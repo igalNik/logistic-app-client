@@ -53,7 +53,7 @@ const Input = memo(
         )}
         <div className="relative">
           {(iconName || (errorMessages && errorMessages?.length > 0)) && (
-            <div className="inset-y-0 ps-3.5 text-gray-500 absolute z-50 flex items-center focus:ring-0">
+            <div className="inset-y-0 ps-3.5 text-gray-500 absolute flex items-center focus:ring-0">
               {errorMessages && errorMessages?.length > 0 ? (
                 <Tooltip iconName="ErrorOutline" type="error">
                   {errorMessages.map((message) => (

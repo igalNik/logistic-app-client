@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ColDef } from 'ag-grid-community';
 
 export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
@@ -21,6 +21,11 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<null | any>(null); // keep type broad here or pass type in args
   const [selectedRows, setSelectedRows] = useState<T[]>([]);
+
+  useEffect(() => {
+    setRowData([...initialData]);
+    setRowDataBackup([...initialData]);
+  }, [initialData]);
 
   return {
     gridRef,

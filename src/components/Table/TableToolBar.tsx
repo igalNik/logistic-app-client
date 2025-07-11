@@ -24,7 +24,7 @@ const TableToolbar = () => {
   return (
     <>
       <div className="lg:flex-row gap-2 mb-2 text-gray-900 flex flex-col overflow-auto text-[16px]">
-        <div className="gap-2 md:order-2 my-1 ml-1 mr-1 md:mr-0 order-1 flex flex-row justify-between">
+        <div className="gap-2 md:order-2 my-1 pr-1 md:mr-0 md:pr-1 order-1 flex flex-row justify-between">
           {selectedRows && selectedRows.length > 0 && (
             <Button
               type="button"
@@ -100,7 +100,7 @@ const TableToolbar = () => {
             </>
           )}
         </div>
-        <div className="md:order-1 my-1 mr-1 order-2 flex-1">
+        <div className="md:order-1 my-1 mr-1 md:max-w-1/2 order-2 flex-1">
           <Input
             type="text"
             id="filter-text-box"

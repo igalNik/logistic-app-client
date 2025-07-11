@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
   },
   DEPARTMENTS: {
     GET_ALL: '/departments',
+    GET_ALL_POPULATE_OFFICER: '/departments?populate=officerId,sergeantId',
     GET_BY_ID: (id: string) => `/departments/${id}`,
   },
   EQUIPMENT: {

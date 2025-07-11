@@ -8,6 +8,9 @@ import ColumnVisibilityManager from './ColumnVisibilityManager';
 import { TableProps } from './types';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { useSearchParams } from 'react-router-dom';
+import Spinner from '../Spinner';
+import Error from '../Error';
+import TableTitle from './TableTitle';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 function Table<T>({ title, description, children }: TableProps<T>) {
@@ -23,6 +26,8 @@ function Table<T>({ title, description, children }: TableProps<T>) {
     setColDefs,
     tableConfig,
     tableConfigOnEdit,
+    isLoading,
+    error,
   } = useTableContext<T>();
 
   useEffect(() => {
@@ -39,15 +44,21 @@ function Table<T>({ title, description, children }: TableProps<T>) {
     if (searchParams.get('id')) setShowAddModal(true);
   }, [searchParams, setShowAddModal]);
 
+  if (isLoading) {
+    console.log('Table component - showing spinner');
+    return <Spinner type={'page'} />;
+  }
+
+  if (error) {
+    console.log('Table component - showing error');
+    return <Error error={error} />;
+  }
+
+  console.log('Table component - rendering table');
   return (
     <div className="flex h-full w-full flex-col">
       {(title || description) && (
-        <div className="pr-1 md:flex-row md:items-center md:justify-between mb-2 flex flex-col">
-          <div>
-            <h2 className="text-2xl font-medium text-gray-900">{title}</h2>
-            <p className="text-sm text-gray-500">{description}</p>
-          </div>
-        </div>
+        <TableTitle title={title} description={description} />
       )}
       <div dir="rtl" className="gap-4 flex h-full w-full flex-row">
         {showColumnVisibilityManager && (
