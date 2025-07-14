@@ -6,10 +6,10 @@ import './style.css';
 
 const TableGrid = ({ ...props }: GridOptions<any>) => {
   const {
+    state,
     gridRef,
-    rowData,
+    tableConfig,
     defaultColDef,
-    colDefs,
     onRowEditingStarted,
     onRowEditingStopped,
     onCellEditingStarted,
@@ -36,8 +36,8 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
         {...props}
         ref={gridRef}
         enableRtl
-        rowData={rowData}
-        columnDefs={colDefs}
+        rowData={state.rowData}
+        columnDefs={tableConfig}
         defaultColDef={defaultColDef}
         suppressCellFocus={false}
         onRowEditingStarted={onRowEditingStarted}
@@ -50,6 +50,7 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
         tooltipShowDelay={500}
         rowSelection={rowSelection}
         onRowSelected={handleRowSelection}
+        quickFilterText={state.searchText}
       />
     </div>
   );

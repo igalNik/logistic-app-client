@@ -11,17 +11,16 @@ import useSoldersColDef from './useSoldersColDef';
 import { useQuery } from '@tanstack/react-query';
 
 function SoldersTable() {
-  const { data: soldersResponse, isLoading, error } = useQuery({
+  const {
+    data: soldersResponse,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['solders'],
     queryFn: getAllSolders,
   });
 
   const { tableConfig, tableConfigOnEdit } = useSoldersColDef();
-
-  console.log('SoldersTable - isLoading:', isLoading);
-  console.log('SoldersTable - full response:', soldersResponse);
-  console.log('SoldersTable - data array:', soldersResponse?.data);
-  console.log('SoldersTable - data length:', soldersResponse?.data?.length);
 
   // Extract the data array from the response
   const tableData = soldersResponse?.data ?? [];
@@ -38,6 +37,7 @@ function SoldersTable() {
       onDeleteMany={deleteSolders}
       isLoading={isLoading}
       error={error?.message}
+      // defaultColDef={[]}
     >
       <CreateSolderForm />
     </Table>

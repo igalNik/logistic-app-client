@@ -1,8 +1,9 @@
 import { ValidationPipe } from '@igalni/logistic-validation';
 import { ColDef } from 'ag-grid-community';
 import { ChangeEventHandler, ReactNode, RefObject } from 'react';
+import { TableState } from './reducer/tableReducer';
 
-export type TableStatus = 'read' | 'write' | 'edit';
+export type TableStatus = 'read' | 'edit';
 export interface FieldValidationSchema<T> {
   fieldName: keyof T;
   validation: (value: string) => ValidationPipe;
@@ -14,10 +15,12 @@ export interface TableProps<T> {
   description?: string;
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
+  // defaultColDef: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
   data: T[];
   isLoading: boolean;
-  error?: string;
+  error?: string | string[] | null;
+
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
   onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 
@@ -26,63 +29,37 @@ export interface TableProps<T> {
 
 export interface TableContextType<T> {
   gridRef: RefObject<any>;
-  rowData: T[];
-  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
-  colDefs: ColDef<T>[];
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
-  tableStatus: 'read' | 'edit' | 'write';
-  setTableStatus: React.Dispatch<
-    React.SetStateAction<'read' | 'edit' | 'write'>
-  >;
-  showColumnVisibilityManager: boolean;
-  setShowColumnVisibilityManager: React.Dispatch<React.SetStateAction<boolean>>;
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  showAddModal: boolean;
-  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading?: boolean;
-  error?: string;
+  state: TableState<T>;
 
-  validationSchema?: any[];
-  defaultColDef: ColDef;
+  initializeTableData: () => void;
+  hideChildren: () => void;
+  showChildren: () => void;
+  setTableStatus: (status: TableStatus) => void;
+  toggleTableVisibility: () => void;
+  setRowData: (rowData: T[]) => void;
+
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
-  invalidCells: Set<string>;
-  updates: Map<string, Partial<T>>;
-  toast: null | {
-    title: string;
-    message: string[] | string;
-    type: 'success' | 'error' | 'info';
-    onClose: () => void;
-  };
-  setToast: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      message: string[] | string;
-      type: 'success' | 'error' | 'info';
-      onClose: () => void;
-    } | null>
-  >;
-  selectedRows: T[];
-  setSelectedRows: React.Dispatch<React.SetStateAction<T[]>>;
+  defaultColDef: ColDef<T>;
+  validationSchema?: any[];
 
   onBtnExport: () => void;
-  handleAdd: () => void;
   handleEditClick: () => void;
   handleCancelEditingClick: () => void;
   handleStopEditAndSaveClick: () => void;
   handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement>;
   handleFilterTextBoxClear: () => void;
 
-  onRowEditingStarted: (event: any) => void;
-  onRowEditingStopped: (event: any) => void;
-  onCellEditingStarted: (event: any) => void;
+  onRowEditingStarted?: (event: any) => void;
+  onRowEditingStopped?: (event: any) => void;
+  onCellEditingStarted?: (event: any) => void;
   onCellEditingStopped: (event: any) => void;
   handleRowDataUpdated: (event: any) => void;
   handleRowSelection: (event: any) => void;
   handleDeleteSelectedItems: (event: any) => void;
 
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
+  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 }
 
 export interface TableProviderProps<T> {
@@ -95,40 +72,32 @@ export interface TableProviderProps<T> {
 }
 
 export interface UseTableHandlersParams<T> {
+  state: TableState<T>;
+  initializeTableData: () => void;
+  hideChildren: () => void;
+  showChildren: () => void;
+  setTableStatus: (status: TableStatus) => void;
+  toggleTableVisibility: () => void;
+  setRowData: (rowData: T[]) => void;
+  setSearchText: (searchText: string) => void;
+  setSelectedRows: (selectedRows: T[]) => void;
+
   gridRef: React.RefObject<any>;
   validationSchema?: FieldValidationSchema<T>[];
   invalidCells: Set<string>;
   updates: Map<string, Partial<T>>;
 
-  setToast: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      message: string | string[];
-      type: 'success' | 'error' | 'info';
-      onClose: () => void;
-    } | null>
-  >;
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-
-  setTableStatus: React.Dispatch<
-    React.SetStateAction<'read' | 'edit' | 'write'>
-  >;
-
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef<T>[]>>;
+  // setToast: React.Dispatch<
+  //   React.SetStateAction<{
+  //     title: string;
+  //     message: string | string[];
+  //     type: 'success' | 'error' | 'info';
+  //     onClose: () => void;
+  //   } | null>
+  // >;
 
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
-
-  rowDataBackup: T[] | null;
-  setRowDataBackup: React.Dispatch<React.SetStateAction<T[] | null>>;
-
-  rowData: T[];
-  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
-
-  selectedRows: T[];
-  setSelectedRows: React.Dispatch<React.SetStateAction<T[]>>;
 
   onUpdateMany?: (data: any) => Promise<any>;
   onDeleteMany?: (data: any) => Promise<any>;

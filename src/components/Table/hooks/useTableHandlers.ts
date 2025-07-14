@@ -1,65 +1,38 @@
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import type { FieldValidationSchema, UseTableHandlersParams } from '../types';
 import { ChangeEventHandler, useCallback } from 'react';
-import { TableStrings } from '../constants';
 
 export function useTableHandlers<T>({
+  state,
+  // initializeTableData,
+  // showChildren,
+  // hideChildren,
+  setTableStatus,
+  setRowData,
+
   gridRef,
   validationSchema,
   invalidCells,
   updates,
-  setToast,
-  setShowAddModal,
-  setTableStatus,
-  setColDefs,
-  tableConfig,
-  tableConfigOnEdit,
-  rowDataBackup,
-  setRowDataBackup,
-  rowData,
-  setRowData,
+  // setToast,
   onUpdateMany,
   onDeleteMany,
   setSearchText,
-  selectedRows,
   setSelectedRows,
 }: UseTableHandlersParams<T>) {
-  // const { revalidate } = useRevalidator();
   const onBtnExport = useCallback(() => {
     gridRef.current?.api.exportDataAsCsv();
   }, [gridRef]);
 
-  const handleAdd = useCallback(() => {
-    setShowAddModal(true);
-  }, [setShowAddModal]);
-
   const handleEditClick = useCallback(() => {
     setTableStatus('edit');
-    setColDefs(tableConfigOnEdit);
-    setRowDataBackup(() => rowData.map((row) => ({ ...row })));
-  }, [
-    setTableStatus,
-    setColDefs,
-    tableConfigOnEdit,
-    setRowDataBackup,
-    rowData,
-  ]);
+  }, [setTableStatus]);
 
   const handleCancelEditingClick = useCallback(() => {
     invalidCells.clear();
     updates.clear();
-    setRowData(rowDataBackup!);
     setTableStatus('read');
-    setColDefs(tableConfig);
-  }, [
-    invalidCells,
-    updates,
-    setRowData,
-    rowDataBackup,
-    setTableStatus,
-    setColDefs,
-    tableConfig,
-  ]);
+  }, [invalidCells, updates, setTableStatus]);
 
   const handleRowSelection = useCallback(() => {
     setSelectedRows(gridRef.current.api.getSelectedRows());
@@ -70,43 +43,25 @@ export function useTableHandlers<T>({
 
     if (res.status === 'fail') return Promise.resolve(res);
 
-    setColDefs(tableConfigOnEdit);
-    setTableStatus(() => 'read');
-    setRowDataBackup(null);
+    setTableStatus('read');
 
     invalidCells.clear();
     updates.clear();
-    // revalidate();
-  }, [
-    invalidCells,
-    onUpdateMany,
-
-    setColDefs,
-    setRowDataBackup,
-    setTableStatus,
-    tableConfigOnEdit,
-    updates,
-  ]);
+  }, [invalidCells, onUpdateMany, setTableStatus, updates]);
 
   const handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (event) => {
-        const val = event.target.value;
-        gridRef.current!.api.setGridOption('quickFilterText', val);
-        setSearchText(val);
+        setSearchText(event.target.value);
       },
-      [gridRef, setSearchText]
+      [setSearchText]
     );
 
   const handleFilterTextBoxClear = useCallback(() => {
-    gridRef.current!.api.setGridOption('quickFilterText', '');
-  }, [gridRef]);
+    setSearchText('');
+  }, [setSearchText]);
 
-  // Stub event handlers, can be expanded:
-  const onRowEditingStarted = useCallback(() => {}, []);
-  const onRowEditingStopped = useCallback(() => {}, []);
-  const onCellEditingStarted = useCallback(() => {}, []);
-
+  // Stub event handlers, can be expande
   const refreshGridCells = useCallback(() => {
     gridRef.current?.api.refreshCells({ force: true });
   }, [gridRef]);
@@ -133,12 +88,12 @@ export function useTableHandlers<T>({
       if (validationResult && !validationResult?.isValid) {
         invalidCells.add(cellKey);
 
-        setToast({
-          title: TableStrings.INVALID_VALUE,
-          message: validationResult!.errors as string[],
-          type: 'error',
-          onClose: () => setToast(null),
-        });
+        // setToast({
+        //   title: TableStrings.INVALID_VALUE,
+        //   message: validationResult!.errors as string[],
+        //   type: 'error',
+        //   onClose: () => setToast(null),
+        // });
       } else {
         invalidCells.delete(cellKey);
         if (updates.has(updatesKey)) {
@@ -153,30 +108,30 @@ export function useTableHandlers<T>({
       }
       refreshGridCells();
     },
-    [invalidCells, updates, refreshGridCells, setToast, validationSchema]
+    [invalidCells, updates, refreshGridCells, validationSchema]
   );
 
   const handleRowDataUpdated = useCallback(() => {}, []);
 
   const handleDeleteSelectedItems = useCallback(async () => {
-    const ids = selectedRows.map((row) => row._id);
+    const ids = state.selectedRows.map((row: T) => (row as any)._id);
     await onDeleteMany?.(ids);
-    setRowData((prev) =>
-      prev.filter((row) => !ids.includes(row.id) && !ids.includes(row._id))
+    setRowData(
+      (state.rowData as T[]).filter(
+        (row) =>
+          !ids.includes((row as any).id) && !ids.includes((row as any)._id)
+      )
     );
-  }, [onDeleteMany, selectedRows, setRowData]);
+  }, [onDeleteMany, state.selectedRows, setRowData, state.rowData]);
 
   return {
     onBtnExport,
-    handleAdd,
     handleEditClick,
     handleCancelEditingClick,
     handleStopEditAndSaveClick,
     handleFilterTextBoxChanged,
     handleFilterTextBoxClear,
-    onRowEditingStarted,
-    onRowEditingStopped,
-    onCellEditingStarted,
+
     onCellEditingStopped,
     handleRowDataUpdated,
     handleRowSelection,

@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo, useRef } from 'react';
 import type { ColDef } from 'ag-grid-community';
 import { TableContext } from './TableContext';
 import { FieldValidationSchema } from '../types';
-import { useTableState } from './../hooks/useTableState';
 import { useDefaultColDef } from './../hooks/useTableConstants';
 import { useTableHandlers } from './../hooks/useTableHandlers';
+import { TableState } from '../reducer/tableReducer';
+import useTableReducer from '../reducer/useTableReducer';
 
 interface TableProviderProps<T> {
   children: ReactNode;
@@ -13,7 +14,7 @@ interface TableProviderProps<T> {
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
   isLoading?: boolean;
-  error?: string;
+  error?: string | string[] | null;
   onUpdateMany?: ((data: any) => Promise<any>) | undefined;
   onDeleteMany?: ((data: any) => Promise<any>) | undefined;
 }
@@ -25,89 +26,91 @@ export function TableProvider<T>({
   tableConfigOnEdit,
   validationSchema,
   isLoading = false,
-  error,
   onUpdateMany,
   onDeleteMany,
 }: TableProviderProps<T>) {
+  //
+  const initialState: TableState<T> = useMemo(
+    () => ({
+      colDefs: tableConfig,
+      rowData: initialData,
+      filteredRowData: null,
+      rowDataBackup: initialData, // Added missing property
+      showChildren: false,
+      showColumnVisibilityManager: false,
+      tableStatus: 'read',
+      selectedRows: [],
+      isLoading: isLoading,
+      updates: new Map(),
+      invalidCells: new Set(),
+      searchText: '',
+      error: null,
+    }),
+    [initialData, isLoading, tableConfig]
+  );
+
+  const gridRef = useRef<any>(null);
+  const invalidCells = useRef(new Set<string>()).current;
+  const updates = useRef(new Map<string, Partial<T>>()).current;
+
   const {
-    gridRef,
-    invalidCells,
-    updates,
-    rowData,
+    state,
+    initializeTableData,
+    showChildren,
+    hideChildren,
+    setTableStatus,
+    toggleTableVisibility,
     setRowData,
-    rowDataBackup,
-    setRowDataBackup,
-    colDefs,
-    setColDefs,
-    tableStatus,
-    setTableStatus,
-    showColumnVisibilityManager,
-    setShowColumnVisibilityManager,
-    searchText,
     setSearchText,
-    showAddModal,
-    setShowAddModal,
-    toast,
-    setToast,
-    selectedRows,
     setSelectedRows,
-  } = useTableState<T>(initialData, tableConfig);
+  } = useTableReducer<T>({ initialState, tableConfig, tableConfigOnEdit });
 
-  const defaultColDef = useDefaultColDef(tableStatus, invalidCells, updates);
+  const defaultColDef = useDefaultColDef(
+    state.tableStatus,
+    invalidCells,
+    updates
+  );
 
-  const handlers = useTableHandlers({
+  const handlers = useTableHandlers<T>({
+    state,
+    initializeTableData,
+    showChildren,
+    hideChildren,
+    setTableStatus,
+    setSearchText,
+    setSelectedRows,
     gridRef,
-    validationSchema,
     invalidCells,
     updates,
-    setToast,
-    setShowAddModal,
-    setTableStatus,
-    setColDefs,
     tableConfig,
     tableConfigOnEdit,
-    rowDataBackup,
-    setRowDataBackup,
-    rowData,
+
     setRowData,
     onUpdateMany,
     onDeleteMany,
-    searchText,
-    setSearchText,
-    selectedRows,
-    setSelectedRows,
+    toggleTableVisibility,
   });
 
   return (
     <TableContext.Provider
       value={{
-        defaultColDef,
+        gridRef,
+        state,
+        initializeTableData,
+        showChildren,
+        hideChildren,
+        setTableStatus,
+        toggleTableVisibility,
+        setRowData,
+
+        ...handlers,
         tableConfig,
         tableConfigOnEdit,
-        gridRef,
-        rowData,
-        setRowData,
-        colDefs,
-        setColDefs,
-        tableStatus,
-        setTableStatus,
-        showColumnVisibilityManager,
-        setShowColumnVisibilityManager,
-        searchText,
-        setSearchText,
-        showAddModal,
-        setShowAddModal,
+        defaultColDef,
         validationSchema,
-        toast,
-        setToast,
-        invalidCells,
-        updates,
-        selectedRows,
-        setSelectedRows,
-        ...handlers,
+
         onUpdateMany,
-        isLoading,
-        error,
+        onDeleteMany,
       }}
     >
       {children}

@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import type { ColDef } from 'ag-grid-community';
 
 export function useDefaultColDef<T>(
-  tableStatus: 'read' | 'edit' | 'write',
+  tableStatus: 'read' | 'edit',
   invalidCells: Set<string>,
   updates: Map<string, Partial<T>>
 ) {
-  return useMemo<ColDef>(
+  return useMemo<ColDef<T>>(
     () => ({
       flex: 1,
       cellClass:

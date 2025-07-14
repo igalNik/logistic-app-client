@@ -9,14 +9,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode | undefined;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function ({
-  children,
-  iconName,
-  iconOptions,
-  ...props
-}: ButtonProps) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function (
+  { children, iconName, iconOptions, ...props }: ButtonProps,
+  ref
+) {
   return (
     <button
+      ref={ref}
       {...props}
       className={mergeClasses(
         'bg-gray-100 active:bg-blue-200 hover:bg-gray-200 rounded-md border-gray-300 px-4 py-2 focus:ring-blue-400 h-full min-w-fit flex-1 cursor-pointer border-1 transition focus:ring-2 focus:outline-none',

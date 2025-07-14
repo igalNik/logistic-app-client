@@ -7,10 +7,8 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
   const invalidCells = useRef(new Set<string>()).current;
   const updates = useRef(new Map<string, Partial<T>>()).current;
 
-  const [rowData, setRowData] = useState<T[]>([...initialData]);
-  const [rowDataBackup, setRowDataBackup] = useState<T[] | null>([
-    ...initialData,
-  ]);
+  const [rowData, setRowData] = useState<T[]>(initialData);
+  const [rowDataBackup, setRowDataBackup] = useState<T[] | null>(initialData);
   const [colDefs, setColDefs] = useState<ColDef<T>[]>(tableConfig);
   const [tableStatus, setTableStatus] = useState<'read' | 'edit' | 'write'>(
     'read'
@@ -18,7 +16,6 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
   const [showColumnVisibilityManager, setShowColumnVisibilityManager] =
     useState<boolean>(false);
   const [searchText, setSearchText] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<null | any>(null); // keep type broad here or pass type in args
   const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
@@ -43,8 +40,6 @@ export function useTableState<T>(initialData: T[], tableConfig: ColDef<T>[]) {
     setShowColumnVisibilityManager,
     searchText,
     setSearchText,
-    showAddModal,
-    setShowAddModal,
     toast,
     setToast,
     selectedRows,

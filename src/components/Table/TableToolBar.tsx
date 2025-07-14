@@ -6,12 +6,9 @@ import { TableStrings } from './constants';
 
 const TableToolbar = () => {
   const {
-    searchText,
-    showColumnVisibilityManager,
-    setShowColumnVisibilityManager,
-    tableStatus,
-    selectedRows,
-    handleAdd,
+    state,
+    showChildren,
+    toggleTableVisibility,
     handleEditClick,
     handleCancelEditingClick,
     handleStopEditAndSaveClick,
@@ -25,7 +22,7 @@ const TableToolbar = () => {
     <>
       <div className="lg:flex-row gap-2 mb-2 text-gray-900 flex flex-col overflow-auto text-[16px]">
         <div className="gap-2 md:order-2 my-1 pr-1 md:mr-0 md:pr-1 order-1 flex flex-row justify-between">
-          {selectedRows && selectedRows.length > 0 && (
+          {state.selectedRows && state.selectedRows.length > 0 && (
             <Button
               type="button"
               onClick={handleDeleteSelectedItems}
@@ -35,10 +32,10 @@ const TableToolbar = () => {
               <HideOnMobile>{TableStrings.DELETE_SELECTED}</HideOnMobile>
             </Button>
           )}
-          {!showColumnVisibilityManager && (
+          {!state.showColumnVisibilityManager && (
             <Button
               type="button"
-              onClick={() => setShowColumnVisibilityManager((prev) => !prev)}
+              onClick={toggleTableVisibility}
               iconName="Columns"
               className="max-h-11 flex-1"
             >
@@ -48,13 +45,13 @@ const TableToolbar = () => {
             </Button>
           )}
 
-          {tableStatus === 'edit' ? (
+          {state.tableStatus === 'edit' ? (
             <>
               <Button
                 type="button"
                 onClick={handleCancelEditingClick}
                 iconName="Close"
-                className="max-h-11 flex-1"
+                className="max-h-11 bg-red-50 hover:bg-red-200 border-red-400 flex-1"
               >
                 <HideOnMobile>{TableStrings.CANCEL_EDITING}</HideOnMobile>
               </Button>
@@ -62,7 +59,7 @@ const TableToolbar = () => {
                 type="button"
                 onClick={handleStopEditAndSaveClick}
                 iconName="Save"
-                className="max-h-11 flex-1"
+                className="max-h-11 bg-green-50 hover:bg-green-200 border-green-400 flex-1"
               >
                 <HideOnMobile>{TableStrings.STOP_AND_SAVE}</HideOnMobile>
               </Button>
@@ -79,26 +76,26 @@ const TableToolbar = () => {
               </Button>
               <Button
                 type="button"
-                onClick={handleAdd}
+                onClick={showChildren}
                 iconName="Add"
                 className="max-h-11 flex-1"
               >
                 <HideOnMobile>{TableStrings.ADD}</HideOnMobile>
               </Button>
-              <Button
-                type="button"
-                onClick={onBtnExport}
-                className="max-h-11 flex-1"
-              >
-                <img
-                  src={`public/Excel.svg`}
-                  alt="Export to Excel"
-                  className="h-6 w-6"
-                />
-                <HideOnMobile>{TableStrings.EXPORT_TO_EXCEL}</HideOnMobile>
-              </Button>
             </>
           )}
+          <Button
+            type="button"
+            onClick={onBtnExport}
+            className="max-h-11 flex-1"
+          >
+            <img
+              src={`public/Excel.svg`}
+              alt="Export to Excel"
+              className="h-6 w-6"
+            />
+            <HideOnMobile>{TableStrings.EXPORT_TO_EXCEL}</HideOnMobile>
+          </Button>
         </div>
         <div className="md:order-1 my-1 mr-1 md:max-w-1/2 order-2 flex-1">
           <Input
@@ -106,7 +103,7 @@ const TableToolbar = () => {
             id="filter-text-box"
             placeholder={TableStrings.QUICK_SEARCH}
             onChange={handleFilterTextBoxChanged}
-            value={searchText}
+            value={state.searchText}
             iconName="Search"
             clearButton
             onClear={handleFilterTextBoxClear}
