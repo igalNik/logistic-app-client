@@ -4,15 +4,12 @@ import { useMemo } from 'react';
 import { GridOptions, RowSelectionOptions } from 'ag-grid-community';
 import './style.css';
 
-const TableGrid = ({ ...props }: GridOptions<any>) => {
+const TableGrid = (props: GridOptions<any>) => {
   const {
     state,
     gridRef,
     tableConfig,
     defaultColDef,
-    onRowEditingStarted,
-    onRowEditingStopped,
-    onCellEditingStarted,
     onCellEditingStopped,
     handleRowDataUpdated,
     handleRowSelection,
@@ -40,9 +37,6 @@ const TableGrid = ({ ...props }: GridOptions<any>) => {
         columnDefs={tableConfig}
         defaultColDef={defaultColDef}
         suppressCellFocus={false}
-        onRowEditingStarted={onRowEditingStarted}
-        onRowEditingStopped={onRowEditingStopped}
-        onCellEditingStarted={onCellEditingStarted}
         onCellEditingStopped={onCellEditingStopped}
         onRowDataUpdated={handleRowDataUpdated}
         stopEditingWhenCellsLoseFocus

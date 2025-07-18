@@ -7,7 +7,7 @@ const GenericTable = function <T>(props: TableProps<T>) {
     <TableProvider<T>
       tableConfig={props.tableConfig}
       tableConfigOnEdit={props.tableConfigOnEdit}
-      initialData={props.data}
+      data={props.data}
       validationSchema={props.validationSchema}
       onUpdateMany={props.onUpdateMany}
       onDeleteMany={props.onDeleteMany}

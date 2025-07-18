@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import {
   tableReducer,
   TableState,
@@ -31,63 +31,67 @@ function useTableReducer<T>({
 }: TableActionProps<T>): TableActionCreators<T> {
   const [state, dispatch] = useReducer(tableReducer, initialState);
 
-  const initializeTableData = () => {
+  // Actions
+  const initializeTableData = useCallback(() => {
     dispatch({
       type: 'data/initializeTableData',
       payload: initialState.rowData,
     });
-  };
+  }, [initialState.rowData]);
 
-  const setRowData = (rowData: T[]) => {
+  const setRowData = useCallback((rowData: T[]) => {
     dispatch({
       type: 'data/setRowData',
       payload: rowData,
     });
-  };
+  }, []);
 
-  const hideChildren = () => {
+  const hideChildren = useCallback(() => {
     dispatch({ type: 'ui/hideChildren' });
-  };
+  }, []);
 
-  const showChildren = () => {
+  const showChildren = useCallback(() => {
     dispatch({ type: 'ui/showChildren' });
-  };
+  }, []);
 
-  const setTableStatus = (status: TableStatus) => {
-    let payload: UIAction<T>;
-    if (status === 'read') {
-      payload = {
-        type: 'ui/setTableStatus',
-        payload: {
-          tableStatus: 'read',
-          colDefs: tableConfig,
-          rowDataBackup: null,
-        },
-      };
-    } else {
-      payload = {
-        type: 'ui/setTableStatus',
-        payload: {
-          tableStatus: 'edit',
-          colDefs: tableConfigOnEdit,
-          rowDataBackup: state.rowData,
-        },
-      };
-    }
-    dispatch(payload);
-  };
+  const setTableStatus = useCallback(
+    (status: TableStatus) => {
+      let payload: UIAction<T>;
+      if (status === 'read') {
+        payload = {
+          type: 'ui/setTableStatus',
+          payload: {
+            tableStatus: 'read',
+            colDefs: tableConfig,
+            rowDataBackup: null,
+          },
+        };
+      } else {
+        payload = {
+          type: 'ui/setTableStatus',
+          payload: {
+            tableStatus: 'edit',
+            colDefs: tableConfigOnEdit,
+            rowDataBackup: [...state.rowData],
+          },
+        };
+      }
+      dispatch(payload);
+    },
+    [state.rowData, tableConfig, tableConfigOnEdit]
+  );
 
-  const toggleTableVisibility = () => {
+  const toggleTableVisibility = useCallback(() => {
     dispatch({ type: 'ui/toggleTableVisibility' });
-  };
+  }, []);
 
-  const setSearchText = (searchText: string) => {
+  const setSearchText = useCallback((searchText: string) => {
     dispatch({ type: 'ui/search', payload: searchText });
-  };
+  }, []);
 
-  const setSelectedRows = (selectedRows: T[]) => {
+  const setSelectedRows = useCallback((selectedRows: T[]) => {
     dispatch({ type: 'ui/setSelectedRows', payload: selectedRows });
-  };
+  }, []);
 
   return {
     state,

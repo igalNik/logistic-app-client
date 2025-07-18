@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTableContext } from './context/TableContext';
 import TableToolbar from './TableToolBar';
 import TableGrid from './TableGrid';
@@ -13,36 +13,29 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 function Table<T>({ title, description, children }: TableProps<T>) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const {
-    gridRef,
-    state,
-    initializeTableData,
-    hideChildren,
-    showChildren,
-    toggleTableVisibility,
-  } = useTableContext<T>();
+  // prettier-ignore
+  const { gridRef, state, hideChildren, showChildren, toggleTableVisibility } = useTableContext<T>();
 
-  useEffect(() => {
-    initializeTableData();
-  }, []);
-
-  const handleCloseForm = () => {
+  const handleCloseForm = useCallback(() => {
     setSearchParams({});
     hideChildren();
-  };
+  }, [hideChildren, setSearchParams]);
 
   useEffect(() => {
     if (searchParams.get('id')) showChildren();
-  }, [searchParams, showChildren]);
+    else hideChildren();
+  }, [searchParams, showChildren, hideChildren]);
 
-  if (state.isLoading) {
-    return <Spinner type={'page'} />;
+  console.log(state.dataStatus);
+
+  switch (state.dataStatus) {
+    case 'loading':
+      return <Spinner type="page" />;
+    case 'error':
+      return <p>{state.error}</p>;
+    default:
+      break;
   }
-
-  if (state.error) {
-    return <p>{state.error}</p>;
-  }
-
   return (
     <div className="flex h-full w-full flex-col">
       {(title || description) && (

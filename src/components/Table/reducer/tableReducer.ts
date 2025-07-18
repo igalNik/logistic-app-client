@@ -3,26 +3,32 @@ import { FieldValidationSchema } from '../types';
 
 export type TableStatus = 'read' | 'edit';
 
+export type DataStatus = 'idle' | 'loading' | 'error';
 export interface TableState<T> {
   tableStatus: TableStatus;
+  dataStatus: DataStatus;
+  error: string | null;
+
   colDefs: ColDef<T, any>[];
   rowData: T[];
   filteredRowData?: T[] | null;
   rowDataBackup: T[] | null;
+
   updates: Map<string, Partial<T>>;
   invalidCells: Set<string>;
+
   selectedRows: T[];
   searchText: string;
   showChildren: boolean;
   showColumnVisibilityManager: boolean;
-  isLoading: boolean;
-  error: string | string[] | null;
 }
 
 export type DataActions<T> =
   | { type: 'data/initializeTableData'; payload: T[] }
   | { type: 'data/restoreFromBackup' }
-  | { type: 'data/setRowData'; payload: T[] };
+  | { type: 'data/setRowData'; payload: T[] }
+  | { type: 'data/setLoading' }
+  | { type: 'data/setError'; payload: string };
 
 export type UIAction<T> =
   | { type: 'ui/defineColumns'; payload: ColDef<T>[] }
@@ -55,15 +61,20 @@ export function tableReducer<T>(
         showChildren: false,
         selectedRows: [],
         rowData: action.payload,
+        dataStatus: 'idle',
       };
     case 'data/setRowData':
-      return { ...state, rowData: action.payload };
+      return { ...state, rowData: action.payload, dataStatus: 'idle' };
 
     case 'data/restoreFromBackup':
       return {
         ...state,
         rowDataBackup: [...state.rowData],
       };
+    case 'data/setLoading':
+      return { ...state, dataStatus: 'loading', error: null };
+    case 'data/setError':
+      return { ...state, dataStatus: 'error', error: action.payload };
     case 'ui/hideChildren':
       return { ...state, showChildren: false };
     case 'ui/showChildren':
@@ -90,6 +101,6 @@ export function tableReducer<T>(
     }
 
     default:
-      return state;
+      throw new Error(`Unknown action type: ${action.type}`);
   }
 }

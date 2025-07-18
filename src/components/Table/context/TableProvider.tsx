@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import type { ColDef } from 'ag-grid-community';
 import { TableContext } from './TableContext';
 import { FieldValidationSchema } from '../types';
@@ -9,7 +9,7 @@ import useTableReducer from '../reducer/useTableReducer';
 
 interface TableProviderProps<T> {
   children: ReactNode;
-  initialData: T[];
+  data: T[];
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
   validationSchema?: FieldValidationSchema<T>[];
@@ -21,33 +21,34 @@ interface TableProviderProps<T> {
 
 export function TableProvider<T>({
   children,
-  initialData,
+  data,
   tableConfig,
   tableConfigOnEdit,
   validationSchema,
   isLoading = false,
+  error,
   onUpdateMany,
   onDeleteMany,
 }: TableProviderProps<T>) {
-  //
-  const initialState: TableState<T> = useMemo(
-    () => ({
-      colDefs: tableConfig,
-      rowData: initialData,
-      filteredRowData: null,
-      rowDataBackup: initialData, // Added missing property
-      showChildren: false,
-      showColumnVisibilityManager: false,
-      tableStatus: 'read',
-      selectedRows: [],
-      isLoading: isLoading,
-      updates: new Map(),
-      invalidCells: new Set(),
-      searchText: '',
-      error: null,
-    }),
-    [initialData, isLoading, tableConfig]
-  );
+  // prettier-ignore
+  const initialState: TableState<T> = {
+  tableStatus: 'read',
+  dataStatus: isLoading? 'loading':'idle',
+  error: null,
+
+  colDefs: tableConfig,
+  rowData: data,
+  filteredRowData: null,
+  rowDataBackup: data,
+
+  updates: new Map(),
+  invalidCells: new Set(),
+
+  selectedRows: [],
+  searchText: '',
+  showChildren: false,
+  showColumnVisibilityManager: false,
+};
 
   const gridRef = useRef<any>(null);
   const invalidCells = useRef(new Set<string>()).current;
@@ -64,6 +65,10 @@ export function TableProvider<T>({
     setSearchText,
     setSelectedRows,
   } = useTableReducer<T>({ initialState, tableConfig, tableConfigOnEdit });
+
+  useEffect(() => {
+    initializeTableData();
+  }, [isLoading, data, initializeTableData]);
 
   const defaultColDef = useDefaultColDef(
     state.tableStatus,

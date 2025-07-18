@@ -33,13 +33,12 @@ function Login() {
       await dispatch(await login(credentials));
       setCredentials({ personalNumber: '', password: '' });
     } catch (err) {
-      console.log(err);
-
       // setError(err instanceof Error ? err.message : 'שגיאה לא ידועה');
     }
   };
   useEffect(() => {
-    if (user) navigate('/');
+    // if (user)
+    navigate('/');
   }, [user, navigate]);
   return (
     <div className="flex min-h-screen min-w-screen items-center justify-center">
