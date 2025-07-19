@@ -6,6 +6,7 @@ import {
   updateSolders,
   deleteSolders,
 } from '../solders';
+import { CreateUserResponse, GetUsersResponse } from '../types/response.type';
 
 // Query keys
 export const soldersKeys = {
@@ -22,6 +23,7 @@ export const useSolders = () => {
     queryKey: soldersKeys.lists(),
     queryFn: getAllSolders,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    select: (response: GetUsersResponse) => response.data,
   });
 };
 
@@ -32,6 +34,7 @@ export const useSolderById = (id: string) => {
     queryFn: () => getSolderById(id),
     enabled: !!id,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    select: (response: GetUsersResponse) => response.data,
   });
 };
 
@@ -41,13 +44,16 @@ export const useCreateSolder = () => {
 
   return useMutation({
     mutationFn: createSolder,
-    onSuccess: () => {
+    onSuccess: ({ data: newUser }: CreateUserResponse) => {
       // Invalidate and refetch solders list
+      console.log(newUser);
+
       queryClient.invalidateQueries({ queryKey: soldersKeys.lists() });
     },
     onError: (error) => {
       console.error('Failed to create solder:', error);
     },
+    select: (response: CreateUserResponse) => response.data,
   });
 };
 
@@ -72,7 +78,7 @@ export const useDeleteSolders = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteSolders,
+    mutationFn: (ids: string[]) => deleteSolders(ids),
     onSuccess: () => {
       // Invalidate and refetch solders list
       queryClient.invalidateQueries({ queryKey: soldersKeys.lists() });

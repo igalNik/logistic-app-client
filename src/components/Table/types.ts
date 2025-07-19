@@ -21,8 +21,14 @@ export interface TableProps<T> {
   isLoading: boolean;
   error?: string | string[] | null;
 
-  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
-  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
+  onUpdateMany?:
+    | ((data: any) => Promise<any>)
+    | ((data: string[]) => void)
+    | undefined;
+  onDeleteMany?:
+    | ((data: any) => Promise<any>)
+    | ((data: string[]) => void)
+    | undefined;
 
   children: ReactNode;
 }
@@ -99,6 +105,6 @@ export interface UseTableHandlersParams<T> {
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
 
-  onUpdateMany?: (data: any) => Promise<any>;
+  onUpdateMany?: (data: any) => Promise<any> | void;
   onDeleteMany?: (data: any) => Promise<any>;
 }

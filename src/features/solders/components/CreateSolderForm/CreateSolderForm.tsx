@@ -22,18 +22,22 @@ import { initialSolderInfo } from './constants';
 import { SolderFormStrings } from './constants';
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 
-import { createSolder } from '../../../../api/solders';
+// import { createSolder } from '../../../../api/solders';
 import { validationSchema } from '../SoldersTable/constants';
 import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';
 import DepartmentsComboBox from '../../../departments/components/DepartmentsComboBox';
 import { useSearchParams } from 'react-router-dom';
+import { useCreateSolder } from '../../../../api/queries';
 
 function CreateSolderForm() {
   const { onClose } = useContext(ModalContext);
   const firstNameRef = useRef<HTMLInputElement>(null);
-  const { rowData, setRowData } = useTableContext<User>();
+  const {
+    state: { rowData },
+    // setRowData,
+  } = useTableContext<User>();
   const [searchParams] = useSearchParams();
   const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
 
@@ -46,16 +50,14 @@ function CreateSolderForm() {
     }
   }, [rowData, searchParams]);
 
-  const onSubmit = useCallback(
-    async (item: CreateSolder) => {
-      const res: any = await createSolder(item);
-      if (res?.status === 'success') {
-        setRowData((prev: User[]) => [...prev, item as User]);
-      }
-      return res;
-    },
+  const createSolder = useCreateSolder();
 
-    [setRowData]
+  const onSubmit = useCallback(
+    (item: CreateSolder) => {
+      createSolder.mutate(item);
+    },
+    [createSolder]
+    // [setRowData]
   );
   const schema = useMemo(
     () =>

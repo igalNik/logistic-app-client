@@ -1,39 +1,32 @@
-import {
-  deleteSolders,
-  updateSolders,
-  getAllSolders,
-} from '../../../../api/solders';
 import { SoldiersStrings, validationSchema } from './constants';
 import CreateSolderForm from '../CreateSolderForm/CreateSolderForm';
 import { User } from '../../../../types/User';
 import Table from '../../../../components/Table';
 import useSoldersColDef from './useSoldersColDef';
-import { useQuery } from '@tanstack/react-query';
+import { useDeleteSolders, useSolders } from '../../../../api/queries';
+import { deleteSolders, updateSolders } from '../../../../api/solders';
 
 function SoldersTable() {
-  const {
-    data: soldersResponse,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['solders'],
-    queryFn: getAllSolders,
-  });
+  const { data: solders, isLoading, error } = useSolders();
 
   const { tableConfig, tableConfigOnEdit } = useSoldersColDef();
 
+  const { mutate: deleteSoldersMutation } = useDeleteSolders();
+
+  const handleDeleteMany = (soldersIds: string[]) => {
+    deleteSoldersMutation(soldersIds);
+  };
   // Extract the data array from the response
-  const tableData = soldersResponse?.data ?? [];
 
   return (
     <Table<User>
       title={SoldiersStrings.TITLE}
       description={SoldiersStrings.DESCRIPTION}
-      data={tableData}
+      data={solders}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
-      onUpdateMany={updateSolders}
+      onUpdateMany={handleDeleteMany}
       onDeleteMany={deleteSolders}
       isLoading={isLoading}
       error={error?.message}

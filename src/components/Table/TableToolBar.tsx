@@ -90,7 +90,7 @@ const TableToolbar = () => {
             className="max-h-11 flex-1"
           >
             <img
-              src={`public/Excel.svg`}
+              src={`./excel.svg`}
               alt="Export to Excel"
               className="h-6 w-6"
             />

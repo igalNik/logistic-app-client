@@ -26,7 +26,7 @@ export function TableProvider<T>({
   tableConfigOnEdit,
   validationSchema,
   isLoading = false,
-  error,
+  // error,
   onUpdateMany,
   onDeleteMany,
 }: TableProviderProps<T>) {

@@ -5,10 +5,10 @@ import { User } from '../types/User';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
 
-export interface GetAllSoldersResponse {
-  status: 'success' | 'fails';
-  data: User[];
-}
+// export interface GetAllSoldersResponse {
+//   status: 'success' | 'fails';
+//   data: User[];
+// }
 
 export const getSolderById = async (id: string) => {
   try {
@@ -18,6 +18,7 @@ export const getSolderById = async (id: string) => {
 
     return res;
   } catch (error) {
+    throw Error('failed to get all users');
     console.log('failed to get all users', error);
   }
 };
