@@ -1,4 +1,4 @@
-import { Department } from '../types/Department';
+import { Department } from '@/types/Department';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
 

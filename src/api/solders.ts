@@ -1,7 +1,7 @@
-import { CreateSolder } from '../types/solder/CreateSolder.type';
-import { Solder } from '../types/solder/Solder';
-import { UpdateSoldier } from '../types/solder/UpdateSoldier';
-import { User } from '../types/User';
+import { CreateSolder } from '@/types/solder/CreateSolder.type';
+import { Solder } from '@/types/solder/Solder';
+import { UpdateSoldier } from '@/types/solder/UpdateSoldier';
+import { User } from '@/types/User';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
 

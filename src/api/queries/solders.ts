@@ -6,7 +6,7 @@ import {
   updateSolders,
   deleteSolders,
 } from '../solders';
-import { CreateUserResponse, GetUsersResponse } from '../types/response.type';
+import { CreateUserResponse, GetUsersResponse } from '@/types/response.type';
 
 // Query keys
 export const soldersKeys = {

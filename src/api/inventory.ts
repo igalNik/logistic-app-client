@@ -1,6 +1,6 @@
-import { EquipmentType } from '../types/equipment-type/EquipmentType';
-import { GetInventoryResponse } from '../types/inventory/GetInventoryResponse.type';
-import { InventoryItem } from '../types/inventory/InventoryItem.type';
+import { EquipmentType } from '@/types/equipment-type/EquipmentType';
+import { GetInventoryResponse } from '@/types/inventory/GetInventoryResponse.type';
+import { InventoryItem } from '@/types/inventory/InventoryItem.type';
 
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';

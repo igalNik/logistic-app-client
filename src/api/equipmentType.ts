@@ -1,4 +1,4 @@
-import { EquipmentType } from '../types/equipment-type/EquipmentType';
+import { EquipmentType } from '@/types/equipment-type/EquipmentType';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
 
