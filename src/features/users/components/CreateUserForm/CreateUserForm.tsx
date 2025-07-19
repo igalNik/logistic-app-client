@@ -23,7 +23,7 @@ import { SolderFormStrings } from './constants';
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 
 // import { createSolder } from '../../../../api/solders';
-import { validationSchema } from '../SoldersTable/constants';
+import { validationSchema } from '../UsersTable/constants';
 import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';

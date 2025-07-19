@@ -183,7 +183,7 @@ export const validationSchema: FieldValidationSchema<User>[] = [
   },
 ];
 
-export enum SoldiersStrings {
+export enum UsersStrings {
   TITLE = 'חיילים',
   DESCRIPTION = 'רשימת סד"כ פלוגתי',
 }

@@ -3,21 +3,21 @@ import AsyncComboBox from '../../../components/AsyncComboBox';
 import { ComboBoxProps } from '../../../components/ComboBox';
 import { Option } from '../../../types/comboBox.types';
 import { objectToOption } from '../../../utils/dropdown.util';
-import { getAllSolders } from '../../../api/solders';
+import { getAllUsers } from '../../../api/users';
 import { User } from '../../../types/User';
 
-const SoldersComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(function (
+const UsersComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(function (
   { ...props }: ComboBoxProps,
   ref
 ) {
-  const getSoldersOptions = useCallback<() => Promise<Option[]>>(async () => {
-    const res = await getAllSolders();
-    const solders = res?.data;
+  const getUsersOptions = useCallback<() => Promise<Option[]>>(async () => {
+    const res = await getAllUsers();
+    const users = res?.data;
 
-    if (!solders) return [];
+    if (!users) return [];
 
-    const options = solders.map((solder) => {
-      const option: Option = objectToOption<User>(solder, '_id', 'fullName');
+    const options = users.map((user) => {
+      const option: Option = objectToOption<User>(user, '_id', 'fullName');
       return option;
     });
 
@@ -26,11 +26,11 @@ const SoldersComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(function (
   return (
     <AsyncComboBox
       ref={ref}
-      id="solders"
-      fetchOptions={getSoldersOptions}
+      id="users"
+      fetchOptions={getUsersOptions}
       className="w-full"
       {...props}
     />
   );
 });
-export default SoldersComboBox;
+export default UsersComboBox;

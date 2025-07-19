@@ -6,9 +6,10 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import PageNotFound from '../pages/PageNotFound';
 import { protectedLoader } from './protectedLoader';
-import Solders from '../pages/Solders';
-import EquipmentTypes from '../pages/EquipmentTypes';
 import Inventory from '../pages/Inventory';
+
+import EquipmentTypes from './../pages/EquipmentTypes';
+import Users from './../pages/Users';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
             element: <Home />,
           },
           {
-            path: '/solders',
-            element: <Solders />,
+            path: '/users',
+            element: <Users />,
           },
           {
             path: '/departments',

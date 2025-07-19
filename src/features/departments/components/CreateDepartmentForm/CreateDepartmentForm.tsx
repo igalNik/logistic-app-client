@@ -16,7 +16,7 @@ import { createDepartment } from '../../../../api/departments';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { initialDepartmentInfo } from './constants';
 import { Department } from '../../../../types/Department';
-import SoldersComboBox from '../../../solders/components/SoldersComboBox';
+import UsersComboBox from '../../../users/components/UsersComboBox';
 
 function CreateDepartmentForm() {
   const { onClose } = useContext(ModalContext);
@@ -72,14 +72,14 @@ function CreateDepartmentForm() {
               iconName="Abc"
             />
             <div className="gap-x-5 gap-y-3 md:grid-cols-2 grid grid-cols-1">
-              <SoldersComboBox
+              <UsersComboBox
                 {...registry['officerId']}
                 label={DepartmentFormStrings.OFFICER_LABEL}
                 id="officer"
                 ref={nameRef}
                 iconName="Abc"
               />
-              <SoldersComboBox
+              <UsersComboBox
                 {...registry['sergeantId']}
                 label={DepartmentFormStrings.NAME_LABEL}
                 id="sergeant"
