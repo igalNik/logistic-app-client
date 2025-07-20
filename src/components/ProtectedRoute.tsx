@@ -1,10 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from './../store/store';
+
+import { useMe } from '../api/queries';
+import Spinner from './Spinner';
 
 const ProtectedRoute = () => {
-  // TODO - change to context
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: user, isLoading, error } = useMe();
+  if (error) throw error;
+  if (isLoading) return <Spinner type={'page'}></Spinner>;
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

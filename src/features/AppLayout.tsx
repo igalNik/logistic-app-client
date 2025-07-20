@@ -2,22 +2,20 @@ import Header from './../components/header/Header';
 import { useState } from 'react';
 // import BlankPage from '../components/BlankPage';
 import SideNav from '../components/sideNav/SideNav';
-import { Navigation, Outlet, useNavigation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Spinner from '../components/Spinner';
-import { RootState } from '../store/store';
-import { useSelector } from 'react-redux';
+
 import BlankPage from '../components/BlankPage';
 import IconButton from '../components/IconButton';
 import Overlay from '../components/Overlay';
 import { useTailwindBreakpoint } from '../hooks/useTailwindBreakpoint';
+import { useMe } from './../api/queries';
 
 function AppLayout() {
   const breakPoint = useTailwindBreakpoint();
   const [showSideNav, setShowSideNav] = useState(false);
-  const navigation: Navigation = useNavigation();
-  const authState = useSelector((state: RootState) => state.auth);
+  const { isLoading } = useMe();
 
-  const isLoading = authState.loading || navigation.state === 'loading';
   const isMobileAndMenuIsClose = breakPoint.isMobile() && !showSideNav;
   return (
     <div
@@ -47,15 +45,12 @@ function AppLayout() {
           <SideNav expend={!breakPoint.isMobile()} />
         </Overlay>
       </div>
-      {/* <div className="md:col-start-2 md:col-end-2 row-start-2 h-full w-full">
-        <BlankPage> */}
+
       <main className="md:p-6 bg-gray-100 row-start-2 mx-auto h-full max-h-full w-full max-w-[1200px] overflow-hidden">
         <BlankPage>
           {isLoading ? <Spinner type="page" /> : <Outlet />}
         </BlankPage>
       </main>
-
-      {/* <div className="col-span-full bg-pink-500"><Footer /></div> */}
     </div>
   );
 }

@@ -21,9 +21,9 @@ export const apiClient = async <T>(
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, requestOptions);
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status} ${response.statusText}`);
-    }
+    // if (!response.ok) {
+    //   throw new Error(`API error: ${response.status} ${response.statusText}`);
+    // }
 
     return response.json() as Promise<T>;
   } catch (error) {

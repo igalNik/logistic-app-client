@@ -18,19 +18,18 @@ function Modal({ onClose, closeOnOutsideClick = false, children }: ModalProps) {
     closeOnEscape(onClose);
     return () => removeCloseOnEscape(onClose);
   }, [onClose]);
-  //
+
   return (
     <ModalContext.Provider value={{ onClose: onClose }}>
       <div
         className="inset-0 fixed z-10"
-        onClick={() => closeOnOutsideClick && onClose}
+        onClick={() => closeOnOutsideClick && onClose()}
       >
         <div
           className={`bg-slate-900/60 flex h-full w-full items-center justify-center`}
           role="dialog"
           aria-modal="true"
           aria-label="dialog"
-          onClick={() => closeOnOutsideClick && onClose()}
         >
           <header className="bg-white rounded-lg shadow-xl md:max-w-3xl min-w-sm relative overflow-hidden">
             <span className="bg-white/40 left-0 top-0 m-3 absolute rounded-full">

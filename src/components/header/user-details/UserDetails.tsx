@@ -2,14 +2,15 @@ import { useRef, useState } from 'react';
 import Icon from '../../Icon';
 import UserDetailsMenu from './UserDetailsMenu';
 import useClickOutside from '../../../hooks/useClickOutside';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { User } from '../../../types/User';
+
+import { useMe } from './../../../api/queries';
 
 function UserDetails() {
   const [showMenu, setShowMenu] = useState(false);
 
-  const user: User | null = useSelector((state: RootState) => state.auth.user);
+  const { data: user } = useMe();
+  console.log(user);
+
   const userDetailsElement = useRef(null);
 
   useClickOutside(userDetailsElement, () => setShowMenu(false));

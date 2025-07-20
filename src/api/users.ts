@@ -1,5 +1,9 @@
 import { CreateUserRequest, UpdateUserRequest } from './types/request.type';
-import { CreateUserResponse, GetUsersResponse } from './types/response.type';
+import {
+  CreateUserResponse,
+  GetUserResponse,
+  GetUsersResponse,
+} from './types/response.type';
 import { User } from '@/types/User';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
@@ -11,9 +15,8 @@ export const getUserById = async (id: string) => {
     });
 
     return res;
-  } catch (error) {
+  } catch {
     throw Error('failed to get user');
-    console.log('failed to get user', error);
   }
 };
 
@@ -59,4 +62,16 @@ export const deleteUsers = async (usersIds: string[]) => {
     body: usersIds,
   });
   return res;
+};
+
+export const handleMe = async (): Promise<GetUserResponse> => {
+  try {
+    const res = await apiClient<GetUserResponse>(API_ENDPOINTS.USERS.ME, {
+      method: 'GET',
+    });
+    return res;
+  } catch (error) {
+    console.log('not authorized: ', error);
+    throw error;
+  }
 };

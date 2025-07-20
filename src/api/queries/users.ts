@@ -5,8 +5,13 @@ import {
   createUser,
   updateUsers,
   deleteUsers,
+  handleMe,
 } from '../users';
-import { CreateUserResponse, GetUsersResponse } from '../types/response.type';
+import {
+  CreateUserResponse,
+  GetUserResponse,
+  GetUsersResponse,
+} from '../types/response.type';
 import { User } from '@/types/User';
 
 // Query keys
@@ -16,6 +21,7 @@ export const usersKeys = {
   list: (filters: string) => [...usersKeys.lists(), { filters }] as const,
   details: () => [...usersKeys.all, 'detail'] as const,
   detail: (id: string) => [...usersKeys.details(), id] as const,
+  me: () => [...usersKeys.all, 'check'] as const,
 };
 
 // Custom hook for getting all users
@@ -87,5 +93,16 @@ export const useDeleteUsers = () => {
     onError: (error) => {
       console.error('Failed to delete users:', error);
     },
+  });
+};
+
+export const useMe = () => {
+  return useQuery({
+    queryKey: usersKeys.me(),
+    queryFn: handleMe,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
+    refetchOnWindowFocus: false,
+    select: (res: GetUserResponse) => res.data,
   });
 };

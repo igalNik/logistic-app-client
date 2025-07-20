@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     CREATE: '/users',
     UPDATE: '/users',
     DELETE: '/users',
+    ME: '/users/me',
     GET_BY_ID: (id: string) => `/users/${id}`,
   },
   DEPARTMENTS: {

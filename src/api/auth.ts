@@ -6,6 +6,7 @@ export interface LoginResponse {
   data: any;
 }
 export interface CheckAuthResponse {
+  success: boolean;
   status: 'success' | 'fails';
   data: any;
 }
