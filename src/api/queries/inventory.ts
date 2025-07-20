@@ -5,6 +5,11 @@ import {
   createInventoryItem,
   updateInventoryItems,
 } from '../inventory';
+import {
+  GetInventoryResponse,
+  InventoryResponse,
+} from 'api/types/response.type';
+// Ensure getInventory returns the correct GetInventoryResponse type from 'api/types/response.type'
 
 // Query keys
 export const inventoryKeys = {
@@ -21,6 +26,7 @@ export const useInventory = () => {
     queryKey: inventoryKeys.lists(),
     queryFn: getInventory,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    select: (res: GetInventoryResponse) => res?.data,
   });
 };
 

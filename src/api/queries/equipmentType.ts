@@ -4,13 +4,16 @@ import {
   createEquipmentType,
   updateEquipmentTypes,
   deleteEquipmentTypes,
+  GetAllEquipmentTypesResponse,
 } from '../equipmentType';
+import { EquipmentType } from '@/types/equipment-type/EquipmentType';
 
 // Query keys
 export const equipmentTypeKeys = {
   all: ['equipmentTypes'] as const,
   lists: () => [...equipmentTypeKeys.all, 'list'] as const,
-  list: (filters: string) => [...equipmentTypeKeys.lists(), { filters }] as const,
+  list: (filters: string) =>
+    [...equipmentTypeKeys.lists(), { filters }] as const,
   details: () => [...equipmentTypeKeys.all, 'detail'] as const,
   detail: (id: string) => [...equipmentTypeKeys.details(), id] as const,
 };
@@ -21,6 +24,8 @@ export const useEquipmentTypes = () => {
     queryKey: equipmentTypeKeys.lists(),
     queryFn: getAllEquipmentTypes,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    select: (res: GetAllEquipmentTypesResponse | undefined) =>
+      res?.data as EquipmentType[],
   });
 };
 
@@ -70,4 +75,4 @@ export const useDeleteEquipmentTypes = () => {
       console.error('Failed to delete equipment types:', error);
     },
   });
-}; 
+};

@@ -6,20 +6,17 @@ import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
 
 export const getInventory = async () => {
-  try {
-    const res = await apiClient<GetInventoryResponse>(
-      API_ENDPOINTS.INVENTORY.GET_ALL,
-      { method: 'GET' }
-    );
+  const res = await apiClient<GetInventoryResponse>(
+    API_ENDPOINTS.INVENTORY.GET_ALL,
+    { method: 'GET' }
+  );
 
-    return res;
-  } catch (error) {
-    console.log('failed to get all INVENTORY', error);
-  }
+  return res;
 };
+
 export const getInventoryWithPopulatedEquipmentAndUser = async () => {
   try {
-    const res = await apiClient<GetInventoryResponse>(
+    const res = await apiClient<GetInventoryResponse | undefined>(
       API_ENDPOINTS.INVENTORY.GET_ALL_WITH_POPULATE_EQUIPMENT_TYPE,
       { method: 'GET' }
     );

@@ -14,20 +14,22 @@ import {
 } from '../../../../api/equipmentType';
 import Table from '../../../../components/Table';
 import CreateEquipmentTypeForm from '../CreateEquipmentTypeForm/CreateEquipmentTypeForm';
+import { useEquipmentTypes } from './../../../../api/queries';
 
 function EquipmentTypesTable() {
-  const equipmentTypes = useLoaderData<GetAllEquipmentTypesResponse>();
+  const { data: equipmentTypes, isLoading, error } = useEquipmentTypes();
 
   return (
     <Table<EquipmentType>
       title={EquipmentTypeStrings.TITLE}
       description={EquipmentTypeStrings.DESCRIPTION}
-      data={equipmentTypes.data}
+      data={equipmentTypes || []}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
       onUpdateMany={updateEquipmentTypes}
       onDeleteMany={deleteEquipmentTypes}
+      isLoading={isLoading}
     >
       <CreateEquipmentTypeForm />
     </Table>

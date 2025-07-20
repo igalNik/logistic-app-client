@@ -1,9 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
-import { login } from '../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from './../api/queries';
 
 interface LoginCredentials {
   personalNumber: string;
@@ -20,26 +18,22 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { user, loading, error } = useSelector(
-    (state: RootState) => state.auth
-  );
-  const dispatch = useDispatch<AppDispatch>();
+  const { data: user, isPending, error, mutate } = useLogin();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setError(null);
 
     try {
-      await dispatch(await login(credentials));
+      mutate(credentials);
       setCredentials({ personalNumber: '', password: '' });
-    } catch (err) {
-      // setError(err instanceof Error ? err.message : 'שגיאה לא ידועה');
+    } catch {
+      console.log(user, error);
     }
   };
   useEffect(() => {
-    // if (user)
-    navigate('/');
+    if (user) navigate('/');
   }, [user, navigate]);
+
   return (
     <div className="flex min-h-screen min-w-screen items-center justify-center">
       <form onSubmit={handleSubmit} className="max-w-md p-6 bg-white w-full">
@@ -77,13 +71,15 @@ function Login() {
           />
         </div>
 
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-500 mb-4 text-center">{error.message}</p>
+        )}
 
         <button
           type="submit"
           className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 w-full transition"
         >
-          {loading ? 'loading' : 'התחבר'}
+          {isPending ? 'loading' : 'התחבר'}
         </button>
       </form>
     </div>
