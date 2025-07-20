@@ -205,7 +205,11 @@ export interface PopulateQuery {
   populate?: string;
 }
 
-export type ApiQuery = PaginationQuery & SortQuery & FilterQuery & FieldSelectionQuery & PopulateQuery;
+export type ApiQuery = PaginationQuery &
+  SortQuery &
+  FilterQuery &
+  FieldSelectionQuery &
+  PopulateQuery;
 
 // URL Parameters
 export interface UserParams {
@@ -243,4 +247,4 @@ export interface UserNestedParams {
 
 export interface DepartmentNestedParams {
   departmentId: string;
-} 
+}

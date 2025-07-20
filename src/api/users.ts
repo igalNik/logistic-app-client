@@ -1,5 +1,5 @@
 import { CreateUserRequest, UpdateUserRequest } from './types/request.type';
-import { UserResponse, GetUsersResponse } from './types/response.type';
+import { CreateUserResponse, GetUsersResponse } from './types/response.type';
 import { User } from '@/types/User';
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from './endpoints';
@@ -19,19 +19,19 @@ export const getUserById = async (id: string) => {
 
 export const getAllUsers = async () => {
   try {
-    const res = await apiClient<GetUsersResponse>(
-      API_ENDPOINTS.USERS.GET_ALL,
-      { method: 'GET' }
-    );
+    const res = await apiClient<GetUsersResponse>(API_ENDPOINTS.USERS.GET_ALL, {
+      method: 'GET',
+    });
 
     return res;
   } catch (error) {
     console.log('failed to get all users', error);
+    throw error;
   }
 };
 
 export const createUser = async (user: CreateUserRequest) => {
-  const res = await apiClient<UserResponse>(API_ENDPOINTS.USERS.CREATE, {
+  const res = await apiClient<CreateUserResponse>(API_ENDPOINTS.USERS.CREATE, {
     method: 'POST',
     body: user,
   });
@@ -59,4 +59,4 @@ export const deleteUsers = async (usersIds: string[]) => {
     body: usersIds,
   });
   return res;
-}; 
+};

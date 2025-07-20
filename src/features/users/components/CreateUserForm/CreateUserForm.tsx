@@ -18,20 +18,32 @@ import { ModalContext } from '../../../../components/Modal/ModalContext';
 
 import { useForm } from '../../../../components/Form/useForm';
 
-import { initialSolderInfo } from './constants';
-import { SolderFormStrings } from './constants';
-import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
+import { UserFormStrings } from './constants';
 
-// import { createSolder } from '../../../../api/solders';
 import { validationSchema } from '../UsersTable/constants';
 import { User } from '../../../../types/User';
 import { useTableContext } from '../../../../components/Table/context/TableContext';
 import { ROLES_OPTIONS } from '../../../../constants/dropdownOptions';
 import DepartmentsComboBox from '../../../departments/components/DepartmentsComboBox';
 import { useSearchParams } from 'react-router-dom';
-import { useCreateSolder } from '../../../../api/queries';
+import { CreateUserRequest } from '../../../../api/types/request.type';
+import { useCreateUser } from '../../../../api/queries/users';
 
-function CreateSolderForm() {
+const initialUserInfo: User = {
+  _id: '',
+  id: '',
+  personalNumber: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  email: '',
+  role: '',
+  department: { name: '', id: '' },
+  fullName: '',
+  departmentId: '',
+};
+
+function CreateUserForm() {
   const { onClose } = useContext(ModalContext);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const {
@@ -39,46 +51,46 @@ function CreateSolderForm() {
     // setRowData,
   } = useTableContext<User>();
   const [searchParams] = useSearchParams();
-  const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
+  const [userInfo, setUserInfo] = useState<CreateUserRequest>(initialUserInfo);
 
   useEffect(() => {
     const id = searchParams.get('id');
     if (id) {
-      const data = rowData.find((solder) => solder._id === id) as CreateSolder;
+      const data = rowData.find((solder) => solder._id === id) as User;
 
-      setSolderInfo(data as CreateSolder);
+      setUserInfo(data);
     }
   }, [rowData, searchParams]);
 
-  const createSolder = useCreateSolder();
+  const createUser = useCreateUser();
 
   const onSubmit = useCallback(
-    (item: CreateSolder) => {
-      createSolder.mutate(item);
+    (item: CreateUserRequest) => {
+      createUser.mutate(item);
     },
-    [createSolder]
+    [createUser]
     // [setRowData]
   );
   const schema = useMemo(
     () =>
       validationSchema
         .filter(
-          (field) => (field.fieldName as keyof CreateSolder) in solderInfo
+          (field) => (field.fieldName as keyof CreateUserRequest) in userInfo
         )
         .map((field) => {
           const data = {
             ...field,
-            fieldName: field.fieldName as keyof CreateSolder,
-            defaultValue: solderInfo[field.fieldName as keyof CreateSolder],
+            fieldName: field.fieldName as keyof CreateUserRequest,
+            defaultValue: userInfo[field.fieldName as keyof CreateUserRequest],
           };
 
           return data;
         }),
-    [solderInfo]
+    [userInfo]
   );
   // console.log('schema: ', schema);
 
-  const { handleSubmit, handleCancel, registry } = useForm<CreateSolder>({
+  const { handleSubmit, handleCancel, registry } = useForm<CreateUserRequest>({
     formInitialization: {
       schema,
     },
@@ -89,15 +101,15 @@ function CreateSolderForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <Card
-        headerTitle={SolderFormStrings.FORM_HEADER_TITLE}
-        headerSubTitle={SolderFormStrings.FORM_HEADER_SUBTITLE}
+        headerTitle={UserFormStrings.FORM_HEADER_TITLE}
+        headerSubTitle={UserFormStrings.FORM_HEADER_SUBTITLE}
         className="p-3"
       >
         <FormSection title={'פרטים אישיים'}>
           <div className="gap-x-5 gap-y-3 md:grid-cols-2 grid grid-cols-1">
             <Input
               {...registry['firstName']}
-              label={SolderFormStrings.FIRST_NAME_LABEL}
+              label={UserFormStrings.FIRST_NAME_LABEL}
               id="first-name"
               tabIndex={1}
               ref={firstNameRef}
@@ -105,27 +117,27 @@ function CreateSolderForm() {
             />
             <Input
               {...registry['lastName']}
-              label={SolderFormStrings.LAST_NAME_LABEL}
+              label={UserFormStrings.LAST_NAME_LABEL}
               id="last-name"
               tabIndex={2}
             />
             <Input
               {...registry['personalNumber']}
-              label={SolderFormStrings.PERSONAL_NUMBER_LABEL}
+              label={UserFormStrings.PERSONAL_NUMBER_LABEL}
               id="personal-number"
               tabIndex={3}
               iconName="Numbers"
             />
             <Input
               {...registry['phoneNumber']}
-              label={SolderFormStrings.PHONE_NUMBER_LABEL}
+              label={UserFormStrings.PHONE_NUMBER_LABEL}
               id="phone-number"
               iconName="Mobile"
               tabIndex={4}
             />
             <Input
               {...registry['email']}
-              label={SolderFormStrings.EMAIL_LABEL}
+              label={UserFormStrings.EMAIL_LABEL}
               id="email"
               tabIndex={5}
               iconName="Email"
@@ -136,18 +148,18 @@ function CreateSolderForm() {
           <div className="gap-x-5 gap-y-3 grid grid-cols-2">
             <DepartmentsComboBox
               {...registry['departmentId']}
-              label={SolderFormStrings.DEPARTMENT_LABEL}
+              label={UserFormStrings.DEPARTMENT_LABEL}
               id="departments"
               tabIndex={6}
-              placeholder={SolderFormStrings.DEPARTMENT_PLACEHOLDER}
+              placeholder={UserFormStrings.DEPARTMENT_PLACEHOLDER}
               className="w-full"
             />
             <ComboBox
               {...registry['role']}
               id="role"
-              label={SolderFormStrings.ROLE_LABEL}
+              label={UserFormStrings.ROLE_LABEL}
               tabIndex={7}
-              placeholder={SolderFormStrings.ROLE_PLACEHOLDER}
+              placeholder={UserFormStrings.ROLE_PLACEHOLDER}
               options={ROLES_OPTIONS}
               className={`w-full`}
             />
@@ -156,10 +168,10 @@ function CreateSolderForm() {
         <div className="gap-5 mt-10 grid grid-cols-2">
           <div className="gap-5 col-start-2 grid grid-cols-2">
             <Button type="button" tabIndex={8} onClick={handleCancel}>
-              {SolderFormStrings.CANCEL_BUTTON_TEXT}
+              {UserFormStrings.CANCEL_BUTTON_TEXT}
             </Button>
             <Button type="submit" tabIndex={9}>
-              {SolderFormStrings.SUBMIT_BUTTON_TEXT}
+              {UserFormStrings.SUBMIT_BUTTON_TEXT}
             </Button>
           </div>
         </div>
@@ -168,4 +180,4 @@ function CreateSolderForm() {
   );
 }
 
-export default CreateSolderForm;
+export default CreateUserForm;

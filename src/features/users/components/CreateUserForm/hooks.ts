@@ -9,11 +9,13 @@ import {
 import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
 import { getAllDepartments } from '../../../../api/departments';
 import { objectToOption } from '../../../../utils/dropdown.util';
-import { initialSolderInfo } from './constants';
+import { initialUserInfo } from './constants';
 import { Department } from '../../../../types/Department';
+import { CreateUserRequest } from 'api/types/request.type';
 
-export const useCreateSolderForm = () => {
-  const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
+export const useCreateUserForm = () => {
+  const [solderInfo, setSolderInfo] =
+    useState<CreateUserRequest>(initialUserInfo);
 
   const firstNameRef = useRef<HTMLInputElement>(null);
 

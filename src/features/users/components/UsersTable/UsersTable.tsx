@@ -3,7 +3,7 @@ import CreateUserForm from '../CreateUserForm/CreateUserForm';
 import { User } from '../../../../types/User';
 import Table from '../../../../components/Table';
 import useUsersColDef from './useUsersColDef';
-import { deleteUsers, updateUsers } from '../../../../api/users';
+import { deleteUsers } from '../../../../api/users';
 import { useUsers, useDeleteUsers } from './../../../../api/queries/users';
 // import { useDeleteUsers, useUsers } from '';
 
@@ -23,7 +23,7 @@ function UsersTable() {
     <Table<User>
       title={UsersStrings.TITLE}
       description={UsersStrings.DESCRIPTION}
-      data={users}
+      data={users || []}
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}

@@ -12,7 +12,7 @@ import { objectToOption } from '../../../../utils/dropdown.util';
 import { initialSolderInfo } from './constants';
 import { Department } from '../../../../types/Department';
 
-export const useCreateSolderForm = () => {
+export const useCreateUserForm = () => {
   const [solderInfo, setSolderInfo] = useState<CreateSolder>(initialSolderInfo);
 
   const firstNameRef = useRef<HTMLInputElement>(null);

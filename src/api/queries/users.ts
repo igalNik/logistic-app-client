@@ -7,6 +7,7 @@ import {
   deleteUsers,
 } from '../users';
 import { CreateUserResponse, GetUsersResponse } from '../types/response.type';
+import { User } from '@/types/User';
 
 // Query keys
 export const usersKeys = {
@@ -23,7 +24,7 @@ export const useUsers = () => {
     queryKey: usersKeys.lists(),
     queryFn: getAllUsers,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    select: (response: GetUsersResponse) => response.data,
+    select: (response: GetUsersResponse) => response.data as User[],
   });
 };
 
@@ -52,6 +53,7 @@ export const useCreateUser = () => {
     },
     onError: (error) => {
       console.error('Failed to create user:', error);
+      throw error;
     },
   });
 };
@@ -86,4 +88,4 @@ export const useDeleteUsers = () => {
       console.error('Failed to delete users:', error);
     },
   });
-}; 
+};

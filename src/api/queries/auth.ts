@@ -24,8 +24,13 @@ export const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ personalNumber, password }: { personalNumber: string; password: string }) =>
-      handleLogin(personalNumber, password),
+    mutationFn: ({
+      personalNumber,
+      password,
+    }: {
+      personalNumber: string;
+      password: string;
+    }) => handleLogin(personalNumber, password),
     onSuccess: () => {
       // Invalidate and refetch auth check
       queryClient.invalidateQueries({ queryKey: authKeys.check() });
@@ -50,4 +55,4 @@ export const useLogout = () => {
       console.error('Logout failed:', error);
     },
   });
-}; 
+};

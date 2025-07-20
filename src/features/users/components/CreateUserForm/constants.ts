@@ -1,7 +1,7 @@
-import { CreateSolder } from '../../../../types/solder/CreateSolder.type';
+import { CreateUserRequest } from 'api/types/request.type';
 
 // Data Constants
-export const initialSolderInfo: CreateSolder = {
+export const initialUserInfo: CreateUserRequest = {
   personalNumber: '',
   firstName: '',
   lastName: '',
@@ -12,7 +12,7 @@ export const initialSolderInfo: CreateSolder = {
 };
 
 // Form UI Strings
-export enum SolderFormStrings {
+export enum UserFormStrings {
   FORM_HEADER_TITLE = 'הוספת חייל',
   FORM_HEADER_SUBTITLE = 'מלא את הפרטים להוספת חייל חדש למערכת',
   FIRST_NAME_LABEL = 'שם פרטי',
