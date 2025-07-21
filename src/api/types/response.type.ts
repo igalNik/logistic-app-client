@@ -1,5 +1,7 @@
 // API Response Types for LogisticApp
 
+import { Signature } from '@/types/Signature';
+
 // Generic API response wrapper
 export interface ApiResponse<T> {
   status: 'success' | 'fail' | 'error';
@@ -173,6 +175,20 @@ export type UpdateUserEquipmentSignatureActionsResponse =
   ApiResponse<UserEquipmentSignatureActionsResponse>;
 export type DeleteUserEquipmentSignatureActionsResponse =
   ApiResponse<undefined>;
+
+// Signature Response
+export type SignatureResponse = Signature;
+
+// Signature Endpoints
+export type GetSignatureResponse = ApiResponse<SignatureResponse>;
+export type GetSignaturesResponse = ApiResponse<SignatureResponse>;
+export type CreateSignatureResponse = ApiResponse<SignatureResponse>;
+export type UpdateSignatureResponse = ApiResponse<SignatureResponse>;
+export type DeleteSignatureResponse = ApiResponse<undefined>;
+export type UpdateManySignaturesResponse = ApiResponse<{
+  updatedCount: number;
+}>;
+export type DeleteManySignaturesResponse = ApiResponse<{ message: string }>;
 
 // Error Response
 export interface ErrorResponse {

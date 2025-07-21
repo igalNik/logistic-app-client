@@ -9,7 +9,6 @@ function UserDetails() {
   const [showMenu, setShowMenu] = useState(false);
 
   const { data: user } = useMe();
-  console.log(user);
 
   const userDetailsElement = useRef(null);
 

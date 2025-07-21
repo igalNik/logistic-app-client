@@ -1,20 +1,30 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTableContext } from './context/TableContext';
 import TableToolbar from './TableToolBar';
-import TableGrid from './TableGrid';
+// import TableGrid from './TableGrid';
 import Modal from '../../components/Modal/Modal';
 import ColumnVisibilityManager from './ColumnVisibilityManager';
 import { TableProps } from './types';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import {
+  AllCommunityModule,
+  ColDef,
+  ModuleRegistry,
+  RowSelectionOptions,
+} from 'ag-grid-community';
 import { useSearchParams } from 'react-router-dom';
 import Spinner from '../Spinner';
 import TableTitle from './TableTitle';
+import { AgGridReact } from 'ag-grid-react';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 function Table<T>({ title, description, children }: TableProps<T>) {
   const [searchParams, setSearchParams] = useSearchParams();
   // prettier-ignore
-  const { gridRef, state, hideChildren, showChildren, toggleTableVisibility } = useTableContext<T>();
+  const { gridRef, state, hideChildren, showChildren, toggleTableVisibility, tableConfig,
+    defaultColDef,
+    onCellEditingStopped,
+    handleRowDataUpdated,
+    handleRowSelection, } = useTableContext<T>();
 
   const handleCloseForm = useCallback(() => {
     setSearchParams({});
@@ -26,7 +36,22 @@ function Table<T>({ title, description, children }: TableProps<T>) {
     else hideChildren();
   }, [searchParams, showChildren, hideChildren]);
 
-  console.log(state.dataStatus);
+  const rowSelection = useMemo<
+    RowSelectionOptions | 'single' | 'multiple'
+  >(() => {
+    return {
+      mode: 'multiRow',
+      checkboxes: true,
+      headerCheckbox: true,
+      // enableClickSelection: true,
+      // enableSelectionWithoutKeys: true,
+    };
+  }, []);
+  const autoGroupColumnDef = useMemo<ColDef>(() => {
+    return {
+      minWidth: 200,
+    };
+  }, []);
 
   switch (state.dataStatus) {
     case 'loading':
@@ -36,6 +61,7 @@ function Table<T>({ title, description, children }: TableProps<T>) {
     default:
       break;
   }
+
   return (
     <div className="flex h-full w-full flex-col">
       {(title || description) && (
@@ -52,7 +78,28 @@ function Table<T>({ title, description, children }: TableProps<T>) {
         <div className="flex flex-1 flex-col">
           <TableToolbar />
           <div className="flex-grow">
-            <TableGrid tabIndex={-1} />
+            {/* <TableGrid<T> tabIndex={-1} /> */}
+            <AgGridReact<T>
+              // {...props}
+              ref={gridRef}
+              enableRtl
+              rowData={state.rowData}
+              columnDefs={tableConfig}
+              defaultColDef={defaultColDef}
+              suppressCellFocus={false}
+              onCellEditingStopped={onCellEditingStopped}
+              onRowDataUpdated={handleRowDataUpdated}
+              stopEditingWhenCellsLoseFocus
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={500}
+              rowSelection={rowSelection}
+              onRowSelected={handleRowSelection}
+              quickFilterText={state.searchText}
+              autoGroupColumnDef={autoGroupColumnDef}
+              enableCellSpan={true}
+              groupDisplayType="groupRows"
+              animateRows={true}
+            />
             {state.showChildren && (
               <Modal onClose={handleCloseForm} className="z-50">
                 {children}

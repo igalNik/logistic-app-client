@@ -10,6 +10,7 @@ import Inventory from '../pages/Inventory';
 
 import EquipmentTypes from './../pages/EquipmentTypes';
 import Users from './../pages/Users';
+import Signatures from './../pages/Signatures';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
           {
             path: '/inventory',
             element: <Inventory />,
+          },
+          {
+            path: '/signatures',
+            element: <Signatures />,
           },
           { path: '*', element: <PageNotFound /> },
         ],

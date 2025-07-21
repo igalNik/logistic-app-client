@@ -29,7 +29,7 @@ const TableGrid = (props: GridOptions<any>) => {
 
   return (
     <div className="min-h-50 pr-1 h-full w-full">
-      <AgGridReact
+      <AgGridReact<T>
         {...props}
         ref={gridRef}
         enableRtl

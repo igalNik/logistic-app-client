@@ -32,4 +32,11 @@ export const API_ENDPOINTS = {
     CREATE: '/inventory',
     UPDATE: '/inventory',
   },
+  SIGNATURES: {
+    GET_ALL: '/signatures',
+    GET_BY_ID: (id: string) => `/signatures/${id}`,
+    CREATE: '/signatures',
+    UPDATE: (id: string) => `/signatures/${id}`,
+    DELETE: (id: string) => `/signatures/${id}`,
+  },
 };

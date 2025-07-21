@@ -28,7 +28,7 @@ export const sideNavData: SideNavSectionData[] = [
         id: uuidv4(),
         text: 'חיילים',
         iconName: 'People',
-        navTo: '/users',
+        navTo: '/solders',
       },
       {
         id: uuidv4(),
@@ -46,7 +46,7 @@ export const sideNavData: SideNavSectionData[] = [
         id: uuidv4(),
         text: 'החתמות/זיכויים',
         iconName: 'Exchange',
-        navTo: '/Inventory',
+        navTo: '/signatures',
       },
       {
         id: uuidv4(),
