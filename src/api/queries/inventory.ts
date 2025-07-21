@@ -24,9 +24,9 @@ export const inventoryKeys = {
 export const useInventory = () => {
   return useQuery({
     queryKey: inventoryKeys.lists(),
-    queryFn: getInventory,
+    queryFn: getInventoryWithPopulatedEquipmentAndUser,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    select: (res: GetInventoryResponse) => res?.data,
+    select: (res: GetInventoryResponse) => res.data as InventoryResponse,
   });
 };
 

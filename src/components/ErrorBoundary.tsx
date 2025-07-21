@@ -1,15 +1,14 @@
 import * as React from 'react';
 
-type Props = {
-  children: React.ReactNode;
+interface ErrorBoundaryProps {
   fallback?: React.ReactNode;
-};
+  children: React.ReactNode;
+}
 
-type State = {
+interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
-};
-
+}
 const messageConfig = {
   success: {
     color: 'text-green-500',
@@ -21,8 +20,11 @@ const messageConfig = {
   },
 } as const;
 
-class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -33,7 +35,6 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
-    // You can also send error logs to a service here
   }
 
   render() {

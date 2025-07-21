@@ -10,6 +10,8 @@ import IconButton from '../components/IconButton';
 import Overlay from '../components/Overlay';
 import { useTailwindBreakpoint } from '../hooks/useTailwindBreakpoint';
 import { useMe } from './../api/queries';
+import ErrorBoundary from './../components/ErrorBoundary';
+import CustomErrorScreen from './../components/CustomErrorScreen';
 
 function AppLayout() {
   const breakPoint = useTailwindBreakpoint();
@@ -18,40 +20,42 @@ function AppLayout() {
 
   const isMobileAndMenuIsClose = breakPoint.isMobile() && !showSideNav;
   return (
-    <div
-      className={`text-gray-900 text-lg grid h-screen max-h-full w-full max-w-screen overflow-hidden ${showSideNav ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr]'} min-w-60 bg-slate-100 md:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]`}
-    >
-      <div className={`md:w-full max-w-screen`}>
-        <Header>
-          <div className="w-fit">
-            {isMobileAndMenuIsClose && (
-              <IconButton
-                iconName={'Menu'}
-                onClick={() => {
-                  setShowSideNav((showSideNav) => !showSideNav);
-                }}
-                className="hover:rotate-180"
-              />
-            )}
-          </div>
-          <span>לוגיסטיקה מסייעת</span>
-        </Header>
-      </div>
-
+    <ErrorBoundary fallback={<CustomErrorScreen />}>
       <div
-        className={` ${!showSideNav ? 'hidden' : ''} md:inline-block row-start-1 row-end-3 block h-full transition-all duration-200`}
+        className={`text-gray-900 text-lg grid h-screen max-h-full w-full max-w-screen overflow-hidden ${showSideNav ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr]'} min-w-60 bg-slate-100 md:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]`}
       >
-        <Overlay isOpen={showSideNav} onClick={() => setShowSideNav(false)}>
-          <SideNav expend={!breakPoint.isMobile()} />
-        </Overlay>
-      </div>
+        <div className={`md:w-full max-w-screen`}>
+          <Header>
+            <div className="w-fit">
+              {isMobileAndMenuIsClose && (
+                <IconButton
+                  iconName={'Menu'}
+                  onClick={() => {
+                    setShowSideNav((showSideNav) => !showSideNav);
+                  }}
+                  className="hover:rotate-180"
+                />
+              )}
+            </div>
+            <span>לוגיסטיקה מסייעת</span>
+          </Header>
+        </div>
 
-      <main className="md:p-6 bg-gray-100 row-start-2 mx-auto h-full max-h-full w-full max-w-[1200px] overflow-hidden">
-        <BlankPage>
-          {isLoading ? <Spinner type="page" /> : <Outlet />}
-        </BlankPage>
-      </main>
-    </div>
+        <div
+          className={` ${!showSideNav ? 'hidden' : ''} md:inline-block row-start-1 row-end-3 block h-full transition-all duration-200`}
+        >
+          <Overlay isOpen={showSideNav} onClick={() => setShowSideNav(false)}>
+            <SideNav expend={!breakPoint.isMobile()} />
+          </Overlay>
+        </div>
+
+        <main className="md:p-6 bg-gray-100 row-start-2 mx-auto h-full max-h-full w-full max-w-[1200px] overflow-hidden">
+          <BlankPage>
+            {isLoading ? <Spinner type="page" /> : <Outlet />}
+          </BlankPage>
+        </main>
+      </div>{' '}
+    </ErrorBoundary>
   );
 }
 

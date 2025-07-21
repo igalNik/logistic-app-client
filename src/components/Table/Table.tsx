@@ -78,9 +78,7 @@ function Table<T>({ title, description, children }: TableProps<T>) {
         <div className="flex flex-1 flex-col">
           <TableToolbar />
           <div className="flex-grow">
-            {/* <TableGrid<T> tabIndex={-1} /> */}
             <AgGridReact<T>
-              // {...props}
               ref={gridRef}
               enableRtl
               rowData={state.rowData}
@@ -96,8 +94,6 @@ function Table<T>({ title, description, children }: TableProps<T>) {
               onRowSelected={handleRowSelection}
               quickFilterText={state.searchText}
               autoGroupColumnDef={autoGroupColumnDef}
-              enableCellSpan={true}
-              groupDisplayType="groupRows"
               animateRows={true}
             />
             {state.showChildren && (

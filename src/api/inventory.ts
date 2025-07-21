@@ -15,16 +15,13 @@ export const getInventory = async () => {
 };
 
 export const getInventoryWithPopulatedEquipmentAndUser = async () => {
-  try {
-    const res = await apiClient<GetInventoryResponse | undefined>(
-      API_ENDPOINTS.INVENTORY.GET_ALL_WITH_POPULATE_EQUIPMENT_TYPE,
-      { method: 'GET' }
-    );
+  const res = await apiClient<GetInventoryResponse>(
+    API_ENDPOINTS.INVENTORY.GET_ALL_WITH_POPULATE_EQUIPMENT_TYPE,
+    { method: 'GET' }
+  );
+  console.log(res);
 
-    return res;
-  } catch (error) {
-    console.log('failed to get all INVENTORY', error);
-  }
+  return res;
 };
 
 export const createInventoryItem = async (item: InventoryItem) => {

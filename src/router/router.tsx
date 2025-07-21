@@ -11,9 +11,12 @@ import Inventory from '../pages/Inventory';
 import EquipmentTypes from './../pages/EquipmentTypes';
 import Users from './../pages/Users';
 import Signatures from './../pages/Signatures';
+import CustomErrorScreen from './../components/CustomErrorScreen';
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
+    errorElement: <CustomErrorScreen />,
+
     children: [
       {
         element: <AppLayout />,
