@@ -23,8 +23,7 @@ function Table<T>({ title, description, children }: TableProps<T>) {
   const { gridRef, state, hideChildren, showChildren, toggleTableVisibility, tableConfig,
     defaultColDef,
     onCellEditingStopped,
-    handleRowDataUpdated,
-    handleRowSelection, } = useTableContext<T>();
+    handleRowSelection } = useTableContext<T>();
 
   const handleCloseForm = useCallback(() => {
     setSearchParams({});
@@ -86,7 +85,6 @@ function Table<T>({ title, description, children }: TableProps<T>) {
               defaultColDef={defaultColDef}
               suppressCellFocus={false}
               onCellEditingStopped={onCellEditingStopped}
-              onRowDataUpdated={handleRowDataUpdated}
               stopEditingWhenCellsLoseFocus
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={500}

@@ -11,6 +11,8 @@ export interface TableActionCreators<T> {
   state: TableState<T>;
   initializeTableData: () => void;
   setRowData: (rowData: T[]) => void;
+  restoreDataFromBackup: () => void;
+  backupRowData: () => void;
   hideChildren: () => void;
   showChildren: () => void;
   toggleTableVisibility: () => void;
@@ -33,6 +35,8 @@ function useTableReducer<T>({
 
   // Actions
   const initializeTableData = useCallback(() => {
+    console.log('init');
+
     dispatch({
       type: 'data/initializeTableData',
       payload: initialState.rowData,
@@ -43,6 +47,17 @@ function useTableReducer<T>({
     dispatch({
       type: 'data/setRowData',
       payload: rowData,
+    });
+  }, []);
+
+  const restoreDataFromBackup = useCallback(() => {
+    dispatch({
+      type: 'data/restoreFromBackup',
+    });
+  }, []);
+  const backupRowData = useCallback(() => {
+    dispatch({
+      type: 'data/backupRowData',
     });
   }, []);
 
@@ -63,7 +78,6 @@ function useTableReducer<T>({
           payload: {
             tableStatus: 'read',
             colDefs: tableConfig,
-            rowDataBackup: null,
           },
         };
       } else {
@@ -72,13 +86,12 @@ function useTableReducer<T>({
           payload: {
             tableStatus: 'edit',
             colDefs: tableConfigOnEdit,
-            rowDataBackup: [...state.rowData],
           },
         };
       }
       dispatch(payload);
     },
-    [state.rowData, tableConfig, tableConfigOnEdit]
+    [tableConfig, tableConfigOnEdit]
   );
 
   const toggleTableVisibility = useCallback(() => {
@@ -97,6 +110,8 @@ function useTableReducer<T>({
     state,
     initializeTableData,
     setRowData,
+    restoreDataFromBackup,
+    backupRowData,
     hideChildren,
     showChildren,
     toggleTableVisibility,

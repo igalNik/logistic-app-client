@@ -65,13 +65,15 @@ export const deleteUsers = async (usersIds: string[]) => {
 };
 
 export const handleMe = async (): Promise<GetUserResponse> => {
-  try {
-    const res = await apiClient<GetUserResponse>(API_ENDPOINTS.USERS.ME, {
-      method: 'GET',
-    });
-    return res;
-  } catch (error) {
-    console.log('not authorized: ', error);
-    throw error;
-  }
+  const res = await apiClient<GetUserResponse>(API_ENDPOINTS.USERS.ME, {
+    method: 'GET',
+  });
+  return res;
+};
+
+export const handleUpdateManyUsers = async (): Promise<any> => {
+  const res = await apiClient<GetUserResponse>(API_ENDPOINTS.USERS.UPDATE, {
+    method: 'GET',
+  });
+  return res;
 };

@@ -21,14 +21,8 @@ export interface TableProps<T> {
   isLoading: boolean;
   error?: string | string[] | null;
 
-  onUpdateMany?:
-    | ((data: any) => Promise<any>)
-    | ((data: string[]) => void)
-    | undefined;
-  onDeleteMany?:
-    | ((data: any) => Promise<any>)
-    | ((data: string[]) => void)
-    | undefined;
+  onUpdateMany?: ((data: Partial<T>[]) => void) | undefined;
+  onDeleteMany?: ((data: string[]) => void) | undefined;
 
   children: ReactNode;
 }
@@ -60,12 +54,11 @@ export interface TableContextType<T> {
   onRowEditingStopped?: (event: any) => void;
   onCellEditingStarted?: (event: any) => void;
   onCellEditingStopped: (event: any) => void;
-  handleRowDataUpdated: (event: any) => void;
   handleRowSelection: (event: any) => void;
   handleDeleteSelectedItems: (event: any) => void;
 
-  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
-  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
+  onUpdateMany?: ((data: any) => void) | undefined;
+  onDeleteMany?: ((data: any) => void) | undefined;
 }
 
 export interface TableProviderProps<T> {
@@ -87,6 +80,8 @@ export interface UseTableHandlersParams<T> {
   setRowData: (rowData: T[]) => void;
   setSearchText: (searchText: string) => void;
   setSelectedRows: (selectedRows: T[]) => void;
+  restoreDataFromBackup: () => void;
+  backupRowData: () => void;
 
   gridRef: React.RefObject<any>;
   validationSchema?: FieldValidationSchema<T>[];
@@ -105,6 +100,6 @@ export interface UseTableHandlersParams<T> {
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
 
-  onUpdateMany?: (data: any) => Promise<any> | void;
-  onDeleteMany?: (data: any) => Promise<any>;
+  onUpdateMany?: (data: any) => void | void;
+  onDeleteMany?: (data: any) => void;
 }

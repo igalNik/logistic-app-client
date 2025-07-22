@@ -9,6 +9,8 @@ export function useTableHandlers<T>({
   // hideChildren,
   setTableStatus,
   setRowData,
+  restoreDataFromBackup,
+  backupRowData,
 
   gridRef,
   validationSchema,
@@ -26,27 +28,26 @@ export function useTableHandlers<T>({
 
   const handleEditClick = useCallback(() => {
     setTableStatus('edit');
-  }, [setTableStatus]);
+    backupRowData();
+  }, [backupRowData, setTableStatus]);
 
   const handleCancelEditingClick = useCallback(() => {
     invalidCells.clear();
     updates.clear();
     setTableStatus('read');
-  }, [invalidCells, updates, setTableStatus]);
+    restoreDataFromBackup();
+  }, [restoreDataFromBackup, invalidCells, updates, setTableStatus]);
 
   const handleRowSelection = useCallback(() => {
     setSelectedRows(gridRef.current.api.getSelectedRows());
   }, [gridRef, setSelectedRows]);
 
   const handleStopEditAndSaveClick = useCallback(async () => {
-    const res = await onUpdateMany?.([...updates.values()]);
-
-    if (res.status === 'fail') return Promise.resolve(res);
-
-    setTableStatus('read');
+    onUpdateMany?.([...updates.values()]);
 
     invalidCells.clear();
     updates.clear();
+    setTableStatus('read');
   }, [invalidCells, onUpdateMany, setTableStatus, updates]);
 
   const handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement> =
@@ -87,13 +88,6 @@ export function useTableHandlers<T>({
 
       if (validationResult && !validationResult?.isValid) {
         invalidCells.add(cellKey);
-
-        // setToast({
-        //   title: TableStrings.INVALID_VALUE,
-        //   message: validationResult!.errors as string[],
-        //   type: 'error',
-        //   onClose: () => setToast(null),
-        // });
       } else {
         invalidCells.delete(cellKey);
         if (updates.has(updatesKey)) {
@@ -110,8 +104,6 @@ export function useTableHandlers<T>({
     },
     [invalidCells, updates, refreshGridCells, validationSchema]
   );
-
-  const handleRowDataUpdated = useCallback(() => {}, []);
 
   const handleDeleteSelectedItems = useCallback(async () => {
     const ids = state.selectedRows.map((row: T) => (row as any)._id);
@@ -133,7 +125,6 @@ export function useTableHandlers<T>({
     handleFilterTextBoxClear,
 
     onCellEditingStopped,
-    handleRowDataUpdated,
     handleRowSelection,
     handleDeleteSelectedItems,
   };

@@ -3,8 +3,12 @@ import CreateUserForm from '../CreateUserForm/CreateUserForm';
 import { User } from '../../../../types/User';
 import Table from '../../../../components/Table';
 import useUsersColDef from './useUsersColDef';
-import { deleteUsers } from '../../../../api/users';
-import { useUsers, useDeleteUsers } from './../../../../api/queries/users';
+import {
+  useUsers,
+  useDeleteUsers,
+  useUpdateUsers,
+} from './../../../../api/queries/users';
+import { UpdateUserRequest } from 'api/types/request.type';
 // import { useDeleteUsers, useUsers } from '';
 
 function UsersTable() {
@@ -14,10 +18,14 @@ function UsersTable() {
 
   const { mutate: deleteUsersMutation } = useDeleteUsers();
 
+  const { mutate: updateUsersMutation } = useUpdateUsers();
+
+  const handleUpdateMany = (updates: User[] | UpdateUserRequest[]) => {
+    updateUsersMutation(updates);
+  };
   const handleDeleteMany = (usersIds: string[]) => {
     deleteUsersMutation(usersIds);
   };
-  // Extract the data array from the response
 
   return (
     <Table<User>
@@ -27,8 +35,8 @@ function UsersTable() {
       tableConfig={tableConfig}
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
-      onUpdateMany={handleDeleteMany}
-      onDeleteMany={deleteUsers}
+      onUpdateMany={handleUpdateMany}
+      onDeleteMany={handleDeleteMany}
       isLoading={isLoading}
       error={error?.message}
       // defaultColDef={[]}

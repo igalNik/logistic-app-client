@@ -26,6 +26,7 @@ export interface TableState<T> {
 export type DataActions<T> =
   | { type: 'data/initializeTableData'; payload: T[] }
   | { type: 'data/restoreFromBackup' }
+  | { type: 'data/backupRowData' }
   | { type: 'data/setRowData'; payload: T[] }
   | { type: 'data/setLoading' }
   | { type: 'data/setError'; payload: string };
@@ -44,7 +45,6 @@ export type UIAction<T> =
       payload: {
         tableStatus: TableStatus;
         colDefs: ColDef<T, any>[];
-        rowDataBackup: T[] | null;
       };
     };
 
@@ -69,7 +69,12 @@ export function tableReducer<T>(
     case 'data/restoreFromBackup':
       return {
         ...state,
-        rowDataBackup: [...state.rowData],
+        rowData: [...state.rowDataBackup!],
+      };
+    case 'data/backupRowData':
+      return {
+        ...state,
+        rowDataBackup: JSON.parse(JSON.stringify(state.rowData)),
       };
     case 'data/setLoading':
       return { ...state, dataStatus: 'loading', error: null };
@@ -89,7 +94,6 @@ export function tableReducer<T>(
         ...state,
         tableStatus: action.payload.tableStatus,
         colDefs: action.payload.colDefs,
-        rowDataBackup: action.payload.rowDataBackup,
         selectedRows: [],
       };
     }

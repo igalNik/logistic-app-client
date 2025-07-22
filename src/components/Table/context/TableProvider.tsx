@@ -15,8 +15,8 @@ interface TableProviderProps<T> {
   validationSchema?: FieldValidationSchema<T>[];
   isLoading?: boolean;
   error?: string | string[] | null;
-  onUpdateMany?: ((data: any) => Promise<any>) | undefined;
-  onDeleteMany?: ((data: any) => Promise<any>) | undefined;
+  onUpdateMany?: ((data: Partial<T>[]) => void) | undefined;
+  onDeleteMany?: ((data: string[]) => void) | undefined;
 }
 
 export function TableProvider<T>({
@@ -62,6 +62,8 @@ export function TableProvider<T>({
     setTableStatus,
     toggleTableVisibility,
     setRowData,
+    restoreDataFromBackup,
+    backupRowData,
     setSearchText,
     setSelectedRows,
   } = useTableReducer<T>({ initialState, tableConfig, tableConfigOnEdit });
@@ -84,6 +86,8 @@ export function TableProvider<T>({
     setTableStatus,
     setSearchText,
     setSelectedRows,
+    restoreDataFromBackup,
+    backupRowData,
     gridRef,
     invalidCells,
     updates,
@@ -108,11 +112,12 @@ export function TableProvider<T>({
         toggleTableVisibility,
         setRowData,
 
-        ...handlers,
         tableConfig,
         tableConfigOnEdit,
         defaultColDef,
         validationSchema,
+
+        ...handlers,
 
         onUpdateMany,
         onDeleteMany,
