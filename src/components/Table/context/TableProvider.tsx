@@ -17,6 +17,9 @@ interface TableProviderProps<T> {
   error?: string | string[] | null;
   onUpdateMany?: ((data: Partial<T>[]) => void) | undefined;
   onDeleteMany?: ((data: string[]) => void) | undefined;
+  onError?: (message: string) => void;
+  onSuccess?: (message: string) => void;
+  onNotification?: (message: string) => void;
 }
 
 export function TableProvider<T>({
@@ -29,6 +32,9 @@ export function TableProvider<T>({
   // error,
   onUpdateMany,
   onDeleteMany,
+  onError,
+  onSuccess,
+  onNotification,
 }: TableProviderProps<T>) {
   // prettier-ignore
   const initialState: TableState<T> = {
@@ -93,10 +99,14 @@ export function TableProvider<T>({
     updates,
     tableConfig,
     tableConfigOnEdit,
+    validationSchema,
 
     setRowData,
     onUpdateMany,
     onDeleteMany,
+    onError,
+    onSuccess,
+    onNotification,
     toggleTableVisibility,
   });
 

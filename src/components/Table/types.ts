@@ -23,6 +23,9 @@ export interface TableProps<T> {
 
   onUpdateMany?: ((data: Partial<T>[]) => void) | undefined;
   onDeleteMany?: ((data: string[]) => void) | undefined;
+  onError?: (message: string) => void;
+  onSuccess?: (message: string) => void;
+  onNotification?: (message: string) => void;
 
   children: ReactNode;
 }
@@ -59,6 +62,9 @@ export interface TableContextType<T> {
 
   onUpdateMany?: ((data: any) => void) | undefined;
   onDeleteMany?: ((data: any) => void) | undefined;
+  onError?: (message: string) => void;
+  onSuccess?: (message: string) => void;
+  onNotification?: (message: string) => void;
 }
 
 export interface TableProviderProps<T> {
@@ -88,18 +94,12 @@ export interface UseTableHandlersParams<T> {
   invalidCells: Set<string>;
   updates: Map<string, Partial<T>>;
 
-  // setToast: React.Dispatch<
-  //   React.SetStateAction<{
-  //     title: string;
-  //     message: string | string[];
-  //     type: 'success' | 'error' | 'info';
-  //     onClose: () => void;
-  //   } | null>
-  // >;
-
   tableConfig: ColDef<T>[];
   tableConfigOnEdit: ColDef<T>[];
 
   onUpdateMany?: (data: any) => void | void;
   onDeleteMany?: (data: any) => void;
+  onError?: (message: string) => void;
+  onSuccess?: (message: string) => void;
+  onNotification?: (message: string) => void;
 }

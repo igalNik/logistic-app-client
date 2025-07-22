@@ -10,9 +10,10 @@ import Table from '../../../../components/Table';
 import CreateDepartmentForm from '../CreateDepartmentForm/CreateDepartmentForm';
 import { useDepartments } from '../../../../api/queries';
 import { Department } from '../../../../types/Department';
+import { toast } from 'react-toastify';
 
 function DepartmentsTable() {
-  const { data: departmentsResponse, isLoading, error } = useDepartments();
+  const { data: departmentsResponse, isLoading } = useDepartments();
   console.log(departmentsResponse);
 
   return (
@@ -25,8 +26,10 @@ function DepartmentsTable() {
       validationSchema={validationSchema}
       // onUpdateMany={updateDepartments}
       // onDeleteMany={deleteDepartments}
-      // isLoading={isLoading}
-      // error={error}
+      onError={(message: string) => toast.error(message)}
+      onSuccess={(message: string) => toast.success(message)}
+      onNotification={(message: string) => toast.info(message)}
+      isLoading={isLoading}
     >
       <CreateDepartmentForm />
     </Table>

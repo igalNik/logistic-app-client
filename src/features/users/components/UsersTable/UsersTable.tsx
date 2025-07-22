@@ -9,10 +9,11 @@ import {
   useUpdateUsers,
 } from './../../../../api/queries/users';
 import { UpdateUserRequest } from 'api/types/request.type';
+import { toast } from 'react-toastify';
 // import { useDeleteUsers, useUsers } from '';
 
 function UsersTable() {
-  const { data: users, isLoading, error } = useUsers();
+  const { data: users, isLoading } = useUsers();
 
   const { tableConfig, tableConfigOnEdit } = useUsersColDef();
 
@@ -38,8 +39,9 @@ function UsersTable() {
       onUpdateMany={handleUpdateMany}
       onDeleteMany={handleDeleteMany}
       isLoading={isLoading}
-      error={error?.message}
-      // defaultColDef={[]}
+      onError={(message: string) => toast.error(message)}
+      onSuccess={(message: string) => toast.success(message)}
+      onNotification={(message: string) => toast.info(message)}
     >
       <CreateUserForm />
     </Table>

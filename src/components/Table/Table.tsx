@@ -101,8 +101,6 @@ function Table<T>({ title, description, children }: TableProps<T>) {
             )}
           </div>
         </div>
-
-        {/* {toast && <Toast {...toast} onClose={() => setToast(null)} />} */}
       </div>
     </div>
   );

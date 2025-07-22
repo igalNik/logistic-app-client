@@ -1,6 +1,7 @@
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import type { FieldValidationSchema, UseTableHandlersParams } from '../types';
 import { ChangeEventHandler, useCallback } from 'react';
+import { TableStrings } from '../constants';
 
 export function useTableHandlers<T>({
   state,
@@ -16,9 +17,11 @@ export function useTableHandlers<T>({
   validationSchema,
   invalidCells,
   updates,
-  // setToast,
   onUpdateMany,
   onDeleteMany,
+  onError,
+  onSuccess,
+  onNotification,
   setSearchText,
   setSelectedRows,
 }: UseTableHandlersParams<T>) {
@@ -38,17 +41,35 @@ export function useTableHandlers<T>({
     restoreDataFromBackup();
   }, [restoreDataFromBackup, invalidCells, updates, setTableStatus]);
 
-  const handleRowSelection = useCallback(() => {
-    setSelectedRows(gridRef.current.api.getSelectedRows());
-  }, [gridRef, setSelectedRows]);
-
   const handleStopEditAndSaveClick = useCallback(async () => {
-    onUpdateMany?.([...updates.values()]);
+    if (invalidCells.size) {
+      onError?.(TableStrings.UPDATE_MANY_ERROR);
+      return;
+    }
+
+    if (updates.size) {
+      onUpdateMany?.([...updates.values()]);
+      onSuccess?.(TableStrings.UPDATE_MANY_SUCCESS);
+    } else {
+      onNotification?.(TableStrings.UPDATE_MANY_NO_CHANGES);
+    }
 
     invalidCells.clear();
     updates.clear();
     setTableStatus('read');
-  }, [invalidCells, onUpdateMany, setTableStatus, updates]);
+  }, [
+    invalidCells,
+    onError,
+    onNotification,
+    onSuccess,
+    onUpdateMany,
+    setTableStatus,
+    updates,
+  ]);
+
+  const handleRowSelection = useCallback(() => {
+    setSelectedRows(gridRef.current.api.getSelectedRows());
+  }, [gridRef, setSelectedRows]);
 
   const handleFilterTextBoxChanged: ChangeEventHandler<HTMLInputElement> =
     useCallback(

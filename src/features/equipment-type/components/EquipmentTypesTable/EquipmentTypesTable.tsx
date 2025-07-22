@@ -1,4 +1,3 @@
-import { useLoaderData } from 'react-router-dom';
 import {
   EquipmentTypeStrings,
   tableConfig,
@@ -9,12 +8,12 @@ import {
 import { EquipmentType } from '../../../../types/equipment-type/EquipmentType';
 import {
   deleteEquipmentTypes,
-  GetAllEquipmentTypesResponse,
   updateEquipmentTypes,
 } from '../../../../api/equipmentType';
 import Table from '../../../../components/Table';
 import CreateEquipmentTypeForm from '../CreateEquipmentTypeForm/CreateEquipmentTypeForm';
 import { useEquipmentTypes } from './../../../../api/queries';
+import { toast } from 'react-toastify';
 
 function EquipmentTypesTable() {
   const { data: equipmentTypes, isLoading, error } = useEquipmentTypes();
@@ -29,6 +28,9 @@ function EquipmentTypesTable() {
       validationSchema={validationSchema}
       onUpdateMany={updateEquipmentTypes}
       onDeleteMany={deleteEquipmentTypes}
+      onError={(message: string) => toast.error(message)}
+      onSuccess={(message: string) => toast.success(message)}
+      onNotification={(message: string) => toast.info(message)}
       isLoading={isLoading}
     >
       <CreateEquipmentTypeForm />

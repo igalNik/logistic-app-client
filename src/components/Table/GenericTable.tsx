@@ -13,6 +13,9 @@ const GenericTable = function <T>(props: TableProps<T>) {
       onDeleteMany={props.onDeleteMany}
       isLoading={props.isLoading}
       error={props.error}
+      onError={props.onError}
+      onSuccess={props.onSuccess}
+      onNotification={props.onNotification}
     >
       <Table<T> {...props}>{props.children}</Table>
     </TableProvider>

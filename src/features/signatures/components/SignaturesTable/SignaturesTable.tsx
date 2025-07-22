@@ -4,9 +4,10 @@ import Table from '../../../../components/Table';
 import useSignaturesColDef from './useSignaturesColDef';
 import { useSignatures } from '../../../../api/queries/signatures';
 import CreateSignatureForm from '../CreateSignatureForm/CreateSignatureForm';
+import { toast } from 'react-toastify';
 
 function SignaturesTable() {
-  const { data: signatures = [], isLoading, error } = useSignatures();
+  const { data: signatures = [], isLoading } = useSignatures();
   const { tableConfig, tableConfigOnEdit } = useSignaturesColDef();
 
   return (
@@ -18,7 +19,9 @@ function SignaturesTable() {
       tableConfigOnEdit={tableConfigOnEdit}
       validationSchema={validationSchema}
       isLoading={isLoading}
-      error={error?.message}
+      onError={(message: string) => toast.error(message)}
+      onSuccess={(message: string) => toast.success(message)}
+      onNotification={(message: string) => toast.info(message)}
     >
       <CreateSignatureForm />
     </Table>
